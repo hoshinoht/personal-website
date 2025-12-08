@@ -8,6 +8,7 @@ export const keywords = [
   "Data Engineering",
   "IoT",
   "GenAI / LLM",
+  "Quality Assurance",
 ] as const;
 
 export type Keyword = typeof keywords[number];
@@ -33,6 +34,19 @@ export interface Project {
 
 export const experiences: Experience[] = [
   {
+    id: "sit-la",
+    title: "Lab Assistant - Discrete Mathematics",
+    company: "Singapore Institute of Technology",
+    period: "SEP 2025 — Present",
+    location: "Singapore",
+    type: "Part-time",
+    description: [
+      "Assist students with discrete mathematics concepts and problem-solving during lab sessions.",
+      "Support academic staff in delivering course materials and managing lab activities.",
+    ],
+    keywords: ["Backend Development"],
+  },
+  {
     id: "sit-ra",
     title: "Research Assistant",
     company: "Singapore Institute of Technology",
@@ -46,17 +60,46 @@ export const experiences: Experience[] = [
     keywords: ["Game Development", "Backend Development"],
   },
   {
-    id: "razer",
-    title: "Software Engineering Intern",
-    company: "Razer",
+    id: "razer-swe",
+    title: "Software Engineer",
+    company: "Razer Inc.",
     period: "APR 2022 — SEP 2022",
     location: "Singapore",
     type: "Full-time, Hybrid",
     description: [
-      "Boosted system performance and enhanced scalability by collaborating with cross-functional teams to architect and implement key software structural improvements.",
-      "Optimised core UI components for Razer Synapse 4, reducing interface load times by 15% based on performance testing.",
+      "Contributed to the development of Razer Synapse 4 as a Front-End Developer, implementing and debugging UI components to enhance user experience.",
+      "Worked closely with cross-functional teams, ensuring seamless integration with Razer's ecosystem and maintaining brand consistency.",
+      "Optimized JavaScript and TypeScript code for improved performance and responsiveness in the software.",
     ],
     keywords: ["Backend Development", "Frontend Development"],
+  },
+  {
+    id: "razer-qa",
+    title: "Quality Assurance Engineer",
+    company: "Razer Inc.",
+    period: "MAR 2021 — SEP 2021",
+    location: "Singapore",
+    type: "Full-time",
+    description: [
+      "Conducted software testing for Razer Synapse 4, identifying and reporting critical issues to enhance product stability.",
+      "Developed Python-based automation tools to streamline testing processes, improving test coverage and reducing manual testing efforts.",
+      "Collaborated with developers to troubleshoot and resolve software bugs before deployment.",
+    ],
+    keywords: ["Quality Assurance", "Backend Development"],
+  },
+  {
+    id: "wishbone",
+    title: "Full Stack Engineer",
+    company: "Wishbone Digital Group",
+    period: "JAN 2019 — MAR 2019",
+    location: "Central Singapore",
+    type: "Full-time",
+    description: [
+      "Worked with clients to develop custom web application solutions, ensuring functionality and responsiveness.",
+      "Designed and implemented both front-end and back-end features using PHP and JavaScript.",
+      "Provided maintenance and enhancements to existing web applications, improving efficiency and user experience.",
+    ],
+    keywords: ["Frontend Development", "Backend Development"],
   },
 ];
 
@@ -108,12 +151,13 @@ export const skills = {
   "Data Engineering & Analytics": ["Python", "Pandas", "Scikit-learn", "SQL", "MySQL", "ETL Pipelines"],
   "Software Engineering": ["Clean Architecture", "Pytest", "Performance Optimisation", "Scalable System Design"],
   "Game Development": ["Unity", "C#", "Multiplayer Systems"],
+  "Programming Languages": ["C", "JavaScript", "TypeScript", "Python", "PHP", "C#"],
 };
 
 export const education = [
   {
-    degree: "Bachelor of Science with Honours in Computing Science",
-    school: "Singapore Institute of Technology",
+    degree: "Bachelor of Science (Honours) in Computing Science",
+    school: "Singapore Institute of Technology / University of Glasgow",
     period: "SEP 2024 — APR 2027",
   },
   {
@@ -121,11 +165,37 @@ export const education = [
     school: "Singapore Polytechnic",
     period: "MAR 2019 — APR 2022",
   },
+  {
+    degree: "National ITE Certificate (Nitec) with Merit in Social Media & Web Development",
+    school: "Institute of Technical Education",
+    period: "2017 — 2018",
+  },
 ];
+
+export const certifications = [
+  "Kubernetes Fundamentals",
+  "AWS Academy Graduate - Cloud Architecting",
+  "Docker Fundamentals",
+  "AWS Academy Graduate - Cloud Foundations",
+];
+
+export const languages = [
+  { language: "English", proficiency: "Native or Bilingual" },
+  { language: "Chinese", proficiency: "Limited Working" },
+];
+
+export const topSkills = ["C (Programming Language)", "Amazon Web Services (AWS)", "Distributed Computing"];
+
+export const bio = `I'm a Computing Science student at the Singapore Institute of Technology (SIT), passionate about building innovative solutions that bridge technology and creativity. My core interests lie at the intersection of Software Engineering, Cloud Computing, Game Development, and Artificial Intelligence (AI).
+
+Diverse experiences have shaped my journey in tech: from enhancing user interfaces and software performance as an intern at Razer to ensuring seamless IT operations in the Singapore Army. These roles have deepened my expertise in full-stack development, system troubleshooting, and software testing, while strengthening my ability to adapt, collaborate, and think critically.
+
+I am always experimenting with new ideas and emerging trends. I have a strong interest in cloud-native technologies and distributed systems, with hands-on experience with Amazon Web Services (AWS) and containerization tools such as Docker and Kubernetes.`;
 
 export const contact = {
   email: "pohaoting@gmail.com",
   phone: "+65 9820 0498",
   linkedin: "https://linkedin.com/in/po-haoting",
   github: "https://github.com/hoshinoht",
+  location: "Singapore, Singapore",
 };

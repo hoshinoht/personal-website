@@ -59,8 +59,8 @@ const Hero = () => {
             className="text-secondary-foreground max-w-xl mx-auto mb-10 leading-relaxed animate-slide-up"
             style={{ animationDelay: "0.3s" }}
           >
-            Building scalable systems and immersive experiences. 
-            Passionate about systems programming, cloud infrastructure, and interactive media.
+            Computing Science student passionate about Software Engineering, Cloud Computing, 
+            Game Development, and AI. Building innovative solutions that bridge technology and creativity.
           </p>
           
           {/* Contact Links */}
