@@ -2,12 +2,8 @@ export const keywords = [
   "Game Development",
   "Systems Programming",
   "Cloud & Infrastructure",
-  "Machine Learning",
   "Backend Development",
   "Frontend Development",
-  "Data Engineering",
-  "IoT",
-  "GenAI / LLM",
   "Quality Assurance",
 ] as const;
 
@@ -72,7 +68,7 @@ export const experiences: Experience[] = [
       "Worked closely with cross-functional teams, ensuring seamless integration with Razer's ecosystem and maintaining brand consistency.",
       "Optimized JavaScript and TypeScript code for improved performance and responsiveness in the software.",
     ],
-    keywords: ["Backend Development", "Frontend Development"],
+    keywords: ["Backend Development", "Frontend Development", "Systems Programming"],
   },
   {
     id: "razer-qa",
@@ -100,7 +96,7 @@ export const experiences: Experience[] = [
       "Designed and implemented both front-end and back-end features using PHP and JavaScript.",
       "Provided maintenance and enhancements to existing web applications, improving efficiency and user experience.",
     ],
-    keywords: ["Frontend Development", "Backend Development"],
+    keywords: ["Frontend Development", "Backend Development", "Cloud & Infrastructure"],
   },
 ];
 
@@ -113,7 +109,7 @@ export const projects: Project[] = [
       "Built a real-time web dashboard for monitoring and control of connected IoT devices.",
     ],
     technologies: ["C", "FreeRTOS", "MQTT-SN", "Raspberry Pi Pico W", "Web Dashboard"],
-    keywords: ["Systems Programming", "IoT", "Backend Development"],
+    keywords: ["Systems Programming", "Backend Development"],
     github: "https://github.com/hoshinoht/mqttsn-picow",
   },
   {
@@ -124,7 +120,7 @@ export const projects: Project[] = [
       "Implemented core features including full read/write access and robust error handling for reliable data storage in IoT applications.",
     ],
     technologies: ["C", "Raspberry Pi Pico W", "SPI", "exFAT"],
-    keywords: ["Systems Programming", "IoT"],
+    keywords: ["Systems Programming"],
   },
   {
     id: "zensupply",
@@ -134,7 +130,7 @@ export const projects: Project[] = [
       "Integrated Azure OpenAI and Google's Gemini for enhanced inventory insights, providing hands-on experience with GenAI capabilities and LLM-driven applications.",
     ],
     technologies: ["Python", "Scikit-learn", "Azure OpenAI", "Google Gemini"],
-    keywords: ["Machine Learning", "Data Engineering", "GenAI / LLM", "Cloud & Infrastructure"],
+    keywords: ["Cloud & Infrastructure", "Backend Development"],
   },
   {
     id: "air-power",
@@ -158,13 +154,34 @@ export const projects: Project[] = [
   },
 ];
 
-export const skills = {
-  "Cloud & Infrastructure": ["AWS", "Azure", "GCP", "Docker", "Kubernetes", "Terraform"],
-  "Data Engineering & Analytics": ["Python", "Pandas", "Scikit-learn", "SQL", "MySQL", "ETL Pipelines"],
-  "Software Engineering": ["Clean Architecture", "Pytest", "Performance Optimisation", "Scalable System Design"],
-  "Game Development": ["Unity", "C#", "Multiplayer Systems"],
-  "Programming Languages": ["C", "JavaScript", "TypeScript", "Python", "PHP", "C#"],
-};
+export interface SkillCategory {
+  name: string;
+  skills: string[];
+  keywords: Keyword[];
+}
+
+export const skillCategories: SkillCategory[] = [
+  {
+    name: "Cloud & Infrastructure",
+    skills: ["AWS", "Azure", "GCP", "Docker", "Kubernetes", "Terraform"],
+    keywords: ["Cloud & Infrastructure", "Backend Development"],
+  },
+  {
+    name: "Software Engineering",
+    skills: ["Clean Architecture", "Pytest", "Performance Optimisation", "Scalable System Design", "Python", "SQL"],
+    keywords: ["Backend Development", "Frontend Development", "Quality Assurance"],
+  },
+  {
+    name: "Game Development",
+    skills: ["Unity", "C#", "Multiplayer Systems"],
+    keywords: ["Game Development"],
+  },
+  {
+    name: "Systems & Embedded",
+    skills: ["C", "FreeRTOS", "SPI", "MQTT-SN", "Raspberry Pi Pico W"],
+    keywords: ["Systems Programming"],
+  },
+];
 
 export const education = [
   {

@@ -113,7 +113,7 @@ const Index = () => {
         </div>
       </section>
 
-      <SkillsSection />
+      <SkillsSection selectedKeywords={selectedKeywords} />
       <EducationSection />
       <Footer />
     </div>
