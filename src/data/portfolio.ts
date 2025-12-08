@@ -30,6 +30,7 @@ export interface Project {
   description: string[];
   technologies: string[];
   keywords: Keyword[];
+  github?: string;
 }
 
 export const experiences: Experience[] = [
@@ -104,6 +105,17 @@ export const experiences: Experience[] = [
 ];
 
 export const projects: Project[] = [
+  {
+    id: "mqttsn-picow",
+    title: "MQTT-SN Client for the Pico W",
+    description: [
+      "A complete IoT file transfer system featuring Raspberry Pi Pico W devices running FreeRTOS, communicating via MQTT-SN protocol.",
+      "Built a real-time web dashboard for monitoring and control of connected IoT devices.",
+    ],
+    technologies: ["C", "FreeRTOS", "MQTT-SN", "Raspberry Pi Pico W", "Web Dashboard"],
+    keywords: ["Systems Programming", "IoT", "Backend Development"],
+    github: "https://github.com/hoshinoht/mqttsn-picow",
+  },
   {
     id: "microsd-driver",
     title: "MicroSD Filesystem Driver",

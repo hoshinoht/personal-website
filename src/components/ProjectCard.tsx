@@ -1,5 +1,5 @@
 import { Project } from "@/data/portfolio";
-import { Code2, ExternalLink } from "lucide-react";
+import { Code2, Github } from "lucide-react";
 
 interface ProjectCardProps {
   project: Project;
@@ -26,6 +26,16 @@ const ProjectCard = ({ project, isHighlighted }: ProjectCardProps) => {
         <div className="p-2.5 rounded-lg bg-primary/10 border border-primary/20">
           <Code2 className="w-5 h-5 text-primary" />
         </div>
+        {project.github && (
+          <a
+            href={project.github}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="p-2 rounded-lg border border-border hover:border-primary/50 hover:bg-primary/10 transition-colors"
+          >
+            <Github className="w-4 h-4 text-muted-foreground hover:text-primary" />
+          </a>
+        )}
       </div>
       
       <h3 className="text-lg font-semibold text-foreground mb-3">
