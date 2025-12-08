@@ -1,9 +1,10 @@
 import { Github, Linkedin, Mail } from "lucide-react";
 import { contact } from "@/data/portfolio";
 import TypingEffect from "./TypingEffect";
-import profileImage from "@/assets/profile.png";
 
 const Hero = () => {
+  const profileImage = `${import.meta.env.BASE_URL}images/profile.png`;
+  
   return (
     <section className="relative min-h-[80vh] flex items-center justify-center overflow-hidden">
       {/* Background effects */}
