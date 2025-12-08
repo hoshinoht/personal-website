@@ -1,5 +1,6 @@
-import { Github, Linkedin, Mail, Phone } from "lucide-react";
+import { Github, Linkedin, Mail } from "lucide-react";
 import { contact } from "@/data/portfolio";
+import TypingEffect from "./TypingEffect";
 
 const Hero = () => {
   return (
@@ -29,12 +30,12 @@ const Hero = () => {
             Po <span className="text-gradient">Haoting</span>
           </h1>
           
-          {/* Title */}
+          {/* Title with Typing Effect */}
           <p 
-            className="text-xl md:text-2xl text-muted-foreground mb-8 font-light animate-slide-up"
+            className="text-xl md:text-2xl text-muted-foreground mb-8 font-light animate-slide-up h-8"
             style={{ animationDelay: "0.2s" }}
           >
-            Software Engineer & Game Developer
+            <TypingEffect />
           </p>
           
           {/* Bio */}
