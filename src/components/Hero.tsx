@@ -32,7 +32,7 @@ const Hero = () => {
           </div>
           {/* Terminal-style intro */}
           <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full border border-border bg-card/50 backdrop-blur-sm animate-fade-in">
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse-slow" />
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse shadow-[0_0_8px_2px] shadow-primary/50" />
             <span className="font-mono text-sm text-muted-foreground">
               Available for opportunities
             </span>
