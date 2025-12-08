@@ -1,6 +1,7 @@
 import { Github, Linkedin, Mail } from "lucide-react";
 import { contact } from "@/data/portfolio";
 import TypingEffect from "./TypingEffect";
+import profileImage from "@/assets/profile.png";
 
 const Hero = () => {
   return (
@@ -14,6 +15,21 @@ const Hero = () => {
       
       <div className="container relative z-10 px-6">
         <div className="max-w-3xl mx-auto text-center">
+          {/* Profile Image */}
+          <div 
+            className="mb-8 animate-fade-in"
+          >
+            <div className="relative inline-block">
+              <div className="w-32 h-32 md:w-40 md:h-40 rounded-full overflow-hidden border-2 border-primary/50 shadow-lg shadow-primary/20">
+                <img 
+                  src={profileImage} 
+                  alt="Po Haoting" 
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="absolute inset-0 rounded-full ring-2 ring-primary/30 ring-offset-2 ring-offset-background" />
+            </div>
+          </div>
           {/* Terminal-style intro */}
           <div className="inline-flex items-center gap-2 px-4 py-2 mb-8 rounded-full border border-border bg-card/50 backdrop-blur-sm animate-fade-in">
             <span className="w-2 h-2 rounded-full bg-primary animate-pulse-slow" />
