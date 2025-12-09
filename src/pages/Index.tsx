@@ -1,4 +1,5 @@
 import { useState, useMemo } from "react";
+import Navigation from "@/components/Navigation";
 import Hero from "@/components/Hero";
 import KeywordFilter from "@/components/KeywordFilter";
 import ExperienceCard from "@/components/ExperienceCard";
@@ -48,10 +49,14 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-background">
-      <Hero />
+      <Navigation />
+      
+      <section id="hero">
+        <Hero />
+      </section>
 
       {/* Resume Tailor Section */}
-      <section className="py-20 relative">
+      <section id="experience" className="py-20 relative scroll-mt-20">
         <div className="absolute inset-0 dot-pattern opacity-10" />
         <div className="container px-6 relative z-10 max-w-7xl mx-auto">
           <div className="text-center mb-12">
@@ -116,9 +121,17 @@ const Index = () => {
         </div>
       </section>
 
-      <SkillsSection selectedKeywords={selectedKeywords} />
-      <EducationSection />
-      <Footer />
+      <section id="skills" className="scroll-mt-20">
+        <SkillsSection selectedKeywords={selectedKeywords} />
+      </section>
+      
+      <section id="education" className="scroll-mt-20">
+        <EducationSection />
+      </section>
+      
+      <section id="contact" className="scroll-mt-20">
+        <Footer />
+      </section>
     </div>
   );
 };
