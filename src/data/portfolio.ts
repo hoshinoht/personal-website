@@ -7,7 +7,7 @@ export const keywords = [
   "Quality Assurance",
 ] as const;
 
-export type Keyword = typeof keywords[number];
+export type Keyword = (typeof keywords)[number];
 
 export interface Experience {
   id: string;
@@ -209,7 +209,7 @@ export const certifications = [
 ];
 
 export const languages = [
-  { language: "English", proficiency: "Native or Bilingual" },
+  { language: "English", proficiency: "Native" },
   { language: "Chinese", proficiency: "Limited Working" },
 ];
 
