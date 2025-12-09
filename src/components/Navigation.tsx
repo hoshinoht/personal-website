@@ -1,9 +1,10 @@
 import { useState, useEffect } from "react";
-import { User, Briefcase, Code, GraduationCap, ChevronLeft, ChevronRight } from "lucide-react";
+import { User, Briefcase, FolderOpen, Code, GraduationCap, ChevronLeft, ChevronRight } from "lucide-react";
 
 const navLinks = [
   { label: "About", href: "#hero", icon: User },
   { label: "Experience", href: "#experience", icon: Briefcase },
+  { label: "Projects", href: "#projects", icon: FolderOpen },
   { label: "Skills", href: "#skills", icon: Code },
   { label: "Education", href: "#education", icon: GraduationCap },
 ];

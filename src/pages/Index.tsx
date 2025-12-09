@@ -97,7 +97,7 @@ const Index = () => {
             </div>
 
             {/* Projects */}
-            <div>
+            <div id="projects" className="scroll-mt-20">
               <div className="flex items-center gap-3 mb-6">
                 <FolderOpen className="w-5 h-5 text-primary" />
                 <h3 className="text-2xl font-semibold">Projects</h3>
