@@ -48,7 +48,7 @@ const Navigation = () => {
   };
 
   return (
-    <nav className="fixed left-4 md:left-6 top-1/2 -translate-y-1/2 z-50">
+    <nav className="fixed right-4 md:right-6 top-1/2 -translate-y-1/2 z-50">
       <div className={`flex flex-col items-center transition-all duration-300 ${isCollapsed ? "gap-0" : "gap-1"}`}>
         {/* Toggle Button */}
         <button
@@ -83,7 +83,7 @@ const Navigation = () => {
                   <Icon className={`w-5 h-5 ${isActive ? "text-black" : ""}`} />
 
                   {/* Tooltip */}
-                  <span className="absolute left-full ml-3 px-2 py-1 rounded bg-card text-foreground text-sm font-medium whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity shadow-md border border-border">
+                  <span className="absolute right-full mr-3 px-2 py-1 rounded bg-card text-foreground text-sm font-medium whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity shadow-md border border-border">
                     {link.label}
                   </span>
                 </button>
