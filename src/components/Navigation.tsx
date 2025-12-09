@@ -56,7 +56,7 @@ const Navigation = () => {
           className="p-2 rounded-full bg-card/60 backdrop-blur-xl border border-border/50 shadow-lg text-foreground hover:bg-card/80 transition-colors mb-2"
           aria-label={isCollapsed ? "Show navigation" : "Hide navigation"}
         >
-          {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+          {isCollapsed ? <ChevronLeft className="w-4 h-4" /> : <ChevronRight className="w-4 h-4" />}
         </button>
 
         {/* Nav Items */}
