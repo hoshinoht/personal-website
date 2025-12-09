@@ -53,7 +53,7 @@ const Navigation = () => {
         {/* Toggle Button */}
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className="p-2 rounded-full bg-primary/90 backdrop-blur-sm shadow-lg text-foreground hover:bg-primary transition-colors mb-2"
+          className="p-2 rounded-full bg-card/60 backdrop-blur-xl border border-border/50 shadow-lg text-foreground hover:bg-card/80 transition-colors mb-2"
           aria-label={isCollapsed ? "Show navigation" : "Hide navigation"}
         >
           {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
@@ -61,7 +61,7 @@ const Navigation = () => {
 
         {/* Nav Items */}
         <div
-          className={`flex flex-col items-center gap-1 p-2 rounded-full bg-primary/90 backdrop-blur-sm shadow-lg transition-all duration-300 ${
+          className={`flex flex-col items-center gap-1 p-2 rounded-full bg-card/60 backdrop-blur-xl border border-border/50 shadow-lg transition-all duration-300 ${
             isCollapsed ? "opacity-0 scale-75 pointer-events-none h-0 p-0 overflow-hidden" : "opacity-100 scale-100"
           }`}
         >
