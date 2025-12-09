@@ -129,9 +129,8 @@ const Index = () => {
         <EducationSection />
       </section>
       
-      <section id="contact" className="scroll-mt-20">
-        <Footer />
-      </section>
+      
+      <Footer />
     </div>
   );
 };
