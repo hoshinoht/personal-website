@@ -80,7 +80,7 @@ const Navigation = () => {
                   }`}
                   aria-label={link.label}
                 >
-                  <Icon className="w-5 h-5" />
+                  <Icon className={`w-5 h-5 ${isActive ? "text-black" : ""}`} />
 
                   {/* Tooltip */}
                   <span className="absolute left-full ml-3 px-2 py-1 rounded bg-card text-foreground text-sm font-medium whitespace-nowrap opacity-0 pointer-events-none group-hover:opacity-100 transition-opacity shadow-md border border-border">
