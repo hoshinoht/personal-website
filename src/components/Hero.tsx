@@ -65,8 +65,9 @@ const Hero = () => {
                 className="text-secondary-foreground max-w-xl mx-auto lg:mx-0 mb-8 leading-relaxed animate-slide-up lg:text-lg"
                 style={{ animationDelay: "0.3s" }}
               >
-                Computing Science student passionate about Software Engineering, Cloud Computing, 
-                Game Development, and AI. Building innovative solutions that bridge technology and creativity.
+                Final-year Computing Science student specializing in Systems Engineering and Game Development. 
+                I architect scalable cloud-native solutions, optimize high-performance applications, and build 
+                immersive experiences—bridging low-level systems programming with modern AI-driven technologies.
               </p>
               
               {/* Contact Links */}
