@@ -4,11 +4,12 @@ import { GraduationCap, Calendar, Award, Languages } from "lucide-react";
 const EducationSection = () => {
   return (
     <section className="py-20 bg-card/30">
-      <div className="container px-6">
+      <div className="container px-6 max-w-7xl mx-auto">
+      
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
           {/* Education */}
           <div className="lg:col-span-2">
-            <h2 className="text-3xl font-bold mb-2">Education</h2>
+            <h2 className="text-3xl lg:text-4xl font-bold mb-2">Education</h2>
             <p className="text-muted-foreground mb-10">Academic background</p>
             
             <div className="space-y-6 max-w-2xl">

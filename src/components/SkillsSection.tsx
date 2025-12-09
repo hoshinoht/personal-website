@@ -27,11 +27,11 @@ const SkillsSection = ({ selectedKeywords }: SkillsSectionProps) => {
 
   return (
     <section className="py-20">
-      <div className="container px-6">
-        <h2 className="text-3xl font-bold mb-2">Skills & Competencies</h2>
+      <div className="container px-6 max-w-7xl mx-auto">
+        <h2 className="text-3xl lg:text-4xl font-bold mb-2">Skills & Competencies</h2>
         <p className="text-muted-foreground mb-10">Technologies and tools I work with</p>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {visibleCategories.map((category) => (
             <div
               key={category.name}

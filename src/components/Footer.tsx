@@ -4,7 +4,7 @@ import { Github, Linkedin, Mail, Phone } from "lucide-react";
 const Footer = () => {
   return (
     <footer className="py-12 border-t border-border">
-      <div className="container px-6">
+      <div className="container px-6 max-w-7xl mx-auto">
         <div className="flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="text-center md:text-left">
             <p className="font-mono text-sm text-muted-foreground">
