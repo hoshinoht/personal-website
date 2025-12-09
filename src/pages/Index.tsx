@@ -72,51 +72,51 @@ const Index = () => {
             onClear={clearKeywords}
           />
 
-          {/* Two column layout on desktop */}
-          <div className="grid grid-cols-1 xl:grid-cols-2 gap-12 xl:gap-16">
-            {/* Experience */}
-            <div>
-              <div className="flex items-center gap-3 mb-6">
-                <Briefcase className="w-5 h-5 text-primary" />
-                <h3 className="text-2xl font-semibold">Work Experience</h3>
-                {selectedKeywords.length > 0 && (
-                  <span className="ml-2 px-2 py-0.5 rounded-full bg-primary/20 text-primary text-sm font-mono">
-                    {filteredExperiences.length} match{filteredExperiences.length !== 1 && "es"}
-                  </span>
-                )}
-              </div>
-              <div className="space-y-6">
-                {experiences.map((exp) => (
-                  <ExperienceCard
-                    key={exp.id}
-                    experience={exp}
-                    isHighlighted={isExperienceHighlighted(exp)}
-                  />
-                ))}
-              </div>
+          {/* Experience */}
+          <div className="mb-16">
+            <div className="flex items-center gap-3 mb-6">
+              <Briefcase className="w-5 h-5 text-primary" />
+              <h3 className="text-2xl font-semibold">Work Experience</h3>
+              {selectedKeywords.length > 0 && (
+                <span className="ml-2 px-2 py-0.5 rounded-full bg-primary/20 text-primary text-sm font-mono">
+                  {filteredExperiences.length} match{filteredExperiences.length !== 1 && "es"}
+                </span>
+              )}
             </div>
+            <div className="space-y-6">
+              {experiences.map((exp) => (
+                <ExperienceCard
+                  key={exp.id}
+                  experience={exp}
+                  isHighlighted={isExperienceHighlighted(exp)}
+                />
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
 
-            {/* Projects */}
-            <div id="projects" className="scroll-mt-20">
-              <div className="flex items-center gap-3 mb-6">
-                <FolderOpen className="w-5 h-5 text-primary" />
-                <h3 className="text-2xl font-semibold">Projects</h3>
-                {selectedKeywords.length > 0 && (
-                  <span className="ml-2 px-2 py-0.5 rounded-full bg-primary/20 text-primary text-sm font-mono">
-                    {filteredProjects.length} match{filteredProjects.length !== 1 && "es"}
-                  </span>
-                )}
-              </div>
-              <div className="grid grid-cols-1 gap-6">
-                {projects.map((proj) => (
-                  <ProjectCard
-                    key={proj.id}
-                    project={proj}
-                    isHighlighted={isProjectHighlighted(proj)}
-                  />
-                ))}
-              </div>
-            </div>
+      {/* Projects Section */}
+      <section id="projects" className="pb-20 relative scroll-mt-20">
+        <div className="absolute inset-0 dot-pattern opacity-10" />
+        <div className="container px-6 relative z-10 max-w-7xl mx-auto">
+          <div className="flex items-center gap-3 mb-6">
+            <FolderOpen className="w-5 h-5 text-primary" />
+            <h3 className="text-2xl font-semibold">Projects</h3>
+            {selectedKeywords.length > 0 && (
+              <span className="ml-2 px-2 py-0.5 rounded-full bg-primary/20 text-primary text-sm font-mono">
+                {filteredProjects.length} match{filteredProjects.length !== 1 && "es"}
+              </span>
+            )}
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {projects.map((proj) => (
+              <ProjectCard
+                key={proj.id}
+                project={proj}
+                isHighlighted={isProjectHighlighted(proj)}
+              />
+            ))}
           </div>
         </div>
       </section>
