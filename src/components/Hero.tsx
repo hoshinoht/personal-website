@@ -67,7 +67,7 @@ const Hero = () => {
               >
                 Final-year Computing Science student specializing in Systems Engineering and Game Development. 
                 I architect scalable cloud-native solutions, optimize high-performance applications, and build 
-                immersive experiences—bridging low-level systems programming with modern AI-driven technologies.
+                immersive experiences, bridging low-level systems programming with modern AI-driven technologies.
               </p>
               
               {/* Contact Links */}
