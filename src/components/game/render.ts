@@ -266,18 +266,22 @@ export function renderDeath(ctx: CanvasRenderingContext2D, gs: GameState, W: num
   }
   ctx.globalAlpha = 1;
 
-  // Scrolling rescue names
+  // Scrolling rescue names — randomised, continuous stream until prompt
   if (textElapsed > 10000 && textElapsed < DEATH_PROMPT_TIME && gs.deathChoice === 0) {
     const nameElapsed = textElapsed - 10000;
-    const namesVisible = Math.min(Math.floor(nameElapsed / 70), RESCUE_NAMES.length);
+    // Spawn one every 50ms, no cap — keeps streaming
+    const namesVisible = Math.floor(nameElapsed / 50);
     ctx.font = '12px "JetBrains Mono", monospace';
     for (let i = 0; i < namesVisible; i++) {
-      const nameAge = nameElapsed - i * 70;
-      ctx.globalAlpha = Math.min(nameAge / 200, 1) * Math.max(0, 1 - nameAge / 1200);
-      const nx = W * 0.15 + (((i * 7919) % 100) / 100) * W * 0.7;
-      const ny = H * 0.3 + (((i * 6271) % 100) / 100) * H * 0.4;
+      const nameAge = nameElapsed - i * 50;
+      if (nameAge > 1500) continue; // expired, skip drawing
+      ctx.globalAlpha = Math.min(nameAge / 150, 1) * Math.max(0, 1 - nameAge / 1500);
+      // Seeded-random positions using index as seed
+      const seed = i * 2654435761; // Knuth multiplicative hash
+      const nx = W * 0.08 + ((seed >>> 0) % 1000) / 1000 * W * 0.84;
+      const ny = H * 0.2 + (((seed >>> 12) % 1000) / 1000) * H * 0.55;
       ctx.fillStyle = HELPER_COLORS[i % HELPER_COLORS.length];
-      ctx.fillText(RESCUE_NAMES[i], nx, ny);
+      ctx.fillText(RESCUE_NAMES[((seed >>> 8) % RESCUE_NAMES.length)], nx, ny);
     }
     ctx.globalAlpha = 1;
   }
@@ -325,7 +329,7 @@ export function renderDeath(ctx: CanvasRenderingContext2D, gs: GameState, W: num
 }
 
 /* ── Outro (victory) ── */
-export function renderOutro(ctx: CanvasRenderingContext2D, gs: GameState, W: number, H: number, elapsed: number) {
+export function renderOutro(ctx: CanvasRenderingContext2D, _gs: GameState, W: number, H: number, elapsed: number) {
   const fade = Math.min(elapsed / 1200, 1);
   ctx.fillStyle = `rgba(10, 10, 12, ${fade})`; ctx.fillRect(0, 0, W, H);
   ctx.fillStyle = 'rgba(255,255,255,0.015)';
