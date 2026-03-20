@@ -7,6 +7,33 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 10px;
+  opacity: 0;
+  transform: translateY(16px);
+  pointer-events: none;
+  transition: opacity 0.3s, transform 0.3s;
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 8px;
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.linksOpen {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
 }
 
 .link {
@@ -21,7 +48,7 @@
   color: var(--md-sys-color-on-surface);
   font: var(--md-sys-typescale-label-medium);
   white-space: nowrap;
-  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+  transition: all 0.15s;
 }
 
 .link:hover {
@@ -29,8 +56,6 @@
   color: var(--md-sys-color-on-primary);
   border-color: var(--md-sys-color-primary);
 }
-
-.linkLabel {}
 
 .fab {
   width: 48px;
@@ -44,8 +69,7 @@
   align-items: center;
   justify-content: center;
   box-shadow: var(--md-sys-elevation-3);
-  transition: all var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
-  position: relative;
+  transition: all 0.2s;
 }
 
 .fab:hover {
@@ -58,24 +82,12 @@
   color: var(--md-sys-color-on-surface);
 }
 
-.fabIcon, .fabX {
-  transition: opacity 0.15s, transform 0.15s;
-  position: absolute;
+.fabIcon {
+  transition: transform 0.2s;
 }
 
-.fabIconHidden {
-  opacity: 0;
+.fabIconRotated {
   transform: rotate(90deg);
-}
-
-.fabX {
-  font-size: 16px;
-  font-weight: 300;
-}
-
-.fabXHidden {
-  opacity: 0;
-  transform: rotate(-90deg);
 }
 
 @media print {

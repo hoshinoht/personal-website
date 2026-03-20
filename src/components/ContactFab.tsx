@@ -1,10 +1,9 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { MessageCircle, Mail, Github, Linkedin } from 'lucide-react';
+import { Mail, Github, Linkedin, MessageCircle } from 'lucide-react';
 import { bio } from '../data/portfolio';
 import { useScrolledPast } from '../lib/useScrolledPast';
-import styles from '../styles/components/ContactFab.module.css';
 import { cn } from '../lib/utils';
+import styles from '../styles/components/ContactFab.module.css';
 
 const links = [
   { icon: Mail, label: 'Email Me', href: `mailto:${bio.email}` },
@@ -16,29 +15,24 @@ export function ContactFab() {
   const [open, setOpen] = useState(false);
   const visible = useScrolledPast('hero');
 
-  if (!visible) return null;
-
   return (
-    <div className={styles.container}>
-      <AnimatePresence>
-        {open && links.map((link, i) => (
-          <motion.a
+    <div className={cn(styles.container, visible && styles.visible)}>
+      <div className={cn(styles.links, open && styles.linksOpen)}>
+        {links.map((link) => (
+          <a
             key={link.label}
             href={link.href}
             target={link.label === 'Email Me' ? undefined : '_blank'}
             rel={link.label === 'Email Me' ? undefined : 'noopener noreferrer'}
             className={styles.link}
             aria-label={link.label}
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 8 }}
-            transition={{ duration: 0.15, delay: i * 0.04 }}
+            tabIndex={open ? 0 : -1}
           >
             <link.icon size={18} />
             <span>{link.label}</span>
-          </motion.a>
+          </a>
         ))}
-      </AnimatePresence>
+      </div>
 
       <button
         className={cn(styles.fab, open && styles.fabOpen)}
@@ -46,8 +40,7 @@ export function ContactFab() {
         aria-label={open ? 'Close contact menu' : 'Contact me'}
         title="Contact me"
       >
-        <MessageCircle size={20} className={cn(styles.fabIcon, open && styles.fabIconHidden)} />
-        <span className={cn(styles.fabX, !open && styles.fabXHidden)}>✕</span>
+        <MessageCircle size={20} className={cn(styles.fabIcon, open && styles.fabIconRotated)} />
       </button>
     </div>
   );
