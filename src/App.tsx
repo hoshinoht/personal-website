@@ -6,6 +6,8 @@ import { KeyboardNav } from './components/KeyboardNav';
 import { CommandPalette } from './components/CommandPalette';
 import { Terminal } from './components/Terminal';
 import { JdMatcher } from './components/JdMatcher';
+import { ConsoleArt } from './components/ConsoleArt';
+import { KonamiEgg } from './components/KonamiEgg';
 import { Hero } from './components/Hero';
 import { StickyFilter } from './components/StickyFilter';
 import { ImpactStats } from './components/ImpactStats';
@@ -26,6 +28,8 @@ export default function App() {
       <CommandPalette />
       <Terminal />
       <JdMatcher />
+      <ConsoleArt />
+      <KonamiEgg />
       <main>
         <Hero />
         <StickyFilter />

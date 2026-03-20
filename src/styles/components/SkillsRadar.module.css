@@ -1,0 +1,63 @@
+.container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.svg {
+  width: 100%;
+  max-width: 360px;
+  height: auto;
+}
+
+.gridRing {
+  fill: none;
+  stroke: var(--md-sys-color-outline-variant);
+  stroke-width: 0.5;
+  opacity: 0.4;
+}
+
+.axis {
+  stroke: var(--md-sys-color-outline-variant);
+  stroke-width: 0.5;
+  opacity: 0.3;
+}
+
+.dataFill {
+  fill: var(--md-sys-color-primary);
+  opacity: 0.12;
+}
+
+.dataStroke {
+  fill: none;
+  stroke: var(--md-sys-color-primary);
+  stroke-width: 2;
+  opacity: 0.8;
+}
+
+.dot {
+  fill: var(--md-sys-color-outline);
+  transition: all var(--md-sys-motion-duration-short);
+}
+
+.dotActive {
+  fill: var(--md-sys-color-primary);
+  filter: drop-shadow(0 0 4px var(--md-sys-color-primary));
+  transition: all var(--md-sys-motion-duration-short);
+}
+
+.label {
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 400;
+  fill: var(--md-sys-color-outline);
+  transition: all var(--md-sys-motion-duration-short);
+}
+
+.labelActive {
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  fill: var(--md-sys-color-on-surface);
+  transition: all var(--md-sys-motion-duration-short);
+}

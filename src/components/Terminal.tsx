@@ -85,6 +85,31 @@ function processCommand(input: string): string {
     case 'neofetch':
       return `${bio.name}@portfolio\n──────────────────\nOS: React 19 + Vite 6\nTheme: Catppuccin Dusk\nFont: Inter / JetBrains Mono\nProjects: ${projects.length}\nSkills: ${skillCategories.reduce((n, c) => n + c.skills.length, 0)}\nCommits: 700+`;
 
+    case 'hack':
+      return '█▓▒░ ACCESSING MAINFRAME ░▒▓█\n\n[████████████████████] 100%\n\nACCESS GRANTED.\n\nJust kidding. But if you\'re reading this, you\'re my kind of person.\nFeel free to reach out — I love building things with curious people.';
+
+    case 'coffee':
+    case 'brew':
+      return '  ( (\n   ) )\n ........\n |      |]\n \\      /\n  `----\'\n\nHere\'s a virtual kopi. ☕';
+
+    case 'ping':
+      return 'PONG! 🏓 (0ms latency — you\'re on localhost after all)';
+
+    case 'uptime':
+      return `Portfolio has been live since Jan 2026.\nCurrent session: ${Math.floor(performance.now() / 1000)}s`;
+
+    case 'fortune':
+    case 'cowsay': {
+      const fortunes = [
+        'The best code is no code at all.',
+        'Premature optimization is the root of all evil. — Knuth',
+        'Make it work, make it right, make it fast. — Kent Beck',
+        'Weeks of coding can save hours of planning.',
+        'It works on my machine. Ship the machine.',
+      ];
+      return fortunes[Math.floor(Math.random() * fortunes.length)];
+    }
+
     default:
       return `command not found: ${cmd}. Type 'help' for available commands.`;
   }

@@ -9,6 +9,7 @@ import { getTechChipColor, getDomainAccentColor } from '../lib/techColors';
 import { highlightMetrics } from '../lib/highlightMetrics';
 import { ProjectGrid } from './ProjectGrid';
 import { ProjectGraph } from './ProjectGraph';
+import { ProjectTimeline } from './ProjectTimeline';
 import styles from '../styles/components/Projects.module.css';
 
 export function FeaturedProjects() {
@@ -50,6 +51,7 @@ export function FeaturedProjects() {
       </div>
 
       <ProjectGraph />
+      <ProjectTimeline />
 
       {featured.length > 0 && (
         <div className={styles.featuredGrid}>
@@ -66,6 +68,14 @@ export function FeaturedProjects() {
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
                   transition={{ duration: 0.3, delay: i * 0.06 }}
+                  onMouseMove={(e) => {
+                    const el = e.currentTarget;
+                    const rect = el.getBoundingClientRect();
+                    const x = (e.clientX - rect.left) / rect.width - 0.5;
+                    const y = (e.clientY - rect.top) / rect.height - 0.5;
+                    el.style.transform = `perspective(800px) rotateX(${-y * 3}deg) rotateY(${x * 3}deg)`;
+                  }}
+                  onMouseLeave={(e) => { e.currentTarget.style.transform = ''; }}
                 >
                   <div
                     className={styles.cardClickable}

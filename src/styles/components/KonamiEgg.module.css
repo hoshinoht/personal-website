@@ -1,0 +1,29 @@
+.confettiLayer {
+  position: fixed;
+  inset: 0;
+  z-index: 500;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.confetti {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+}
+
+.message {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 501;
+  background: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-on-surface);
+  padding: 20px 40px;
+  border-radius: var(--md-sys-shape-corner-extra-large);
+  font: var(--md-sys-typescale-headline-medium);
+  box-shadow: var(--md-sys-elevation-5);
+  pointer-events: none;
+}

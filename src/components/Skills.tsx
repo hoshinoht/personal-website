@@ -2,6 +2,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { skillCategories, domainToSkillCategories } from '../data/portfolio';
 import { useFilter } from './FilterContext';
 import { Chip } from './ui/Chip';
+import { SkillsRadar } from './SkillsRadar';
 import styles from '../styles/components/Skills.module.css';
 
 const proficiencyVariant = {
@@ -36,6 +37,8 @@ export function Skills() {
       >
         Skills
       </motion.h2>
+
+      <SkillsRadar />
 
       <div className={styles.legend}>
         <span className={styles.legendItem}>

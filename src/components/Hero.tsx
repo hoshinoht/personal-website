@@ -4,7 +4,16 @@ import { bio } from '../data/portfolio';
 import { Button } from './ui/Button';
 import { TypingEffect } from './TypingEffect';
 import { GitHubStatus } from './GitHubStatus';
+import { CurrentlyLearning } from './CurrentlyLearning';
+import { PdfExport } from './PdfExport';
 import styles from '../styles/components/Hero.module.css';
+
+function getGreeting(): string {
+  const hour = new Date().getHours();
+  if (hour < 12) return 'Good morning, I\'m';
+  if (hour < 18) return 'Good afternoon, I\'m';
+  return 'Good evening, I\'m';
+}
 
 export function Hero() {
   return (
@@ -17,7 +26,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
         >
-          <p className={styles.greeting}>Hi, I'm</p>
+          <p className={styles.greeting}>{getGreeting()}</p>
           <h1 className={styles.name}>{bio.name}</h1>
           <TypingEffect roles={bio.roles} />
           <p className={styles.summary}>{bio.summary}</p>
@@ -31,6 +40,7 @@ export function Hero() {
             <Button href={bio.linkedin} variant="outlined" aria-label="LinkedIn profile">
               <Linkedin size={18} /> LinkedIn
             </Button>
+            <PdfExport />
           </div>
           <motion.div
             initial={{ opacity: 0 }}
@@ -39,6 +49,7 @@ export function Hero() {
             className={styles.statusRow}
           >
             <GitHubStatus />
+            <CurrentlyLearning />
           </motion.div>
         </motion.div>
         <motion.div
