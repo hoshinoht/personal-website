@@ -8,7 +8,7 @@ export const bio = {
   name: 'Po Haoting',
   roles: ['ML Research Assistant', 'Systems Engineer', 'Cloud Architect', 'Full Stack Developer'],
   summary: 'Computing Science undergraduate at SIT–University of Glasgow, currently developing custom model architectures for long-horizon time-series prediction as an ML Research Assistant. Former cloud software engineering intern at Razer and WorldSkills Singapore 2018 competitor. Ngee Ann Kongsi Scholar and SCDF & Dell Innovation Challenge 2025 Top 10 Finalist.',
-  email: 'haoting.po@gmail.com',
+  email: 'pohaoting@gmail.com',
   github: 'https://github.com/hoshinoht',
   linkedin: 'https://www.linkedin.com/in/po-haoting/',
 };

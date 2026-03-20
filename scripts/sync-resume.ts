@@ -228,7 +228,7 @@ function main() {
   lines.push(`  name: 'Po Haoting',`);
   lines.push(`  roles: ['ML Research Assistant', 'Systems Engineer', 'Cloud Architect', 'Full Stack Developer'],`);
   lines.push(`  summary: '${escapeStr(summaryData.summary)}',`);
-  lines.push(`  email: 'haoting.po@gmail.com',`);
+  lines.push(`  email: 'pohaoting@gmail.com',`);
   lines.push(`  github: 'https://github.com/hoshinoht',`);
   lines.push(`  linkedin: 'https://www.linkedin.com/in/po-haoting/',`);
   lines.push('};');
