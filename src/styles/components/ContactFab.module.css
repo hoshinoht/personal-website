@@ -45,11 +45,37 @@
   justify-content: center;
   box-shadow: var(--md-sys-elevation-3);
   transition: all var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
+  position: relative;
 }
 
 .fab:hover {
   box-shadow: var(--md-sys-elevation-4);
   filter: brightness(1.1);
+}
+
+.fabOpen {
+  background: var(--md-sys-color-surface-container-highest);
+  color: var(--md-sys-color-on-surface);
+}
+
+.fabIcon, .fabX {
+  transition: opacity 0.15s, transform 0.15s;
+  position: absolute;
+}
+
+.fabIconHidden {
+  opacity: 0;
+  transform: rotate(90deg);
+}
+
+.fabX {
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.fabXHidden {
+  opacity: 0;
+  transform: rotate(-90deg);
 }
 
 @media print {
