@@ -17,6 +17,11 @@ export function Footer() {
             <Linkedin size={18} /> LinkedIn
           </a>
         </div>
+        <div className={styles.shortcuts}>
+          <span className={styles.shortcut}><kbd>⌘K</kbd> Search</span>
+          <span className={styles.shortcut}><kbd>`</kbd> Terminal</span>
+          <span className={styles.shortcut}><kbd>J</kbd><kbd>K</kbd> Navigate</span>
+        </div>
         <p className={styles.copyright}>
           &copy; {new Date().getFullYear()} Po Haoting. Built with React & Vite.
         </p>

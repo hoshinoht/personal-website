@@ -3,6 +3,7 @@ import { Github, Linkedin, Mail } from 'lucide-react';
 import { bio } from '../data/portfolio';
 import { Button } from './ui/Button';
 import { TypingEffect } from './TypingEffect';
+import { GitHubStatus } from './GitHubStatus';
 import styles from '../styles/components/Hero.module.css';
 
 export function Hero() {
@@ -31,6 +32,14 @@ export function Hero() {
               <Linkedin size={18} /> LinkedIn
             </Button>
           </div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8, duration: 0.4 }}
+            className={styles.statusRow}
+          >
+            <GitHubStatus />
+          </motion.div>
         </motion.div>
         <motion.div
           className={styles.photoContainer}

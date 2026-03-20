@@ -31,6 +31,35 @@
   color: var(--md-sys-color-primary);
 }
 
+.shortcuts {
+  display: flex;
+  gap: var(--spacing-lg);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.shortcut {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font: var(--md-sys-typescale-label-small);
+  color: var(--md-sys-color-outline);
+}
+
+.shortcut kbd {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  padding: 2px 6px;
+  background: var(--md-sys-color-surface-container);
+  border-radius: var(--md-sys-shape-corner-extra-small);
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
 .copyright {
   font: var(--md-sys-typescale-body-small);
   color: var(--md-sys-color-outline);

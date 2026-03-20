@@ -102,6 +102,10 @@
   box-shadow: 0 0 40px rgba(196, 162, 212, 0.1);
 }
 
+.statusRow {
+  margin-top: var(--spacing-lg);
+}
+
 @media (max-width: 768px) {
   .heroContent {
     flex-direction: column-reverse;

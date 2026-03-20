@@ -1,0 +1,115 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 400;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--spacing-xl);
+}
+
+.terminal {
+  width: 100%;
+  max-width: 700px;
+  max-height: 80vh;
+  background: var(--md-sys-color-surface-container-lowest);
+  border-radius: var(--md-sys-shape-corner-large);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  box-shadow: var(--md-sys-elevation-5);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.titleBar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
+  padding: 10px var(--spacing-md);
+  background: var(--md-sys-color-surface-container);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.dots {
+  display: flex;
+  gap: 6px;
+}
+
+.dotRed, .dotYellow, .dotGreen {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.dotRed {
+  background: #E27878;
+  cursor: pointer;
+}
+
+.dotYellow {
+  background: #E8C97E;
+}
+
+.dotGreen {
+  background: #82C8A0;
+}
+
+.titleText {
+  font: var(--md-sys-typescale-label-small);
+  font-family: var(--font-mono);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.body {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--spacing-md);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  line-height: 1.5;
+}
+
+.entry {
+  margin-bottom: var(--spacing-sm);
+}
+
+.inputLine {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+}
+
+.prompt {
+  color: var(--md-sys-color-primary);
+  flex-shrink: 0;
+}
+
+.output {
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin: 2px 0 0 0;
+  font: inherit;
+}
+
+.inputField {
+  flex: 1;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--md-sys-color-on-surface);
+  font: inherit;
+  caret-color: var(--md-sys-color-primary);
+}
+
+@media (max-width: 600px) {
+  .overlay {
+    padding: var(--spacing-md);
+  }
+
+  .terminal {
+    max-height: 70vh;
+  }
+}

@@ -1,0 +1,34 @@
+.toggle {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 90;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background: var(--md-sys-color-surface-container);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface-variant);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
+}
+
+.toggle:hover {
+  background: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-primary);
+  transform: rotate(15deg);
+}
+
+@media (max-width: 768px) {
+  .toggle {
+    top: 12px;
+    right: 48px;
+    width: 36px;
+    height: 36px;
+  }
+}
