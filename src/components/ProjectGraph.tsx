@@ -90,7 +90,7 @@ export function ProjectGraph() {
   return (
     <>
       <button className={styles.toggleBtn} onClick={() => setOpen((p) => !p)}>
-        {open ? 'Hide' : 'View'} connections
+        {open ? 'Hide connections' : 'How my projects connect'}
       </button>
 
       {open && (

@@ -1,24 +1,29 @@
+import { lazy, Suspense } from 'react';
 import { FilterProvider } from './components/FilterContext';
 import { ScrollProgress } from './components/ScrollProgress';
 import { Navigation } from './components/Navigation';
 import { ThemeToggle } from './components/ThemeToggle';
 import { KeyboardNav } from './components/KeyboardNav';
-import { CommandPalette } from './components/CommandPalette';
-import { Terminal } from './components/Terminal';
-import { JdMatcher } from './components/JdMatcher';
 import { ContactFab } from './components/ContactFab';
 import { ConsoleArt } from './components/ConsoleArt';
-import { KonamiEgg } from './components/KonamiEgg';
 import { Hero } from './components/Hero';
 import { StickyFilter } from './components/StickyFilter';
 import { ImpactStats } from './components/ImpactStats';
-import { ProjectTimeline } from './components/ProjectTimeline';
 import { ExperienceTimeline } from './components/ExperienceTimeline';
-import { FeaturedProjects } from './components/FeaturedProjects';
-import { Skills } from './components/Skills';
-import { Education } from './components/Education';
 import { SectionDivider } from './components/SectionDivider';
 import { Footer } from './components/Footer';
+
+// Lazy load: overlays (not visible until user triggers them)
+const CommandPalette = lazy(() => import('./components/CommandPalette').then((m) => ({ default: m.CommandPalette })));
+const Terminal = lazy(() => import('./components/Terminal').then((m) => ({ default: m.Terminal })));
+const JdMatcher = lazy(() => import('./components/JdMatcher').then((m) => ({ default: m.JdMatcher })));
+const KonamiEgg = lazy(() => import('./components/KonamiEgg').then((m) => ({ default: m.KonamiEgg })));
+
+// Lazy load: below-fold sections
+const ProjectTimeline = lazy(() => import('./components/ProjectTimeline').then((m) => ({ default: m.ProjectTimeline })));
+const FeaturedProjects = lazy(() => import('./components/FeaturedProjects').then((m) => ({ default: m.FeaturedProjects })));
+const Skills = lazy(() => import('./components/Skills').then((m) => ({ default: m.Skills })));
+const Education = lazy(() => import('./components/Education').then((m) => ({ default: m.Education })));
 
 export default function App() {
   return (
@@ -27,25 +32,35 @@ export default function App() {
       <Navigation />
       <ThemeToggle />
       <KeyboardNav />
-      <CommandPalette />
-      <Terminal />
-      <JdMatcher />
+      <Suspense fallback={null}>
+        <CommandPalette />
+        <Terminal />
+        <JdMatcher />
+        <KonamiEgg />
+      </Suspense>
       <ContactFab />
       <ConsoleArt />
-      <KonamiEgg />
       <main>
         <Hero />
         <StickyFilter />
         <ImpactStats />
-        <ProjectTimeline />
+        <Suspense fallback={null}>
+          <ProjectTimeline />
+        </Suspense>
         <SectionDivider />
         <ExperienceTimeline />
         <SectionDivider />
-        <FeaturedProjects />
+        <Suspense fallback={null}>
+          <FeaturedProjects />
+        </Suspense>
         <SectionDivider />
-        <Skills />
+        <Suspense fallback={null}>
+          <Skills />
+        </Suspense>
         <SectionDivider />
-        <Education />
+        <Suspense fallback={null}>
+          <Education />
+        </Suspense>
       </main>
       <Footer />
     </FilterProvider>
