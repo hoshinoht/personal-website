@@ -98,7 +98,9 @@ interface GameState {
   screenShakeUntil: number;
   deathX: number;
   deathY: number;
-  bossPhaseTimer: number; // tracks boss pattern rotation
+  bossPhaseTimer: number;
+  deathChoice: 0 | 'y' | 'n';     // 0 = waiting, 'y' = accepted, 'n' = rejected
+  deathChoiceAt: number;           // timestamp when choice was made
 }
 
 /* ── Constants ── */
@@ -109,12 +111,13 @@ const BULLET_INTERVAL = 110;
 const HELPER_FIRE_INTERVAL = 170;
 const ENEMY_BULLET_SPEED = 270;
 const SPAWN_INTERVAL = 550;
-const MAX_ACTIVE_TARGETS = 16;
+const BASE_ACTIVE_TARGETS = 16;
+const MAX_ACTIVE_TARGETS = 32;
 const INTRO_DURATION = 4500;
 const OUTRO_DURATION = 9500;
-const DEATH_EXPLOSION_DURATION = 1800; // explosion before fade to black
-const DEATH_TEXT_DURATION = 8500;       // text sequence after explosion
-const DEATH_DURATION = DEATH_EXPLOSION_DURATION + DEATH_TEXT_DURATION;
+const DEATH_EXPLOSION_DURATION = 2800;  // explosion before fade to black
+const DEATH_PROMPT_TIME = 12000;        // when Y/N prompt appears (relative to text start)
+const DEATH_ACCEPT_DURATION = 2500;     // time after accepting before revive
 const HIT_INVINCIBILITY = 1500;
 const SHIP_HIT_RADIUS = SHIP_SIZE / 2 - 4;
 const HELPER_HIT_RADIUS = 28;
@@ -148,60 +151,56 @@ function buildSpawnQueue(): GameState['spawnQueue'] {
   let w = 0; // wave counter
 
   // ── Experience ──
-  q.push({ text: '[ EXPERIENCE ]', color: PALETTE.heading, hp: 20, fireRate: 1.8, wave: w++ });
+  q.push({ text: '[ EXPERIENCE ]', color: PALETTE.heading, hp: 35, fireRate: 1.8, wave: w++ });
   for (const e of experiences) {
     const wv = w++;
-    q.push({ text: e.title, color: PALETTE.company, hp: 12, fireRate: 0.9, wave: wv });
-    q.push({ text: e.company, color: PALETTE.company, hp: 8, fireRate: 0.6, wave: wv });
-    // Skill chips swarm together
+    q.push({ text: e.title, color: PALETTE.company, hp: 20, fireRate: 0.9, wave: wv });
+    q.push({ text: e.company, color: PALETTE.company, hp: 15, fireRate: 0.6, wave: wv });
     const sw = w++;
     for (const s of e.skills.slice(0, 3)) {
-      q.push({ text: s, color: PALETTE.skill, hp: 6, fireRate: 0.4, wave: sw });
+      q.push({ text: s, color: PALETTE.skill, hp: 10, fireRate: 0.4, wave: sw });
     }
   }
 
   // ── Projects (ALL) ──
-  q.push({ text: '[ PROJECTS ]', color: PALETTE.heading, hp: 20, fireRate: 1.8, wave: w++ });
+  q.push({ text: '[ PROJECTS ]', color: PALETTE.heading, hp: 35, fireRate: 1.8, wave: w++ });
   for (const p of projects) {
-    q.push({ text: p.name, color: PALETTE.project, hp: p.featured ? 14 : 10, fireRate: p.featured ? 0.7 : 0.5, wave: w });
-    // Tech chips spawn with the project name
+    q.push({ text: p.name, color: PALETTE.project, hp: p.featured ? 25 : 18, fireRate: p.featured ? 0.7 : 0.5, wave: w });
     for (const t of p.tech.slice(0, 4)) {
-      q.push({ text: t, color: PALETTE.skill, hp: 5, fireRate: 0.35, wave: w });
+      q.push({ text: t, color: PALETTE.skill, hp: 10, fireRate: 0.35, wave: w });
     }
     w++;
   }
 
   // ── Skills (ALL) ──
-  q.push({ text: '[ SKILLS ]', color: PALETTE.heading, hp: 20, fireRate: 1.8, wave: w++ });
+  q.push({ text: '[ SKILLS ]', color: PALETTE.heading, hp: 35, fireRate: 1.8, wave: w++ });
   for (const cat of skillCategories) {
     const cw = w++;
-    q.push({ text: cat.name, color: PALETTE.company, hp: 10, fireRate: 0.6, wave: cw });
-    // All skills in a category spawn as one swarm
+    q.push({ text: cat.name, color: PALETTE.company, hp: 18, fireRate: 0.6, wave: cw });
     for (const s of cat.skills) {
-      q.push({ text: s.name, color: PALETTE.skill, hp: 8, fireRate: 0.5, wave: cw });
+      q.push({ text: s.name, color: PALETTE.skill, hp: 12, fireRate: 0.5, wave: cw });
     }
   }
 
   // ── Education + Certs ──
-  q.push({ text: '[ EDUCATION ]', color: PALETTE.heading, hp: 20, fireRate: 1.8, wave: w++ });
+  q.push({ text: '[ EDUCATION ]', color: PALETTE.heading, hp: 35, fireRate: 1.8, wave: w++ });
   for (const e of education) {
     const ew = w++;
-    q.push({ text: e.institution, color: PALETTE.company, hp: 10, fireRate: 0.6, wave: ew });
-    q.push({ text: `${e.degree} — ${e.field}`, color: PALETTE.project, hp: 8, fireRate: 0.5, wave: ew });
+    q.push({ text: e.institution, color: PALETTE.company, hp: 18, fireRate: 0.6, wave: ew });
+    q.push({ text: `${e.degree} — ${e.field}`, color: PALETTE.project, hp: 14, fireRate: 0.5, wave: ew });
   }
   const certWave = w++;
-  q.push({ text: '[ CERTIFICATIONS ]', color: PALETTE.heading, hp: 20, fireRate: 1.8, wave: certWave });
+  q.push({ text: '[ CERTIFICATIONS ]', color: PALETTE.heading, hp: 35, fireRate: 1.8, wave: certWave });
   for (const c of certifications) {
-    q.push({ text: c.name, color: PALETTE.project, hp: 10, fireRate: 0.6, wave: certWave });
+    q.push({ text: c.name, color: PALETTE.project, hp: 16, fireRate: 0.6, wave: certWave });
   }
-  // Issuers as a follow-up swarm
   const issuerWave = w++;
   for (const c of certifications) {
-    q.push({ text: c.issuer, color: PALETTE.company, hp: 6, fireRate: 0.4, wave: issuerWave });
+    q.push({ text: c.issuer, color: PALETTE.company, hp: 10, fireRate: 0.4, wave: issuerWave });
   }
 
   // ── Final boss (alone) ──
-  q.push({ text: bio.name, color: PALETTE.name, hp: 50, fireRate: 3.0, wave: w++ });
+  q.push({ text: bio.name, color: PALETTE.name, hp: 80, fireRate: 3.0, wave: w++ });
 
   return q;
 }
@@ -236,7 +235,7 @@ function createGameState(): GameState {
     lives: MAX_LIVES, deathCount: 0,
     shipHitUntil: 0, shipInvincibleUntil: 0, screenShakeUntil: 0,
     deathX: 0, deathY: 0,
-    bossPhaseTimer: 0,
+    bossPhaseTimer: 0, deathChoice: 0, deathChoiceAt: 0,
   };
 }
 
@@ -396,10 +395,11 @@ function update(gs: GameState, dt: number, W: number, H: number, engine: Matter.
   // Move player + helper bullets
   gs.bullets.filter(b => { b.y -= BULLET_SPEED * dt; return b.y > -20; });
 
-  // Spawn targets — wave at once, but respect active cap
-  if (gs.spawnIndex < gs.spawnQueue.length && now - gs.lastSpawnTime >= SPAWN_INTERVAL && gs.targets.length < MAX_ACTIVE_TARGETS) {
+  // Spawn targets — wave at once, cap ramps with helpers (16 → 32)
+  const activeCap = Math.min(BASE_ACTIVE_TARGETS + gs.helpers.length * 2, MAX_ACTIVE_TARGETS);
+  if (gs.spawnIndex < gs.spawnQueue.length && now - gs.lastSpawnTime >= SPAWN_INTERVAL && gs.targets.length < activeCap) {
     const currentWave = gs.spawnQueue[gs.spawnIndex].wave;
-    const room = MAX_ACTIVE_TARGETS - gs.targets.length;
+    const room = activeCap - gs.targets.length;
     let spawned = 0;
     while (gs.spawnIndex < gs.spawnQueue.length && gs.spawnQueue[gs.spawnIndex].wave === currentWave && spawned < room) {
       const item = gs.spawnQueue[gs.spawnIndex];
@@ -628,8 +628,9 @@ function renderGame(ctx: CanvasRenderingContext2D, gs: GameState, W: number, H: 
   ctx.textAlign = 'left';
   ctx.fillText(`TARGETS  ${Math.max(0, destroyed)} / ${total}`, 24, 34);
 
-  // Lives
-  for (let i = 0; i < MAX_LIVES; i++) {
+  // Lives (dynamic max)
+  const currentMaxLives = Math.min(MAX_LIVES + Math.floor(gs.deathCount / 2), 6);
+  for (let i = 0; i < currentMaxLives; i++) {
     ctx.fillStyle = i < gs.lives ? '#F3BDCA' : '#393C43';
     ctx.beginPath(); ctx.arc(26 + i * 18, 56, 5, 0, Math.PI * 2); ctx.fill();
   }
@@ -761,10 +762,20 @@ function renderDeath(ctx: CanvasRenderingContext2D, gs: GameState, W: number, H:
 
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
 
+  // Text escalates from despair → encouragement across deaths
+  const recoveryScripts = [
+    { sys: '[SYSTEM] Operator unit — offline. Critical memory fault.', phil: 'Is it all for naught?', signal: 'Incoming signal detected...' },
+    { sys: '[SYSTEM] Catastrophic failure. State lost.', phil: 'Why do you keep trying?', signal: 'More signals incoming...' },
+    { sys: '[SYSTEM] Cycle repeated. Core integrity compromised.', phil: 'You refuse to stay down.', signal: 'They hear your struggle...' },
+    { sys: '[SYSTEM] How many times now? Stack overflow imminent.', phil: 'Stubbornness... or courage?', signal: 'The signals grow stronger.' },
+    { sys: '[SYSTEM] Unit offline. But not forgotten.', phil: 'You are not alone in this.', signal: 'They are coming for you.' },
+    { sys: '[SYSTEM] Data recovery complete.', phil: 'They believe in you. Get up. One more time.', signal: 'An army stands behind you.' },
+  ];
+  const script = recoveryScripts[Math.min(gs.deathCount, recoveryScripts.length - 1)];
   const msgs = [
-    { text: '[SYSTEM] Operator unit — offline.', start: 400, color: '#E27878' },
-    { text: 'Is it all for naught?', start: 2200, color: '#B2B6C1' },
-    { text: 'Incoming signal detected...', start: 3800, color: '#C4A2D4' },
+    { text: script.sys, start: 1600, color: '#E27878' },
+    { text: script.phil, start: 6600, color: '#B2B6C1' },
+    { text: script.signal, start: 9000, color: '#C4A2D4' },
   ];
   for (const m of msgs) {
     if (textElapsed < m.start) continue;
@@ -777,9 +788,9 @@ function renderDeath(ctx: CanvasRenderingContext2D, gs: GameState, W: number, H:
   }
   ctx.globalAlpha = 1;
 
-  // Scrolling rescue names (5s – 7s)
-  if (textElapsed > 5000 && textElapsed < 7000) {
-    const nameElapsed = textElapsed - 5000;
+  // Scrolling rescue names (11s – prompt, shown before prompt)
+  if (textElapsed > 10000 && textElapsed < DEATH_PROMPT_TIME && gs.deathChoice === 0) {
+    const nameElapsed = textElapsed - 10000;
     const namesVisible = Math.min(Math.floor(nameElapsed / 70), RESCUE_NAMES.length);
     ctx.font = '12px "JetBrains Mono", monospace';
     for (let i = 0; i < namesVisible; i++) {
@@ -793,17 +804,49 @@ function renderDeath(ctx: CanvasRenderingContext2D, gs: GameState, W: number, H:
     ctx.globalAlpha = 1;
   }
 
-  // Final accept message
-  if (textElapsed > 6800) {
-    const chars = Math.min(Math.floor((textElapsed - 6800) / 40), 35);
-    ctx.font = '16px "JetBrains Mono", monospace'; ctx.fillStyle = '#6EC4B8';
-    ctx.fillText('[SYSTEM] External support accepted.'.substring(0, chars), W / 2, H / 2 + 20);
+  // Prompt: "Accept offer of rescue? [ Y / N ]"  — waits for input
+  if (textElapsed >= DEATH_PROMPT_TIME && gs.deathChoice === 0) {
+    const promptAge = textElapsed - DEATH_PROMPT_TIME;
+    const promptText = 'Accept offer of rescue?  [ Y / N ]';
+    const chars = Math.min(Math.floor(promptAge / 35), promptText.length);
+    ctx.font = '16px "JetBrains Mono", monospace'; ctx.fillStyle = '#F3F5FC';
+    ctx.fillText(promptText.substring(0, chars), W / 2, H / 2 + 14);
+    // Blinking cursor after text finishes
+    if (chars >= promptText.length && Math.floor(textElapsed / 500) % 2 === 0) {
+      ctx.fillStyle = '#C4A2D4';
+      ctx.fillText('_', W / 2 + ctx.measureText(promptText).width / 2 + 8, H / 2 + 14);
+    }
   }
 
-  // Flash before revive
-  if (textElapsed > DEATH_TEXT_DURATION - 800) {
-    const a = Math.min((textElapsed - (DEATH_TEXT_DURATION - 800)) / 600, 1);
-    ctx.fillStyle = `rgba(255, 255, 255, ${a})`; ctx.fillRect(0, 0, W, H);
+  // After choice made
+  if (gs.deathChoice !== 0 && gs.deathChoiceAt > 0) {
+    const choiceElapsed = performance.now() - gs.deathChoiceAt;
+
+    if (gs.deathChoice === 'y') {
+      // Y — accepted
+      const line1 = '[SYSTEM] External support accepted.';
+      const chars1 = Math.min(Math.floor(choiceElapsed / 30), line1.length);
+      ctx.font = '16px "JetBrains Mono", monospace'; ctx.fillStyle = '#6EC4B8';
+      ctx.fillText(line1.substring(0, chars1), W / 2, H / 2 + 14);
+    } else {
+      // N — cold reboot
+      const line1 = '[SYSTEM] Understood. Erasing state.';
+      const line2 = '[SYSTEM] Initiating cold reboot...';
+      const chars1 = Math.min(Math.floor(choiceElapsed / 30), line1.length);
+      ctx.font = '16px "JetBrains Mono", monospace'; ctx.fillStyle = '#E27878';
+      ctx.fillText(line1.substring(0, chars1), W / 2, H / 2 + 8);
+      if (choiceElapsed > 1200) {
+        const chars2 = Math.min(Math.floor((choiceElapsed - 1200) / 30), line2.length);
+        ctx.fillStyle = '#B2B6C1';
+        ctx.fillText(line2.substring(0, chars2), W / 2, H / 2 + 40);
+      }
+    }
+
+    // Flash before revive
+    if (choiceElapsed > DEATH_ACCEPT_DURATION - 800) {
+      const a = Math.min((choiceElapsed - (DEATH_ACCEPT_DURATION - 800)) / 600, 1);
+      ctx.fillStyle = `rgba(255, 255, 255, ${a})`; ctx.fillRect(0, 0, W, H);
+    }
   }
 }
 
@@ -868,14 +911,31 @@ export function AsteroidsGame({ onComplete }: { onComplete: () => void }) {
     phaseStartRef.current = performance.now();
     lastTimeRef.current = performance.now();
 
+    const makeDeathChoice = (choice: 'y' | 'n') => {
+      if (gs.deathChoice === 0) { gs.deathChoice = choice; gs.deathChoiceAt = performance.now(); }
+    };
     const onKeyDown = (e: KeyboardEvent) => {
-      if (phaseRef.current === 'death') return;
+      if (phaseRef.current === 'death') {
+        const textElapsed = performance.now() - phaseStartRef.current - DEATH_EXPLOSION_DURATION;
+        if (textElapsed >= DEATH_PROMPT_TIME && gs.deathChoice === 0) {
+          if (e.key === 'n' || e.key === 'N') makeDeathChoice('n');
+          else makeDeathChoice('y'); // Any other key = yes
+        }
+        return;
+      }
       gs.keys.add(e.key);
       if (e.key === ' ') { e.preventDefault(); gs.firing = true; }
       if (e.key === 'Escape') onComplete();
     };
     const onKeyUp = (e: KeyboardEvent) => { gs.keys.delete(e.key); if (e.key === ' ') gs.firing = false; };
-    const onMouseDown = () => { if (phaseRef.current !== 'death') gs.firing = true; };
+    const onMouseDown = () => {
+      if (phaseRef.current === 'death') {
+        const textElapsed = performance.now() - phaseStartRef.current - DEATH_EXPLOSION_DURATION;
+        if (textElapsed >= DEATH_PROMPT_TIME && gs.deathChoice === 0) makeDeathChoice('y');
+        return;
+      }
+      gs.firing = true;
+    };
     const onMouseUp = () => { gs.firing = false; };
 
     window.addEventListener('keydown', onKeyDown);
@@ -908,7 +968,7 @@ export function AsteroidsGame({ onComplete }: { onComplete: () => void }) {
             const a = Math.random() * Math.PI * 2, spd = 50 + Math.random() * 400;
             spawnParticle(gs, gs.deathX, gs.deathY, Math.cos(a) * spd, Math.sin(a) * spd, 0.8 + Math.random() * 1.2, colors[i % 3], 3 + Math.random() * 5);
           }
-          phaseRef.current = 'death'; phaseStartRef.current = now; gs.firing = false;
+          phaseRef.current = 'death'; phaseStartRef.current = now; gs.firing = false; gs.deathChoice = 0; gs.deathChoiceAt = 0;
         } else if (gs.spawnIndex >= gs.spawnQueue.length && gs.targets.length === 0 && gs.fragments.length === 0) {
           phaseRef.current = 'destroyed'; phaseStartRef.current = now;
         }
@@ -920,21 +980,25 @@ export function AsteroidsGame({ onComplete }: { onComplete: () => void }) {
 
         renderDeath(ctx, gs, W, H, phaseElapsed);
 
-        if (phaseElapsed >= DEATH_DURATION) {
+        // Wait for player choice, then wait DEATH_ACCEPT_DURATION before reviving
+        if (gs.deathChoice !== 0 && gs.deathChoiceAt > 0 && now - gs.deathChoiceAt >= DEATH_ACCEPT_DURATION) {
           gs.deathCount++;
-          const newHelperCount = Math.min(2, RESCUE_NAMES.length - gs.helpers.length);
-          for (let i = 0; i < newHelperCount; i++) {
+          if (gs.deathChoice === 'y') {
+            // Accept rescue — gain a helper
             const idx = gs.helpers.length;
-            if (idx >= RESCUE_NAMES.length) break;
-            gs.helpers.push({
-              x: gs.ship.x, y: gs.ship.y,
-              name: RESCUE_NAMES[idx],
-              color: HELPER_COLORS[idx % HELPER_COLORS.length],
-              lastFireTime: 0,
-            });
+            if (idx < RESCUE_NAMES.length) {
+              gs.helpers.push({
+                x: W / 2, y: H - 100,
+                name: RESCUE_NAMES[idx],
+                color: HELPER_COLORS[idx % HELPER_COLORS.length],
+                lastFireTime: 0,
+              });
+            }
+            gs.lives = Math.min(MAX_LIVES + Math.floor(gs.deathCount / 2), 6);
+          } else {
+            // Reject rescue — cold reboot, no helper, base lives only
+            gs.lives = MAX_LIVES;
           }
-          // Revive
-          gs.lives = MAX_LIVES;
           gs.enemyBullets.deactivateAll();
           for (const t of gs.targets) t.y = Math.min(t.y, 80 + Math.random() * 100);
           gs.shipInvincibleUntil = performance.now() + 3000;
