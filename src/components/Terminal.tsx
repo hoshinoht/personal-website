@@ -83,6 +83,10 @@ function processCommand(input: string): string {
     case 'clear':
       return '__CLEAR__';
 
+    case 'secret':
+    case 'konami':
+      return '[YoRHa] Classification level: Black Box\n\nTry the Konami code.\n↑ ↑ ↓ ↓ ← → ← → B A\n\n...Glory to mankind.';
+
     case 'sudo':
       return 'Nice try.';
 

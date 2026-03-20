@@ -20,6 +20,10 @@ export function ConsoleArt() {
       '%cBuilt with React 19 + Vite 6 + Catppuccin Dusk',
       'color: #B2B6C1; font-size: 11px; font-family: Inter, sans-serif;',
     );
+    console.log(
+      '%c// ↑↑↓↓←→←→BA — if you know, you know.',
+      'color: #6E7280; font-size: 10px; font-family: monospace; font-style: italic;',
+    );
   }, []);
 
   return null;
