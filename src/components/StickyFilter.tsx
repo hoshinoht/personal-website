@@ -1,3 +1,4 @@
+import { motion } from 'framer-motion';
 import {
   Brain,
   Cloud,
@@ -32,7 +33,7 @@ export function StickyFilter() {
         <div className={styles.inner}>
           <span className={styles.label}>Show me:</span>
 
-          <button
+          <motion.button
             className={cn(
               styles.pill,
               styles.viewAll,
@@ -40,24 +41,32 @@ export function StickyFilter() {
             )}
             onClick={() => setActiveDomain(null)}
             aria-pressed={activeDomain === null}
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            whileTap={{ scale: 0.95 }}
+            transition={{ duration: 0.3 }}
           >
             <LayoutGrid className={styles.icon} />
             All
-          </button>
+          </motion.button>
 
-          {domains.map((domain) => {
+          {domains.map((domain, i) => {
             const Icon = domainIcons[domain];
             const isActive = activeDomain === domain;
             return (
-              <button
+              <motion.button
                 key={domain}
                 className={cn(styles.pill, isActive && styles.pillActive)}
                 onClick={() => setActiveDomain(isActive ? null : domain)}
                 aria-pressed={isActive}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ duration: 0.25, delay: (i + 1) * 0.04 }}
               >
-                <Icon className={styles.icon} />
+                <Icon className={cn(styles.icon, isActive && styles.iconActive)} />
                 {domain}
-              </button>
+              </motion.button>
             );
           })}
         </div>

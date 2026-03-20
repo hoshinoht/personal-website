@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FileText, X, Sparkles } from 'lucide-react';
 import { projects, experiences, skillCategories } from '../data/portfolio';
+import { useScrolledPast } from '../lib/useScrolledPast';
 import styles from '../styles/components/JdMatcher.module.css';
 
 interface MatchResult {
@@ -97,16 +98,26 @@ export function JdMatcher() {
     setResults(null);
   };
 
+  const visible = useScrolledPast('hero');
+
   return (
     <>
-      <button
-        className={styles.fab}
-        onClick={() => setOpen(true)}
-        aria-label="Match to job description"
-        title="Match my portfolio to a job description"
-      >
-        <Sparkles size={20} />
-      </button>
+      <AnimatePresence>
+        {visible && (
+          <motion.button
+            className={styles.fab}
+            onClick={() => setOpen(true)}
+            aria-label="Match to job description"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 20 }}
+            transition={{ duration: 0.3 }}
+            title="Match my portfolio to a job description"
+          >
+            <Sparkles size={20} />
+          </motion.button>
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {open && (

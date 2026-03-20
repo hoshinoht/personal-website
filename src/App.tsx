@@ -6,6 +6,7 @@ import { KeyboardNav } from './components/KeyboardNav';
 import { CommandPalette } from './components/CommandPalette';
 import { Terminal } from './components/Terminal';
 import { JdMatcher } from './components/JdMatcher';
+import { ContactFab } from './components/ContactFab';
 import { ConsoleArt } from './components/ConsoleArt';
 import { KonamiEgg } from './components/KonamiEgg';
 import { Hero } from './components/Hero';
@@ -29,6 +30,7 @@ export default function App() {
       <CommandPalette />
       <Terminal />
       <JdMatcher />
+      <ContactFab />
       <ConsoleArt />
       <KonamiEgg />
       <main>
