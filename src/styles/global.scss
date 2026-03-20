@@ -13,7 +13,13 @@ body {
 
 #root {
   min-height: 100dvh;
-  isolation: isolate;
+}
+
+// Content container — caps all animated card stacking contexts at z-index 1
+// so they can never render above fixed UI (nav, FABs, modals)
+main {
+  position: relative;
+  z-index: 1;
 }
 
 ::selection {

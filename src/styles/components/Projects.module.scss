@@ -58,7 +58,6 @@
   display: flex;
   flex-direction: column;
   border-left: 3px solid var(--md-sys-color-outline-variant);
-  animation: cardFadeIn 0.4s var(--md-sys-motion-easing-standard) both;
 }
 
 .featuredCard:hover {
@@ -207,7 +206,6 @@
   border-radius: var(--md-sys-shape-corner-large);
   padding: var(--spacing-md);
   transition: background-color var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
-  animation: cardFadeIn 0.3s var(--md-sys-motion-easing-standard) both;
 }
 
 .otherCard:hover {
@@ -274,19 +272,5 @@
     padding: var(--spacing-sm) var(--spacing-md);
   }
 
-  .featuredCard, .otherCard {
-    position: relative;
-    z-index: 0;
-  }
 }
 
-@keyframes cardFadeIn {
-  from {
-    opacity: 0;
-    transform: translateY(12px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}

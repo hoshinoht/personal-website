@@ -57,10 +57,14 @@ export function FeaturedProjects() {
               const isExpanded = expandedId === project.id;
               const accentColor = getDomainAccentColor(project.domains);
               return (
-                <div
+                <motion.div
                   key={project.id}
                   className={cn(styles.featuredCard, isExpanded && styles.featuredCardExpanded)}
-                  style={{ borderLeftColor: accentColor, animationDelay: `${i * 60}ms` }}
+                  style={{ borderLeftColor: accentColor }}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-50px' }}
+                  transition={{ duration: 0.3, delay: i * 0.06 }}
                 >
                   <div
                     className={styles.cardClickable}
@@ -131,7 +135,7 @@ export function FeaturedProjects() {
                       )}
                     </div>
                   )}
-                </div>
+                </motion.div>
               );
             })}
         </div>
