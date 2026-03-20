@@ -1,66 +1,135 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
-import { Search, Briefcase, FolderGit2, Wrench, GraduationCap, X } from 'lucide-react';
-import { experiences, projects, skillCategories, education, sections } from '../data/portfolio';
+import {
+  Search, Briefcase, FolderGit2, Wrench, GraduationCap,
+  X, Command,
+} from 'lucide-react';
+import { bio, experiences, projects, skillCategories, education, sections } from '../data/portfolio';
 import styles from '../styles/components/CommandPalette.module.scss';
 
+type ResultType = 'action' | 'section' | 'experience' | 'project' | 'skill' | 'education';
+
 interface SearchResult {
-  type: 'section' | 'experience' | 'project' | 'skill' | 'education';
+  type: ResultType;
   title: string;
   subtitle: string;
+  keywords: string; // extra searchable text
   action: () => void;
 }
 
 function buildIndex(): SearchResult[] {
   const results: SearchResult[] = [];
 
-  // Sections
+  // ─── Quick Actions (always at top when relevant) ───
+  results.push({
+    type: 'action',
+    title: 'Open Terminal',
+    subtitle: 'Easter egg CLI — explore via commands',
+    keywords: 'terminal cmd console shell cli bash zsh',
+    action: () => window.dispatchEvent(new CustomEvent('open-terminal')),
+  });
+
+  results.push({
+    type: 'action',
+    title: 'Toggle Theme',
+    subtitle: 'Switch between dark and light mode',
+    keywords: 'theme dark light mode toggle sun moon catppuccin',
+    action: () => {
+      const current = document.documentElement.getAttribute('data-theme') || 'dark';
+      const next = current === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    },
+  });
+
+  results.push({
+    type: 'action',
+    title: 'Copy Email Address',
+    subtitle: bio.email,
+    keywords: 'email contact copy clipboard mail',
+    action: () => { navigator.clipboard.writeText(bio.email); },
+  });
+
+  results.push({
+    type: 'action',
+    title: 'Send Email',
+    subtitle: bio.email,
+    keywords: 'email contact mail message',
+    action: () => { window.location.href = `mailto:${bio.email}`; },
+  });
+
+  results.push({
+    type: 'action',
+    title: 'Match to Job Description',
+    subtitle: 'Paste a JD and rank portfolio relevance',
+    keywords: 'jd job description match ats resume tailor',
+    action: () => {
+      // Click the JD matcher FAB
+      const fab = document.querySelector('[aria-label="Match to job description"]') as HTMLButtonElement | null;
+      fab?.click();
+    },
+  });
+
+  // ─── Sections ───
   for (const s of sections) {
     results.push({
       type: 'section',
       title: s.label,
-      subtitle: 'Section',
+      subtitle: 'Jump to section',
+      keywords: s.id,
       action: () => document.getElementById(s.id)?.scrollIntoView({ behavior: 'smooth' }),
     });
   }
 
-  // Experiences
+  // ─── Experiences ───
   for (const exp of experiences) {
     results.push({
       type: 'experience',
       title: `${exp.title} — ${exp.company}`,
-      subtitle: exp.period,
-      action: () => document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' }),
+      subtitle: `${exp.period} · ${exp.skills.join(', ')}`,
+      keywords: [...exp.skills, ...exp.domains, exp.type].join(' '),
+      action: () => {
+        document.getElementById('experience')?.scrollIntoView({ behavior: 'smooth' });
+      },
     });
   }
 
-  // Projects
+  // ─── Projects (deep link to specific card) ───
   for (const proj of projects) {
     results.push({
       type: 'project',
       title: proj.name,
       subtitle: proj.tech.slice(0, 5).join(', '),
-      action: () => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }),
+      keywords: [...proj.tech, ...proj.domains, proj.summary].join(' '),
+      action: () => {
+        document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' });
+        // Dispatch event to expand specific project
+        setTimeout(() => {
+          window.dispatchEvent(new CustomEvent('expand-project', { detail: proj.id }));
+        }, 400);
+      },
     });
   }
 
-  // Skills (individual)
+  // ─── Skills ───
   for (const cat of skillCategories) {
     for (const skill of cat.skills) {
       results.push({
         type: 'skill',
         title: skill.name,
-        subtitle: `${cat.name} — ${skill.proficiency}`,
+        subtitle: `${cat.name} · ${skill.proficiency}`,
+        keywords: cat.name,
         action: () => document.getElementById('skills')?.scrollIntoView({ behavior: 'smooth' }),
       });
     }
   }
 
-  // Education
+  // ─── Education ───
   for (const edu of education) {
     results.push({
       type: 'education',
       title: edu.institution,
       subtitle: `${edu.degree}, ${edu.field}`,
+      keywords: edu.field,
       action: () => document.getElementById('education')?.scrollIntoView({ behavior: 'smooth' }),
     });
   }
@@ -68,13 +137,36 @@ function buildIndex(): SearchResult[] {
   return results;
 }
 
-const typeIcons = {
+const typeIcons: Record<ResultType, typeof Search> = {
+  action: Command,
   section: Search,
   experience: Briefcase,
   project: FolderGit2,
   skill: Wrench,
   education: GraduationCap,
 };
+
+// Simple fuzzy scoring: exact > startsWith > includes > keyword match
+function scoreResult(result: SearchResult, query: string): number {
+  const q = query.toLowerCase();
+  const title = result.title.toLowerCase();
+  const subtitle = result.subtitle.toLowerCase();
+  const keywords = result.keywords.toLowerCase();
+
+  if (title === q) return 100;
+  if (title.startsWith(q)) return 80;
+  if (title.includes(q)) return 60;
+  if (subtitle.includes(q)) return 40;
+  if (keywords.includes(q)) return 20;
+
+  // Word-level partial matching
+  const qWords = q.split(/\s+/);
+  const allText = `${title} ${subtitle} ${keywords}`;
+  const matched = qWords.filter((w) => allText.includes(w)).length;
+  if (matched > 0) return matched * 10;
+
+  return 0;
+}
 
 export function CommandPalette() {
   const [open, setOpen] = useState(false);
@@ -86,14 +178,18 @@ export function CommandPalette() {
   const index = useMemo(buildIndex, []);
 
   const results = useMemo(() => {
-    if (!query.trim()) return index.slice(0, 8);
-    const q = query.toLowerCase();
+    if (!query.trim()) {
+      // Show actions first, then sections
+      return [
+        ...index.filter((r) => r.type === 'action'),
+        ...index.filter((r) => r.type === 'section'),
+      ].slice(0, 10);
+    }
+
     return index
-      .filter(
-        (r) =>
-          r.title.toLowerCase().includes(q) ||
-          r.subtitle.toLowerCase().includes(q),
-      )
+      .map((r) => ({ ...r, score: scoreResult(r, query) }))
+      .filter((r) => r.score > 0)
+      .sort((a, b) => b.score - a.score)
       .slice(0, 12);
   }, [query, index]);
 
@@ -121,7 +217,6 @@ export function CommandPalette() {
     setSelectedIndex(0);
   }, [query]);
 
-  // Scroll selected item into view
   useEffect(() => {
     const list = listRef.current;
     if (!list) return;
@@ -152,7 +247,7 @@ export function CommandPalette() {
           <input
             ref={inputRef}
             className={styles.input}
-            placeholder="Search projects, skills, experience..."
+            placeholder="Search or type a command..."
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}

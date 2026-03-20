@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Github, ChevronDown } from 'lucide-react';
 import { projects } from '../data/portfolio';
@@ -14,6 +14,16 @@ import styles from '../styles/components/Projects.module.scss';
 export function FeaturedProjects() {
   const { activeDomain } = useFilter();
   const [expandedId, setExpandedId] = useState<string | null>(null);
+
+  // Listen for deep-link expand from command palette
+  useEffect(() => {
+    const handler = (e: Event) => {
+      const projectId = (e as CustomEvent).detail;
+      setExpandedId(projectId);
+    };
+    window.addEventListener('expand-project', handler);
+    return () => window.removeEventListener('expand-project', handler);
+  }, []);
 
   const allFiltered = activeDomain
     ? projects.filter((p) => p.domains.includes(activeDomain))

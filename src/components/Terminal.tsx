@@ -178,8 +178,13 @@ export function Terminal() {
         setOpen((prev) => !prev);
       }
     };
+    const openHandler = () => setOpen(true);
     window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
+    window.addEventListener('open-terminal', openHandler);
+    return () => {
+      window.removeEventListener('keydown', handler);
+      window.removeEventListener('open-terminal', openHandler);
+    };
   }, []);
 
   useEffect(() => {
