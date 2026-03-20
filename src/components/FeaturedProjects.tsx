@@ -1,13 +1,16 @@
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, ChevronDown } from 'lucide-react';
 import { projects } from '../data/portfolio';
 import { useFilter } from './FilterContext';
 import { Chip } from './ui/Chip';
 import { ProjectGrid } from './ProjectGrid';
+import { cn } from '../lib/utils';
 import styles from '../styles/components/Projects.module.css';
 
 export function FeaturedProjects() {
   const { activeDomain } = useFilter();
+  const [expandedId, setExpandedId] = useState<string | null>(null);
 
   const allFiltered = activeDomain
     ? projects.filter((p) => p.domains.includes(activeDomain))
@@ -17,6 +20,8 @@ export function FeaturedProjects() {
   const other = allFiltered.filter((p) => !p.featured);
 
   if (allFiltered.length === 0) return null;
+
+  const toggle = (id: string) => setExpandedId((prev) => (prev === id ? null : id));
 
   return (
     <section id="projects" className={styles.section}>
@@ -36,51 +41,98 @@ export function FeaturedProjects() {
       {featured.length > 0 && (
         <div className={styles.featuredGrid}>
           <AnimatePresence mode="popLayout">
-            {featured.map((project, i) => (
-              <motion.div
-                key={project.id}
-                className={styles.featuredCard}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                layout
-                transition={{ duration: 0.3, delay: i * 0.06 }}
-              >
-                <div className={styles.cardTop}>
-                  <h3 className={styles.projectName}>{project.name}</h3>
-                  <span className={styles.projectPeriod}>{project.period}</span>
-                </div>
-                <p className={styles.projectSummary}>{project.summary}</p>
-
-                {project.responsibilities.length > 0 && (
-                  <div className={styles.responsibilityList}>
-                    {project.responsibilities.map((r, j) => (
-                      <p key={j} className={styles.responsibility}>{r}</p>
-                    ))}
+            {featured.map((project, i) => {
+              const isExpanded = expandedId === project.id;
+              return (
+                <motion.div
+                  key={project.id}
+                  className={cn(styles.featuredCard, isExpanded && styles.featuredCardExpanded)}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  transition={{ duration: 0.3, delay: i * 0.06 }}
+                >
+                  <div
+                    className={styles.cardClickable}
+                    onClick={() => toggle(project.id)}
+                    role="button"
+                    tabIndex={0}
+                    aria-expanded={isExpanded}
+                    onKeyDown={(e) => e.key === 'Enter' && toggle(project.id)}
+                  >
+                    <div className={styles.cardTop}>
+                      <h3 className={styles.projectName}>{project.name}</h3>
+                      <div className={styles.cardTopRight}>
+                        <span className={styles.projectPeriod}>{project.period}</span>
+                        <ChevronDown
+                          size={16}
+                          className={cn(styles.chevron, isExpanded && styles.chevronOpen)}
+                        />
+                      </div>
+                    </div>
+                    <p className={styles.projectSummary}>{project.summary}</p>
                   </div>
-                )}
 
-                {project.impact.length > 0 && (
-                  <div className={styles.impactList}>
-                    {project.impact.map((imp, j) => (
-                      <p key={j} className={styles.impact}>{imp}</p>
+                  <div className={styles.techRow}>
+                    {project.tech.slice(0, 6).map((t) => (
+                      <Chip key={t} color="sapphire">{t}</Chip>
                     ))}
+                    {project.tech.length > 6 && (
+                      <Chip variant="outlined">+{project.tech.length - 6}</Chip>
+                    )}
                   </div>
-                )}
 
-                <div className={styles.techRow}>
-                  {project.tech.map((t) => (
-                    <Chip key={t} color="sapphire">{t}</Chip>
-                  ))}
-                </div>
+                  <AnimatePresence initial={false}>
+                    {isExpanded && (
+                      <motion.div
+                        className={styles.expandedContent}
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.25, ease: [0.2, 0, 0, 1] }}
+                        style={{ overflow: 'hidden' }}
+                      >
+                        {project.tech.length > 6 && (
+                          <div className={styles.techRowFull}>
+                            {project.tech.slice(6).map((t) => (
+                              <Chip key={t} color="sapphire">{t}</Chip>
+                            ))}
+                          </div>
+                        )}
 
-                {project.repo && (
-                  <a href={project.repo} className={styles.repoLink} target="_blank" rel="noopener noreferrer">
-                    <ExternalLink size={14} /> View on GitHub
-                  </a>
-                )}
-              </motion.div>
-            ))}
+                        {project.responsibilities.length > 0 && (
+                          <div className={styles.responsibilityList}>
+                            {project.responsibilities.map((r, j) => (
+                              <p key={j} className={styles.responsibility}>{r}</p>
+                            ))}
+                          </div>
+                        )}
+
+                        {project.impact.length > 0 && (
+                          <div className={styles.impactList}>
+                            {project.impact.map((imp, j) => (
+                              <p key={j} className={styles.impact}>{imp}</p>
+                            ))}
+                          </div>
+                        )}
+
+                        {project.repo && (
+                          <a
+                            href={project.repo}
+                            className={styles.repoLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <ExternalLink size={14} /> View on GitHub
+                          </a>
+                        )}
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              );
+            })}
           </AnimatePresence>
         </div>
       )}

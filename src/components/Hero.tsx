@@ -3,7 +3,6 @@ import { Github, Linkedin, Mail } from 'lucide-react';
 import { bio } from '../data/portfolio';
 import { Button } from './ui/Button';
 import { TypingEffect } from './TypingEffect';
-import { DomainFilter } from './DomainFilter';
 import styles from '../styles/components/Hero.module.css';
 
 export function Hero() {
@@ -32,14 +31,6 @@ export function Hero() {
               <Linkedin size={18} /> LinkedIn
             </Button>
           </div>
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.4 }}
-            className={styles.filterSection}
-          >
-            <DomainFilter />
-          </motion.div>
         </motion.div>
         <motion.div
           className={styles.photoContainer}

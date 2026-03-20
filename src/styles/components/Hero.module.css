@@ -81,12 +81,6 @@
   border: 3px solid var(--md-sys-color-outline-variant);
 }
 
-.filterSection {
-  margin-top: var(--spacing-xl);
-  padding-top: var(--spacing-lg);
-  border-top: 1px solid var(--md-sys-color-outline-variant);
-}
-
 @media (max-width: 768px) {
   .heroContent {
     flex-direction: column-reverse;

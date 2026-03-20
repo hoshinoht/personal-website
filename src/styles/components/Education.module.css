@@ -10,101 +10,91 @@
   margin-bottom: var(--spacing-3xl);
 }
 
+.columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--spacing-2xl);
+  align-items: start;
+}
+
+.column {
+  display: flex;
+  flex-direction: column;
+}
+
 .subheading {
-  font: var(--md-sys-typescale-headline-small);
-  color: var(--md-sys-color-on-surface-variant);
-  margin-bottom: var(--spacing-lg);
-  margin-top: var(--spacing-3xl);
-}
-
-/* Education timeline */
-.timeline {
-  position: relative;
-  padding-left: 32px;
-}
-
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 6px;
-  top: 8px;
-  bottom: 8px;
-  width: 2px;
-  background-color: var(--md-sys-color-outline-variant);
-}
-
-.timelineItem {
-  position: relative;
+  font: var(--md-sys-typescale-title-large);
+  color: var(--md-sys-color-on-surface);
   margin-bottom: var(--spacing-lg);
 }
 
-.timelineDot {
-  position: absolute;
-  left: -32px;
-  top: 8px;
-  width: 14px;
-  height: 14px;
-  border-radius: var(--md-sys-shape-corner-full);
-  background-color: var(--md-sys-color-secondary);
-  border: 2px solid var(--md-sys-color-background);
-  z-index: 1;
+/* Education list (no timeline, just compact cards) */
+.eduList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-md);
 }
 
 .eduCard {
   background-color: var(--md-sys-color-surface-container);
-  border-radius: var(--md-sys-shape-corner-extra-large);
-  padding: var(--spacing-lg);
+  border-radius: var(--md-sys-shape-corner-large);
+  padding: var(--spacing-md);
 }
 
 .institution {
-  font: var(--md-sys-typescale-title-large);
+  font: var(--md-sys-typescale-title-small);
   color: var(--md-sys-color-on-surface);
 }
 
+.degreeRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
 .degree {
-  font: var(--md-sys-typescale-title-medium);
+  font: var(--md-sys-typescale-label-large);
   color: var(--md-sys-color-secondary);
 }
 
 .field {
-  font: var(--md-sys-typescale-body-medium);
+  font: var(--md-sys-typescale-body-small);
   color: var(--md-sys-color-on-surface-variant);
 }
 
 .period {
-  font: var(--md-sys-typescale-label-large);
+  font: var(--md-sys-typescale-label-medium);
   color: var(--md-sys-color-on-surface-variant);
-  margin-top: var(--spacing-xs);
+  white-space: nowrap;
 }
 
-/* Certifications grid */
-.certGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: var(--spacing-md);
+/* Certifications list */
+.certList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
 }
 
 .certCard {
-  background: transparent;
-  border: 1px solid var(--md-sys-color-outline-variant);
-  border-radius: var(--md-sys-shape-corner-large);
-  padding: var(--spacing-md);
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   gap: var(--spacing-md);
-  transition: all var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
+  padding: 10px var(--spacing-md);
+  border-radius: var(--md-sys-shape-corner-medium);
+  transition: background-color var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
 }
 
 .certCard:hover {
   background-color: var(--md-sys-color-surface-container);
-  border-color: var(--md-sys-color-outline);
 }
 
 .certIcon {
   flex-shrink: 0;
-  width: 40px;
-  height: 40px;
-  border-radius: var(--md-sys-shape-corner-medium);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--md-sys-shape-corner-small);
   background-color: var(--md-sys-color-primary-container);
   display: flex;
   align-items: center;
@@ -113,11 +103,18 @@
 }
 
 .certName {
-  font: var(--md-sys-typescale-title-small);
+  font: var(--md-sys-typescale-label-large);
   color: var(--md-sys-color-on-surface);
 }
 
 .certIssuer {
-  font: var(--md-sys-typescale-label-medium);
+  font: var(--md-sys-typescale-label-small);
   color: var(--md-sys-color-on-surface-variant);
+}
+
+@media (max-width: 768px) {
+  .columns {
+    grid-template-columns: 1fr;
+    gap: var(--spacing-xl);
+  }
 }

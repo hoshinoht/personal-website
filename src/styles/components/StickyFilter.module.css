@@ -1,29 +1,46 @@
-.filterBar {
+.wrapper {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  transition: all var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
+}
+
+.bar {
+  padding: 12px 24px;
+  background-color: rgba(38, 40, 45, 0.85);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+}
+
+.inner {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
   display: flex;
   align-items: center;
   gap: var(--spacing-sm);
   flex-wrap: wrap;
-  margin-bottom: var(--spacing-xl);
 }
 
 .label {
   font: var(--md-sys-typescale-label-large);
   color: var(--md-sys-color-on-surface-variant);
   margin-right: var(--spacing-xs);
+  white-space: nowrap;
 }
 
 .pill {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 18px;
+  gap: 5px;
+  padding: 6px 14px;
   border: 1px solid var(--md-sys-color-outline-variant);
   border-radius: var(--md-sys-shape-corner-full);
   background: transparent;
   color: var(--md-sys-color-on-surface-variant);
-  font: var(--md-sys-typescale-label-large);
+  font: var(--md-sys-typescale-label-medium);
   cursor: pointer;
-  transition: all var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
   white-space: nowrap;
 }
 
@@ -40,13 +57,10 @@
 }
 
 .pillActive:hover {
-  background-color: var(--md-sys-color-primary);
   filter: brightness(1.1);
-  color: var(--md-sys-color-on-primary);
 }
 
 .viewAll {
-  background: transparent;
   color: var(--md-sys-color-secondary);
   border-color: var(--md-sys-color-secondary);
 }
@@ -57,32 +71,26 @@
   border-color: var(--md-sys-color-secondary);
 }
 
-.viewAllActive:hover {
-  background-color: var(--md-sys-color-secondary);
-  filter: brightness(1.1);
-  color: var(--md-sys-color-on-secondary);
-}
-
 .icon {
-  width: 16px;
-  height: 16px;
-}
-
-.filterSummary {
-  font: var(--md-sys-typescale-body-small);
-  color: var(--md-sys-color-on-surface-variant);
-  margin-top: var(--spacing-xs);
-  width: 100%;
+  width: 14px;
+  height: 14px;
 }
 
 @media (max-width: 768px) {
-  .filterBar {
+  .bar {
+    padding: 10px 16px;
+  }
+
+  .inner {
     justify-content: center;
   }
 
   .label {
-    width: 100%;
-    text-align: center;
-    margin-bottom: var(--spacing-xs);
+    display: none;
+  }
+
+  .pill {
+    padding: 5px 10px;
+    font: var(--md-sys-typescale-label-small);
   }
 }

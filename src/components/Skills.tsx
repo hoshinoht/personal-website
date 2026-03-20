@@ -59,7 +59,6 @@ export function Skills() {
                 className={styles.category}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: isRelevant ? 1 : 0.35 }}
-                layout
                 transition={{ duration: 0.3, delay: i * 0.04 }}
                 style={{ order: isRelevant ? 0 : 1 }}
               >

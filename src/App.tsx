@@ -1,6 +1,7 @@
 import { FilterProvider } from './components/FilterContext';
 import { Navigation } from './components/Navigation';
 import { Hero } from './components/Hero';
+import { StickyFilter } from './components/StickyFilter';
 import { ExperienceTimeline } from './components/ExperienceTimeline';
 import { FeaturedProjects } from './components/FeaturedProjects';
 import { Skills } from './components/Skills';
@@ -13,6 +14,7 @@ export default function App() {
       <Navigation />
       <main>
         <Hero />
+        <StickyFilter />
         <ExperienceTimeline />
         <FeaturedProjects />
         <Skills />
