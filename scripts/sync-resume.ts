@@ -230,7 +230,7 @@ function main() {
   lines.push(`  summary: '${escapeStr(summaryData.summary)}',`);
   lines.push(`  email: 'haoting.po@gmail.com',`);
   lines.push(`  github: 'https://github.com/hoshinoht',`);
-  lines.push(`  linkedin: 'https://linkedin.com/in/haotingpo',`);
+  lines.push(`  linkedin: 'https://www.linkedin.com/in/po-haoting/',`);
   lines.push('};');
   lines.push('');
 
