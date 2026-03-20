@@ -56,13 +56,17 @@ export function Hero() {
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.6, delay: 0.2, ease: [0.2, 0, 0, 1] }}
         >
-          <img
-            src="/images/profile.png"
-            alt="Po Haoting"
-            className={styles.photo}
-            width={280}
-            height={280}
-          />
+          <picture>
+            <source srcSet="/images/profile.webp" type="image/webp" />
+            <img
+              src="/images/profile.png"
+              alt="Po Haoting"
+              className={styles.photo}
+              width={280}
+              height={280}
+              loading="eager"
+            />
+          </picture>
         </motion.div>
       </div>
     </section>
