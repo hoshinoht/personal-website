@@ -84,6 +84,25 @@
   background: var(--md-sys-color-primary);
 }
 
+.legendSpacer {
+  width: 1px;
+  height: 14px;
+  background: var(--md-sys-color-outline-variant);
+}
+
+.legendEdge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.legendLine {
+  display: inline-block;
+  width: 20px;
+  height: 3px;
+  border-radius: 2px;
+}
+
 @media (max-width: 768px) {
   .svg {
     max-height: 400px;

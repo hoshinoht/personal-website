@@ -26,6 +26,19 @@ function buildEdges(): Edge[] {
   return edges;
 }
 
+// Edge color by shared tech count
+const EDGE_COLORS = [
+  { min: 1, max: 2, color: 'var(--md-sys-color-outline)', label: '1–2 shared' },
+  { min: 3, max: 4, color: 'var(--color-sky)', label: '3–4 shared' },
+  { min: 5, max: 6, color: 'var(--color-teal)', label: '5–6 shared' },
+  { min: 7, max: Infinity, color: 'var(--md-sys-color-primary)', label: '7+ shared' },
+];
+
+function getEdgeColor(weight: number): string {
+  const tier = EDGE_COLORS.find((t) => weight >= t.min && weight <= t.max);
+  return tier?.color ?? 'var(--md-sys-color-outline)';
+}
+
 // Two-ring layout: featured in inner ring, others in outer ring
 function getNodePositions(count: number, width: number, height: number) {
   const cx = width / 2;
@@ -81,160 +94,143 @@ export function ProjectGraph() {
       </button>
 
       {open && (
-          <div
-            className={styles.container}
+        <div className={styles.container}>
+          <svg
+            viewBox={`0 0 ${width} ${height}`}
+            className={styles.svg}
+            aria-label="Project dependency graph showing shared technologies"
           >
-            <svg
-              viewBox={`0 0 ${width} ${height}`}
-              className={styles.svg}
-              aria-label="Project dependency graph showing shared technologies"
-            >
-              <defs>
-                <filter id="glow">
-                  <feGaussianBlur stdDeviation="3" result="blur" />
-                  <feMerge>
-                    <feMergeNode in="blur" />
-                    <feMergeNode in="SourceGraphic" />
-                  </feMerge>
-                </filter>
-              </defs>
+            <defs>
+              <filter id="glow">
+                <feGaussianBlur stdDeviation="3" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+            </defs>
 
-              {/* Edges — curved paths */}
-              {edges.map((edge, i) => {
-                const from = positions[edge.from];
-                const to = positions[edge.to];
-                const isHighlighted = hoveredNode !== null && (edge.from === hoveredNode || edge.to === hoveredNode);
-                const isDimmed = hoveredNode !== null && !isHighlighted;
+            {/* Edges — curved paths colored by shared tech count */}
+            {edges.map((edge, i) => {
+              const from = positions[edge.from];
+              const to = positions[edge.to];
+              const isHighlighted = hoveredNode !== null && (edge.from === hoveredNode || edge.to === hoveredNode);
+              const isDimmed = hoveredNode !== null && !isHighlighted;
 
-                // Slight curve via quadratic bezier offset
-                const mx = (from.x + to.x) / 2;
-                const my = (from.y + to.y) / 2;
-                const dx = to.x - from.x;
-                const dy = to.y - from.y;
-                const dist = Math.sqrt(dx * dx + dy * dy);
-                const curvature = dist * 0.08;
-                const nx = -dy / dist * curvature;
-                const ny = dx / dist * curvature;
-                const cpx = mx + nx;
-                const cpy = my + ny;
+              const mx = (from.x + to.x) / 2;
+              const my = (from.y + to.y) / 2;
+              const dx = to.x - from.x;
+              const dy = to.y - from.y;
+              const dist = Math.sqrt(dx * dx + dy * dy);
+              const curvature = dist * 0.08;
+              const nx = -dy / dist * curvature;
+              const ny = dx / dist * curvature;
+              const cpx = mx + nx;
+              const cpy = my + ny;
 
-                const strokeW = isHighlighted
-                  ? 1.5 + (edge.weight / maxWeight) * 2.5
-                  : 0.5 + (edge.weight / maxWeight) * 1;
+              const strokeW = isHighlighted
+                ? 1.5 + (edge.weight / maxWeight) * 2.5
+                : 0.5 + (edge.weight / maxWeight) * 1;
 
-                return (
-                  <path
-                    key={`edge-${i}`}
-                    d={`M ${from.x} ${from.y} Q ${cpx} ${cpy} ${to.x} ${to.y}`}
-                    className={styles.edge}
-                    strokeWidth={strokeW}
-                    opacity={isDimmed ? 0.04 : isHighlighted ? 0.7 : 0.12}
-                    filter={isHighlighted ? 'url(#glow)' : undefined}
+              return (
+                <path
+                  key={`edge-${i}`}
+                  d={`M ${from.x} ${from.y} Q ${cpx} ${cpy} ${to.x} ${to.y}`}
+                  fill="none"
+                  stroke={getEdgeColor(edge.weight)}
+                  strokeWidth={strokeW}
+                  opacity={isDimmed ? 0.04 : isHighlighted ? 0.8 : 0.15}
+                  filter={isHighlighted ? 'url(#glow)' : undefined}
+                  className={styles.edge}
+                />
+              );
+            })}
+
+            {/* Nodes */}
+            {positions.map((pos, i) => {
+              const project = allProjects[i];
+              const isFeatured = project.featured;
+              const isActive = connectedNodes === null || connectedNodes.has(i);
+              const isHovered = hoveredNode === i;
+              const color = getDomainAccentColor(project.domains);
+              const nodeR = isFeatured ? (isHovered ? 20 : 15) : (isHovered ? 14 : 9);
+
+              const sharedWith = hoveredNode !== null && hoveredNode !== i
+                ? activeEdges.find(
+                    (e) => (e.from === hoveredNode && e.to === i) || (e.to === hoveredNode && e.from === i),
+                  )
+                : null;
+
+              const cx = width / 2;
+              const cy = height / 2;
+              const angle = Math.atan2(pos.y - cy, pos.x - cx);
+              const labelOffset = nodeR + 14;
+              const lx = pos.x + Math.cos(angle) * labelOffset;
+              const ly = pos.y + Math.sin(angle) * labelOffset;
+              const anchor = Math.abs(angle) > Math.PI / 2 + 0.3 ? 'end' : Math.abs(angle) < Math.PI / 2 - 0.3 ? 'start' : 'middle';
+
+              return (
+                <g
+                  key={project.id}
+                  onMouseEnter={() => setHoveredNode(i)}
+                  onMouseLeave={() => setHoveredNode(null)}
+                  style={{ cursor: 'pointer' }}
+                >
+                  {isHovered && (
+                    <circle cx={pos.x} cy={pos.y} r={nodeR + 6} fill="none" stroke={color} strokeWidth={2} opacity={0.4} />
+                  )}
+
+                  <circle
+                    cx={pos.x} cy={pos.y} r={nodeR}
+                    fill={color}
+                    opacity={isActive ? (isFeatured ? 1 : 0.8) : 0.15}
+                    className={styles.node}
+                    filter={isHovered ? 'url(#glow)' : undefined}
                   />
-                );
-              })}
 
-              {/* Nodes */}
-              {positions.map((pos, i) => {
-                const project = allProjects[i];
-                const isFeatured = project.featured;
-                const isActive = connectedNodes === null || connectedNodes.has(i);
-                const isHovered = hoveredNode === i;
-                const color = getDomainAccentColor(project.domains);
-                const nodeR = isFeatured ? (isHovered ? 20 : 15) : (isHovered ? 14 : 9);
+                  {isFeatured && (
+                    <circle cx={pos.x} cy={pos.y} r={3} fill="var(--md-sys-color-on-primary)" opacity={isActive ? 0.8 : 0.1} />
+                  )}
 
-                const sharedWith = hoveredNode !== null && hoveredNode !== i
-                  ? activeEdges.find(
-                      (e) => (e.from === hoveredNode && e.to === i) || (e.to === hoveredNode && e.from === i),
-                    )
-                  : null;
-
-                // Label positioning: push outward from center
-                const cx = width / 2;
-                const cy = height / 2;
-                const angle = Math.atan2(pos.y - cy, pos.x - cx);
-                const labelOffset = nodeR + 14;
-                const lx = pos.x + Math.cos(angle) * labelOffset;
-                const ly = pos.y + Math.sin(angle) * labelOffset;
-                const anchor = Math.abs(angle) > Math.PI / 2 + 0.3 ? 'end' : Math.abs(angle) < Math.PI / 2 - 0.3 ? 'start' : 'middle';
-
-                return (
-                  <g
-                    key={project.id}
-                    onMouseEnter={() => setHoveredNode(i)}
-                    onMouseLeave={() => setHoveredNode(null)}
-                    style={{ cursor: 'pointer' }}
+                  <text
+                    x={lx} y={ly}
+                    textAnchor={anchor}
+                    dominantBaseline="central"
+                    className={isFeatured ? styles.labelFeatured : styles.label}
+                    opacity={isActive ? 1 : 0.15}
                   >
-                    {/* Outer ring on hover */}
-                    {isHovered && (
-                      <circle
-                        cx={pos.x}
-                        cy={pos.y}
-                        r={nodeR + 6}
-                        fill="none"
-                        stroke={color}
-                        strokeWidth={2}
-                        opacity={0.4}
-                      />
-                    )}
+                    {project.name}
+                  </text>
 
-                    {/* Node */}
-                    <circle
-                      cx={pos.x}
-                      cy={pos.y}
-                      r={nodeR}
-                      fill={color}
-                      opacity={isActive ? (isFeatured ? 1 : 0.8) : 0.15}
-                      className={styles.node}
-                      filter={isHovered ? 'url(#glow)' : undefined}
-                    />
-
-                    {/* Inner dot for featured */}
-                    {isFeatured && (
-                      <circle
-                        cx={pos.x}
-                        cy={pos.y}
-                        r={3}
-                        fill="var(--md-sys-color-on-primary)"
-                        opacity={isActive ? 0.8 : 0.1}
-                      />
-                    )}
-
-                    {/* Label */}
+                  {sharedWith && (
                     <text
-                      x={lx}
-                      y={ly}
-                      textAnchor={anchor}
-                      dominantBaseline="central"
-                      className={isFeatured ? styles.labelFeatured : styles.label}
-                      opacity={isActive ? 1 : 0.15}
+                      x={(pos.x + positions[hoveredNode!].x) / 2}
+                      y={(pos.y + positions[hoveredNode!].y) / 2 - 10}
+                      textAnchor="middle"
+                      className={styles.edgeLabel}
                     >
-                      {project.name}
+                      {sharedWith.shared.slice(0, 3).join(', ')}
+                      {sharedWith.shared.length > 3 ? ` +${sharedWith.shared.length - 3}` : ''}
                     </text>
+                  )}
+                </g>
+              );
+            })}
+          </svg>
 
-                    {/* Shared tech on edge midpoint */}
-                    {sharedWith && (
-                      <text
-                        x={(pos.x + positions[hoveredNode!].x) / 2}
-                        y={(pos.y + positions[hoveredNode!].y) / 2 - 10}
-                        textAnchor="middle"
-                        className={styles.edgeLabel}
-                      >
-                        {sharedWith.shared.slice(0, 3).join(', ')}
-                        {sharedWith.shared.length > 3 ? ` +${sharedWith.shared.length - 3}` : ''}
-                      </text>
-                    )}
-                  </g>
-                );
-              })}
-            </svg>
-
-            <div className={styles.legend}>
-              <span className={styles.legendDot} style={{ width: 12, height: 12 }} /> Featured
-              <span className={styles.legendDot} style={{ width: 8, height: 8 }} /> Other
-            </div>
+          <div className={styles.legend}>
+            <span className={styles.legendDot} style={{ width: 12, height: 12 }} /> Featured
+            <span className={styles.legendDot} style={{ width: 8, height: 8 }} /> Other
+            <span className={styles.legendSpacer} />
+            {EDGE_COLORS.map((tier) => (
+              <span key={tier.label} className={styles.legendEdge}>
+                <span className={styles.legendLine} style={{ background: tier.color }} />
+                {tier.label}
+              </span>
+            ))}
           </div>
-        )}
+        </div>
+      )}
     </>
   );
 }
