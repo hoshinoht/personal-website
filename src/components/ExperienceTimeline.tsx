@@ -5,6 +5,7 @@ import { experiences } from '../data/portfolio';
 import { useFilter } from './FilterContext';
 import { Chip } from './ui/Chip';
 import { cn } from '../lib/utils';
+import { highlightMetrics } from '../lib/highlightMetrics';
 import styles from '../styles/components/Experience.module.css';
 
 export function ExperienceTimeline() {
@@ -86,7 +87,7 @@ export function ExperienceTimeline() {
                         style={{ overflow: 'hidden' }}
                       >
                         {exp.bullets.map((bullet, j) => (
-                          <p key={j} className={styles.bullet}>{bullet}</p>
+                          <p key={j} className={styles.bullet}>{highlightMetrics(bullet)}</p>
                         ))}
                       </motion.div>
                     )}

@@ -6,7 +6,9 @@ import { useFilter } from './FilterContext';
 import { Chip } from './ui/Chip';
 import { cn } from '../lib/utils';
 import { getTechChipColor, getDomainAccentColor } from '../lib/techColors';
+import { highlightMetrics } from '../lib/highlightMetrics';
 import { ProjectGrid } from './ProjectGrid';
+import { ProjectGraph } from './ProjectGraph';
 import styles from '../styles/components/Projects.module.css';
 
 export function FeaturedProjects() {
@@ -46,6 +48,8 @@ export function FeaturedProjects() {
         <span className={styles.legendItem}><Chip color="peach">Protocols</Chip></span>
         <span className={styles.legendItem}><Chip color="sapphire">Tools & Patterns</Chip></span>
       </div>
+
+      <ProjectGraph />
 
       {featured.length > 0 && (
         <div className={styles.featuredGrid}>
@@ -114,7 +118,7 @@ export function FeaturedProjects() {
                         {project.responsibilities.length > 0 && (
                           <div className={styles.responsibilityList}>
                             {project.responsibilities.map((r, j) => (
-                              <p key={j} className={styles.responsibility}>{r}</p>
+                              <p key={j} className={styles.responsibility}>{highlightMetrics(r)}</p>
                             ))}
                           </div>
                         )}
@@ -122,7 +126,7 @@ export function FeaturedProjects() {
                         {project.impact.length > 0 && (
                           <div className={styles.impactList}>
                             {project.impact.map((imp, j) => (
-                              <p key={j} className={styles.impact}>{imp}</p>
+                              <p key={j} className={styles.impact}>{highlightMetrics(imp, 'impact')}</p>
                             ))}
                           </div>
                         )}

@@ -1,0 +1,99 @@
+.toggleBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-full);
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  font: var(--md-sys-typescale-label-large);
+  cursor: pointer;
+  transition: all var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
+  margin-bottom: var(--spacing-lg);
+}
+
+.toggleBtn:hover {
+  background: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface);
+  border-color: var(--md-sys-color-outline);
+}
+
+.container {
+  margin-bottom: var(--spacing-xl);
+  background: var(--md-sys-color-surface-container);
+  border-radius: var(--md-sys-shape-corner-extra-large);
+  padding: var(--spacing-md);
+}
+
+.svg {
+  width: 100%;
+  height: auto;
+  max-height: 650px;
+}
+
+.edge {
+  stroke: var(--md-sys-color-primary);
+  fill: none;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+}
+
+.node {
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+}
+
+.label {
+  font-family: 'Inter', sans-serif;
+  font-size: 9px;
+  font-weight: 400;
+  fill: var(--md-sys-color-on-surface-variant);
+  transition: opacity var(--md-sys-motion-duration-short);
+  pointer-events: none;
+}
+
+.labelFeatured {
+  font-family: 'Inter', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  fill: var(--md-sys-color-on-surface);
+  transition: opacity var(--md-sys-motion-duration-short);
+  pointer-events: none;
+}
+
+.edgeLabel {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px;
+  font-weight: 500;
+  fill: var(--md-sys-color-secondary);
+  pointer-events: none;
+}
+
+.legend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--spacing-md);
+  padding-top: var(--spacing-sm);
+  font: var(--md-sys-typescale-label-small);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.legendDot {
+  display: inline-block;
+  border-radius: 50%;
+  background: var(--md-sys-color-primary);
+}
+
+@media (max-width: 768px) {
+  .svg {
+    max-height: 400px;
+  }
+
+  .label {
+    font-size: 7px;
+  }
+
+  .labelFeatured {
+    font-size: 9px;
+  }
+}
