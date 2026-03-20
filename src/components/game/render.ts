@@ -253,7 +253,7 @@ export function renderDeath(ctx: CanvasRenderingContext2D, gs: GameState, W: num
   const msgs = [
     { text: script.sys, start: 1600, color: '#E27878' },
     { text: script.phil, start: 6600, color: '#B2B6C1' },
-    { text: script.signal, start: 9000, color: '#C4A2D4' },
+    { text: script.signal, start: 10000, color: '#C4A2D4' },
   ];
   for (const m of msgs) {
     if (textElapsed < m.start) continue;
@@ -267,8 +267,8 @@ export function renderDeath(ctx: CanvasRenderingContext2D, gs: GameState, W: num
   ctx.globalAlpha = 1;
 
   // Scrolling rescue names — randomised, continuous stream until prompt
-  if (textElapsed > 10000 && textElapsed < DEATH_PROMPT_TIME && gs.deathChoice === 0) {
-    const nameElapsed = textElapsed - 10000;
+  if (textElapsed > 12000 && textElapsed < DEATH_PROMPT_TIME && gs.deathChoice === 0) {
+    const nameElapsed = textElapsed - 12000;
     // Spawn one every 50ms, no cap — keeps streaming
     const namesVisible = Math.floor(nameElapsed / 50);
     ctx.font = '12px "JetBrains Mono", monospace';
