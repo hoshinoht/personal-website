@@ -1,0 +1,136 @@
+.section {
+  padding: var(--section-padding);
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+}
+
+.heading {
+  font: var(--md-sys-typescale-display-small);
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: var(--spacing-3xl);
+}
+
+.timeline {
+  position: relative;
+  padding-left: 32px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background-color: var(--md-sys-color-outline-variant);
+}
+
+.timelineItem {
+  position: relative;
+  margin-bottom: var(--spacing-xl);
+}
+
+.timelineDot {
+  position: absolute;
+  left: -32px;
+  top: 8px;
+  width: 14px;
+  height: 14px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-color-primary);
+  border: 2px solid var(--md-sys-color-background);
+  z-index: 1;
+}
+
+.card {
+  background-color: var(--md-sys-color-surface-container);
+  border-radius: var(--md-sys-shape-corner-extra-large);
+  padding: var(--spacing-lg);
+}
+
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  margin-bottom: var(--spacing-sm);
+  flex-wrap: wrap;
+}
+
+.title {
+  font: var(--md-sys-typescale-title-large);
+  color: var(--md-sys-color-on-surface);
+}
+
+.company {
+  font: var(--md-sys-typescale-title-medium);
+  color: var(--md-sys-color-primary);
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-shrink: 0;
+}
+
+.period {
+  font: var(--md-sys-typescale-label-large);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.typeBadge {
+  font: var(--md-sys-typescale-label-small);
+  padding: 4px 10px;
+  border-radius: var(--md-sys-shape-corner-full);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.research {
+  background-color: rgba(176, 188, 232, 0.15);
+  color: var(--color-lavender);
+}
+
+.internship {
+  background-color: rgba(110, 196, 184, 0.15);
+  color: var(--color-teal);
+}
+
+.bullets {
+  margin: var(--spacing-md) 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-sm);
+}
+
+.bullet {
+  font: var(--md-sys-typescale-body-medium);
+  color: var(--md-sys-color-on-surface-variant);
+  padding-left: var(--spacing-md);
+  position: relative;
+}
+
+.bullet::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--md-sys-color-primary);
+}
+
+.skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--spacing-sm);
+  margin-top: var(--spacing-md);
+}
+
+@media (max-width: 768px) {
+  .cardHeader {
+    flex-direction: column;
+  }
+
+  .meta {
+    flex-wrap: wrap;
+  }
+}

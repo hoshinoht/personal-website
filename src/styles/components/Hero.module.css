@@ -1,0 +1,110 @@
+.hero {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--section-padding);
+  position: relative;
+  overflow: hidden;
+}
+
+.heroBackground {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(196, 162, 212, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(110, 196, 184, 0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 60% 80%, rgba(176, 188, 232, 0.05) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+.heroContent {
+  max-width: var(--content-max-width);
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-3xl);
+  position: relative;
+  z-index: 1;
+}
+
+.heroText {
+  flex: 1;
+}
+
+.greeting {
+  font: var(--md-sys-typescale-title-large);
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: var(--spacing-sm);
+}
+
+.name {
+  font: var(--md-sys-typescale-display-large);
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: var(--spacing-md);
+}
+
+.roleContainer {
+  font: var(--md-sys-typescale-headline-medium);
+  color: var(--md-sys-color-primary);
+  margin-bottom: var(--spacing-lg);
+  min-height: 2.5rem;
+}
+
+.cursor {
+  color: var(--md-sys-color-primary);
+  font-weight: 300;
+}
+
+.summary {
+  font: var(--md-sys-typescale-body-large);
+  color: var(--md-sys-color-on-surface-variant);
+  max-width: 600px;
+  margin-bottom: var(--spacing-xl);
+}
+
+.actions {
+  display: flex;
+  gap: var(--spacing-md);
+  flex-wrap: wrap;
+}
+
+.photoContainer {
+  flex-shrink: 0;
+}
+
+.photo {
+  width: 280px;
+  height: 280px;
+  border-radius: var(--md-sys-shape-corner-extra-large);
+  object-fit: cover;
+  border: 3px solid var(--md-sys-color-outline-variant);
+}
+
+.filterSection {
+  margin-top: var(--spacing-xl);
+  padding-top: var(--spacing-lg);
+  border-top: 1px solid var(--md-sys-color-outline-variant);
+}
+
+@media (max-width: 768px) {
+  .heroContent {
+    flex-direction: column-reverse;
+    text-align: center;
+    gap: var(--spacing-xl);
+  }
+
+  .summary {
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .actions {
+    justify-content: center;
+  }
+
+  .photo {
+    width: 200px;
+    height: 200px;
+  }
+}

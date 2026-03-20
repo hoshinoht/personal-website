@@ -1,0 +1,36 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  padding: 6px 14px;
+  border-radius: var(--md-sys-shape-corner-full);
+  font: var(--md-sys-typescale-label-medium);
+  white-space: nowrap;
+  transition: all var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
+}
+
+.filled {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+}
+
+.tonal {
+  background-color: var(--md-sys-color-surface-container-high);
+  color: var(--md-sys-color-on-surface);
+}
+
+.outlined {
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  border: 1px solid var(--md-sys-color-outline-variant);
+}
+
+/* Accent variants */
+.green { background-color: rgba(130, 200, 160, 0.15); color: #82C8A0; }
+.peach { background-color: rgba(221, 160, 92, 0.15); color: #DDA05C; }
+.sky { background-color: rgba(117, 214, 246, 0.15); color: #75D6F6; }
+.pink { background-color: rgba(243, 189, 202, 0.15); color: #F3BDCA; }
+.sapphire { background-color: rgba(92, 184, 228, 0.15); color: #5CB8E4; }
+.mauve { background-color: rgba(196, 162, 212, 0.15); color: #C4A2D4; }
+.teal { background-color: rgba(110, 196, 184, 0.15); color: #6EC4B8; }
+.lavender { background-color: rgba(176, 188, 232, 0.15); color: #B0BCE8; }

@@ -1,0 +1,133 @@
+/* M3 Design Tokens — Catppuccin Dusk Palette */
+:root {
+  /* ─── Colors ─── */
+  --md-sys-color-primary: #C4A2D4;
+  --md-sys-color-on-primary: #26282D;
+  --md-sys-color-primary-container: #4A3D52;
+  --md-sys-color-on-primary-container: #E8D5F0;
+
+  --md-sys-color-secondary: #6EC4B8;
+  --md-sys-color-on-secondary: #26282D;
+  --md-sys-color-secondary-container: #2D4A45;
+  --md-sys-color-on-secondary-container: #B8E8E0;
+
+  --md-sys-color-tertiary: #B0BCE8;
+  --md-sys-color-on-tertiary: #26282D;
+  --md-sys-color-tertiary-container: #3D4260;
+  --md-sys-color-on-tertiary-container: #D8E0F8;
+
+  --md-sys-color-error: #E27878;
+  --md-sys-color-on-error: #26282D;
+  --md-sys-color-error-container: #5C2D2D;
+  --md-sys-color-on-error-container: #F0BABA;
+
+  --md-sys-color-surface: #2F3238;
+  --md-sys-color-surface-dim: #26282D;
+  --md-sys-color-surface-bright: #454850;
+  --md-sys-color-surface-container-lowest: #22242A;
+  --md-sys-color-surface-container-low: #2A2D33;
+  --md-sys-color-surface-container: #393C43;
+  --md-sys-color-surface-container-high: #454850;
+  --md-sys-color-surface-container-highest: #50535B;
+
+  --md-sys-color-on-surface: #F3F5FC;
+  --md-sys-color-on-surface-variant: #B2B6C1;
+  --md-sys-color-outline: #6E7280;
+  --md-sys-color-outline-variant: #60646E;
+
+  --md-sys-color-background: #26282D;
+  --md-sys-color-on-background: #F3F5FC;
+
+  --md-sys-color-inverse-surface: #F3F5FC;
+  --md-sys-color-inverse-on-surface: #26282D;
+  --md-sys-color-inverse-primary: #8B6A9E;
+
+  --md-sys-color-scrim: #000000;
+  --md-sys-color-shadow: #000000;
+
+  /* Accent colors for chips/tags */
+  --color-green: #82C8A0;
+  --color-peach: #DDA05C;
+  --color-sky: #75D6F6;
+  --color-pink: #F3BDCA;
+  --color-sapphire: #5CB8E4;
+  --color-red: #E27878;
+  --color-mauve: #C4A2D4;
+  --color-teal: #6EC4B8;
+  --color-lavender: #B0BCE8;
+  --color-yellow: #E8C97E;
+
+  /* ─── Typography ─── */
+  --md-sys-typescale-display-large: 600 3.5rem/1.1 'Inter', sans-serif;
+  --md-sys-typescale-display-medium: 600 2.8rem/1.15 'Inter', sans-serif;
+  --md-sys-typescale-display-small: 600 2.25rem/1.2 'Inter', sans-serif;
+
+  --md-sys-typescale-headline-large: 600 2rem/1.25 'Inter', sans-serif;
+  --md-sys-typescale-headline-medium: 600 1.75rem/1.3 'Inter', sans-serif;
+  --md-sys-typescale-headline-small: 600 1.5rem/1.3 'Inter', sans-serif;
+
+  --md-sys-typescale-title-large: 500 1.375rem/1.35 'Inter', sans-serif;
+  --md-sys-typescale-title-medium: 500 1.125rem/1.4 'Inter', sans-serif;
+  --md-sys-typescale-title-small: 500 0.875rem/1.4 'Inter', sans-serif;
+
+  --md-sys-typescale-body-large: 400 1.125rem/1.6 'Inter', sans-serif;
+  --md-sys-typescale-body-medium: 400 1rem/1.6 'Inter', sans-serif;
+  --md-sys-typescale-body-small: 400 0.875rem/1.5 'Inter', sans-serif;
+
+  --md-sys-typescale-label-large: 500 0.875rem/1.4 'Inter', sans-serif;
+  --md-sys-typescale-label-medium: 500 0.75rem/1.35 'Inter', sans-serif;
+  --md-sys-typescale-label-small: 500 0.6875rem/1.3 'Inter', sans-serif;
+
+  --font-mono: 'JetBrains Mono', monospace;
+
+  /* ─── Shape (M3 Expressive) ─── */
+  --md-sys-shape-corner-none: 0;
+  --md-sys-shape-corner-extra-small: 4px;
+  --md-sys-shape-corner-small: 8px;
+  --md-sys-shape-corner-medium: 12px;
+  --md-sys-shape-corner-large: 16px;
+  --md-sys-shape-corner-extra-large: 28px;
+  --md-sys-shape-corner-full: 9999px;
+
+  /* ─── Elevation (using box-shadow) ─── */
+  --md-sys-elevation-0: none;
+  --md-sys-elevation-1: 0 1px 3px 1px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --md-sys-elevation-2: 0 2px 6px 2px rgba(0, 0, 0, 0.15), 0 1px 2px rgba(0, 0, 0, 0.3);
+  --md-sys-elevation-3: 0 4px 8px 3px rgba(0, 0, 0, 0.15), 0 1px 3px rgba(0, 0, 0, 0.3);
+  --md-sys-elevation-4: 0 6px 10px 4px rgba(0, 0, 0, 0.15), 0 2px 3px rgba(0, 0, 0, 0.3);
+  --md-sys-elevation-5: 0 8px 12px 6px rgba(0, 0, 0, 0.15), 0 4px 4px rgba(0, 0, 0, 0.3);
+
+  /* ─── Motion ─── */
+  --md-sys-motion-duration-short: 150ms;
+  --md-sys-motion-duration-medium: 300ms;
+  --md-sys-motion-duration-long: 500ms;
+  --md-sys-motion-easing-standard: cubic-bezier(0.2, 0, 0, 1);
+  --md-sys-motion-easing-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --md-sys-motion-easing-decelerate: cubic-bezier(0, 0, 0, 1);
+  --md-sys-motion-easing-accelerate: cubic-bezier(0.3, 0, 1, 1);
+
+  /* ─── Spacing ─── */
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --spacing-3xl: 64px;
+  --spacing-4xl: 96px;
+
+  /* ─── Layout ─── */
+  --content-max-width: 1200px;
+  --section-padding: 80px 24px;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --md-sys-typescale-display-large: 600 2.5rem/1.15 'Inter', sans-serif;
+    --md-sys-typescale-display-medium: 600 2rem/1.2 'Inter', sans-serif;
+    --md-sys-typescale-display-small: 600 1.75rem/1.25 'Inter', sans-serif;
+    --md-sys-typescale-headline-large: 600 1.5rem/1.3 'Inter', sans-serif;
+    --md-sys-typescale-headline-medium: 600 1.25rem/1.35 'Inter', sans-serif;
+    --section-padding: 48px 16px;
+  }
+}

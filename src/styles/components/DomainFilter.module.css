@@ -1,0 +1,88 @@
+.filterBar {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-sm);
+  flex-wrap: wrap;
+  margin-bottom: var(--spacing-xl);
+}
+
+.label {
+  font: var(--md-sys-typescale-label-large);
+  color: var(--md-sys-color-on-surface-variant);
+  margin-right: var(--spacing-xs);
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-full);
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  font: var(--md-sys-typescale-label-large);
+  cursor: pointer;
+  transition: all var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
+  white-space: nowrap;
+}
+
+.pill:hover {
+  background-color: var(--md-sys-color-surface-container);
+  border-color: var(--md-sys-color-outline);
+  color: var(--md-sys-color-on-surface);
+}
+
+.pillActive {
+  background-color: var(--md-sys-color-primary);
+  color: var(--md-sys-color-on-primary);
+  border-color: var(--md-sys-color-primary);
+}
+
+.pillActive:hover {
+  background-color: var(--md-sys-color-primary);
+  filter: brightness(1.1);
+  color: var(--md-sys-color-on-primary);
+}
+
+.viewAll {
+  background: transparent;
+  color: var(--md-sys-color-secondary);
+  border-color: var(--md-sys-color-secondary);
+}
+
+.viewAllActive {
+  background-color: var(--md-sys-color-secondary);
+  color: var(--md-sys-color-on-secondary);
+  border-color: var(--md-sys-color-secondary);
+}
+
+.viewAllActive:hover {
+  background-color: var(--md-sys-color-secondary);
+  filter: brightness(1.1);
+  color: var(--md-sys-color-on-secondary);
+}
+
+.icon {
+  width: 16px;
+  height: 16px;
+}
+
+.filterSummary {
+  font: var(--md-sys-typescale-body-small);
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: var(--spacing-xs);
+  width: 100%;
+}
+
+@media (max-width: 768px) {
+  .filterBar {
+    justify-content: center;
+  }
+
+  .label {
+    width: 100%;
+    text-align: center;
+    margin-bottom: var(--spacing-xs);
+  }
+}

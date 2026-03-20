@@ -1,0 +1,123 @@
+.section {
+  padding: var(--section-padding);
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+}
+
+.heading {
+  font: var(--md-sys-typescale-display-small);
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: var(--spacing-3xl);
+}
+
+.subheading {
+  font: var(--md-sys-typescale-headline-small);
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: var(--spacing-lg);
+  margin-top: var(--spacing-3xl);
+}
+
+/* Education timeline */
+.timeline {
+  position: relative;
+  padding-left: 32px;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 6px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background-color: var(--md-sys-color-outline-variant);
+}
+
+.timelineItem {
+  position: relative;
+  margin-bottom: var(--spacing-lg);
+}
+
+.timelineDot {
+  position: absolute;
+  left: -32px;
+  top: 8px;
+  width: 14px;
+  height: 14px;
+  border-radius: var(--md-sys-shape-corner-full);
+  background-color: var(--md-sys-color-secondary);
+  border: 2px solid var(--md-sys-color-background);
+  z-index: 1;
+}
+
+.eduCard {
+  background-color: var(--md-sys-color-surface-container);
+  border-radius: var(--md-sys-shape-corner-extra-large);
+  padding: var(--spacing-lg);
+}
+
+.institution {
+  font: var(--md-sys-typescale-title-large);
+  color: var(--md-sys-color-on-surface);
+}
+
+.degree {
+  font: var(--md-sys-typescale-title-medium);
+  color: var(--md-sys-color-secondary);
+}
+
+.field {
+  font: var(--md-sys-typescale-body-medium);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.period {
+  font: var(--md-sys-typescale-label-large);
+  color: var(--md-sys-color-on-surface-variant);
+  margin-top: var(--spacing-xs);
+}
+
+/* Certifications grid */
+.certGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: var(--spacing-md);
+}
+
+.certCard {
+  background: transparent;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-large);
+  padding: var(--spacing-md);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--spacing-md);
+  transition: all var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
+}
+
+.certCard:hover {
+  background-color: var(--md-sys-color-surface-container);
+  border-color: var(--md-sys-color-outline);
+}
+
+.certIcon {
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--md-sys-shape-corner-medium);
+  background-color: var(--md-sys-color-primary-container);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--md-sys-color-primary);
+}
+
+.certName {
+  font: var(--md-sys-typescale-title-small);
+  color: var(--md-sys-color-on-surface);
+}
+
+.certIssuer {
+  font: var(--md-sys-typescale-label-medium);
+  color: var(--md-sys-color-on-surface-variant);
+}

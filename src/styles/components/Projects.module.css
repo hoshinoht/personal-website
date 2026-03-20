@@ -1,0 +1,194 @@
+.section {
+  padding: var(--section-padding);
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+}
+
+.heading {
+  font: var(--md-sys-typescale-display-small);
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: var(--spacing-3xl);
+}
+
+.filterBadge {
+  font: var(--md-sys-typescale-label-large);
+  color: var(--md-sys-color-primary);
+  margin-left: var(--spacing-md);
+  padding: 4px 14px;
+  background-color: rgba(196, 162, 212, 0.12);
+  border-radius: var(--md-sys-shape-corner-full);
+  vertical-align: middle;
+}
+
+.subheading {
+  font: var(--md-sys-typescale-headline-small);
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: var(--spacing-lg);
+  margin-top: var(--spacing-3xl);
+}
+
+/* Featured projects grid */
+.featuredGrid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--spacing-lg);
+}
+
+.featuredCard {
+  background-color: var(--md-sys-color-surface-container);
+  border-radius: var(--md-sys-shape-corner-extra-large);
+  padding: var(--spacing-lg);
+  transition: all var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
+  display: flex;
+  flex-direction: column;
+}
+
+.featuredCard:hover {
+  box-shadow: var(--md-sys-elevation-3);
+  transform: translateY(-2px);
+}
+
+.cardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-sm);
+}
+
+.projectName {
+  font: var(--md-sys-typescale-headline-small);
+  color: var(--md-sys-color-on-surface);
+}
+
+.projectPeriod {
+  font: var(--md-sys-typescale-label-medium);
+  color: var(--md-sys-color-on-surface-variant);
+  white-space: nowrap;
+}
+
+.projectSummary {
+  font: var(--md-sys-typescale-body-medium);
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: var(--spacing-md);
+}
+
+.responsibilityList {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-bottom: var(--spacing-md);
+}
+
+.responsibility {
+  font: var(--md-sys-typescale-body-small);
+  color: var(--md-sys-color-on-surface-variant);
+  padding-left: var(--spacing-md);
+  position: relative;
+}
+
+.responsibility::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--md-sys-color-secondary);
+}
+
+.impactList {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: var(--spacing-md);
+}
+
+.impact {
+  font: var(--md-sys-typescale-label-large);
+  color: var(--color-green);
+  padding-left: var(--spacing-md);
+  position: relative;
+}
+
+.impact::before {
+  content: '✦';
+  position: absolute;
+  left: 0;
+  font-size: 0.7em;
+}
+
+.techRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: auto;
+}
+
+.repoLink {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font: var(--md-sys-typescale-label-medium);
+  color: var(--md-sys-color-primary);
+  margin-top: var(--spacing-md);
+  transition: color var(--md-sys-motion-duration-short);
+}
+
+.repoLink:hover {
+  color: var(--md-sys-color-secondary);
+}
+
+/* Other projects grid */
+.otherGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--spacing-md);
+}
+
+.otherCard {
+  background-color: var(--md-sys-color-surface-container);
+  border-radius: var(--md-sys-shape-corner-large);
+  padding: var(--spacing-md);
+  transition: all var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
+}
+
+.otherCard:hover {
+  background-color: var(--md-sys-color-surface-container-high);
+}
+
+.otherName {
+  font: var(--md-sys-typescale-title-small);
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: 4px;
+}
+
+.otherSummary {
+  font: var(--md-sys-typescale-body-small);
+  color: var(--md-sys-color-on-surface-variant);
+  margin-bottom: var(--spacing-sm);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.otherTech {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+@media (max-width: 1024px) {
+  .featuredGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .otherGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .otherGrid {
+    grid-template-columns: 1fr;
+  }
+}
