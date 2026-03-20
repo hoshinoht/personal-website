@@ -5,7 +5,6 @@ import { Button } from './ui/Button';
 import { TypingEffect } from './TypingEffect';
 import { GitHubStatus } from './GitHubStatus';
 import { CurrentlyLearning } from './CurrentlyLearning';
-import { PdfExport } from './PdfExport';
 import styles from '../styles/components/Hero.module.css';
 
 function getGreeting(): string {
@@ -40,7 +39,6 @@ export function Hero() {
             <Button href={bio.linkedin} variant="outlined" aria-label="LinkedIn profile">
               <Linkedin size={18} /> LinkedIn
             </Button>
-            <PdfExport />
           </div>
           <motion.div
             initial={{ opacity: 0 }}
