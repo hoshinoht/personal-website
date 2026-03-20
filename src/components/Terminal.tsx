@@ -5,10 +5,7 @@ import styles from '../styles/components/Terminal.module.css';
 const HELP_TEXT = `Available commands:
   whoami       — about me
   ls           — list sections
-  ls projects  — list all projects
-  ls skills    — list skill categories
-  ls exp       — list experience
-  ls edu       — list education & certs
+  ls <section> — list items (projects, skills, exp, edu, hero)
   cat <name>   — show project details
   clear        — clear terminal
   help         — show this help
@@ -29,6 +26,9 @@ function processCommand(input: string): string {
     case 'ls':
       if (!arg || arg === 'sections') {
         return 'hero  experience  projects  skills  education';
+      }
+      if (arg === 'hero') {
+        return `${bio.name}\n${bio.roles.join(' | ')}\n\nLinks:\n  Email: ${bio.email}\n  GitHub: ${bio.github}\n  LinkedIn: ${bio.linkedin}`;
       }
       if (arg === 'projects' || arg === 'project') {
         return projects
@@ -52,7 +52,7 @@ function processCommand(input: string): string {
         const certStr = certifications.map((c) => `${c.name} — ${c.issuer}`).join('\n');
         return `Education:\n${eduStr}\n\nCertifications:\n${certStr}`;
       }
-      return `ls: unknown argument '${arg}'. Try: projects, skills, exp, edu`;
+      return `ls: unknown argument '${arg}'. Try: hero, projects, skills, exp, edu`;
 
     case 'cat': {
       if (!arg) return 'cat: missing argument. Usage: cat <project-name>';
@@ -67,6 +67,13 @@ function processCommand(input: string): string {
       if (proj.responsibilities.length) out += `\n\nResponsibilities:\n${proj.responsibilities.map((r) => `  ▸ ${r}`).join('\n')}`;
       return out;
     }
+
+    case 'cd':
+      if (arg) {
+        // Scroll to section if it exists
+        return `__NAVIGATE__${arg}`;
+      }
+      return 'cd: missing argument. Try: hero, experience, projects, skills, education';
 
     case 'exit':
     case 'quit':
@@ -83,7 +90,7 @@ function processCommand(input: string): string {
       return 'Permission denied. This portfolio is protected under CC BY-NC-ND 4.0.';
 
     case 'neofetch':
-      return `${bio.name}@portfolio\n──────────────────\nOS: React 19 + Vite 6\nTheme: Catppuccin Dusk\nFont: Inter / JetBrains Mono\nProjects: ${projects.length}\nSkills: ${skillCategories.reduce((n, c) => n + c.skills.length, 0)}\nCommits: 700+`;
+      return `\x1b[mauve]${bio.name}\x1b[reset]@\x1b[teal]portfolio\x1b[reset]\n──────────────────\n\x1b[pink]OS\x1b[reset]      React 19 + Vite 6\n\x1b[pink]Theme\x1b[reset]   Catppuccin Dusk\n\x1b[pink]Shell\x1b[reset]   Starship + zsh\n\x1b[pink]Term\x1b[reset]    Ghostty\n\x1b[pink]Font\x1b[reset]    Google Sans Code\n\x1b[pink]Projects\x1b[reset] ${projects.length}\n\x1b[pink]Skills\x1b[reset]  ${skillCategories.reduce((n, c) => n + c.skills.length, 0)}\n\x1b[pink]Commits\x1b[reset] 700+`;
 
     case 'hack':
       return '█▓▒░ ACCESSING MAINFRAME ░▒▓█\n\n[████████████████████] 100%\n\nACCESS GRANTED.\n\nJust kidding. But if you\'re reading this, you\'re my kind of person.\nFeel free to reach out — I love building things with curious people.';
@@ -113,6 +120,40 @@ function processCommand(input: string): string {
     default:
       return `command not found: ${cmd}. Type 'help' for available commands.`;
   }
+}
+
+// Parse simple color codes for neofetch output
+function renderColoredText(text: string): React.ReactNode {
+  const colorMap: Record<string, string> = {
+    mauve: 'var(--color-mauve)',
+    teal: 'var(--color-teal)',
+    pink: 'var(--color-pink)',
+    green: 'var(--color-green)',
+    yellow: 'var(--color-yellow)',
+    sky: 'var(--color-sky)',
+    red: 'var(--color-red)',
+    reset: '',
+  };
+
+  const parts = text.split(/\x1b\[(\w+)\]/);
+  if (parts.length === 1) return text;
+
+  const nodes: React.ReactNode[] = [];
+  let currentColor: string | null = null;
+
+  for (let i = 0; i < parts.length; i++) {
+    if (i % 2 === 1) {
+      // This is a color name
+      currentColor = parts[i] === 'reset' ? null : (colorMap[parts[i]] || null);
+    } else if (parts[i]) {
+      nodes.push(
+        currentColor
+          ? <span key={i} style={{ color: currentColor }}>{parts[i]}</span>
+          : parts[i],
+      );
+    }
+  }
+  return nodes;
 }
 
 interface HistoryEntry {
@@ -167,6 +208,28 @@ export function Terminal() {
       setInput('');
       return;
     }
+    if (output.startsWith('__NAVIGATE__')) {
+      const section = output.replace('__NAVIGATE__', '');
+      const sectionMap: Record<string, string> = {
+        hero: 'hero', home: 'hero',
+        exp: 'experience', experience: 'experience', work: 'experience',
+        projects: 'projects', project: 'projects',
+        skills: 'skills', skill: 'skills',
+        edu: 'education', education: 'education',
+      };
+      const targetId = sectionMap[section];
+      if (targetId) {
+        setOpen(false);
+        setTimeout(() => document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' }), 100);
+        setHistory((h) => [...h, { input, output: `Navigating to ${section}...` }]);
+      } else {
+        setHistory((h) => [...h, { input, output: `cd: unknown section '${section}'. Try: hero, experience, projects, skills, education` }]);
+      }
+      setCmdHistory((h) => [input, ...h]);
+      setInput('');
+      setHistoryIndex(-1);
+      return;
+    }
 
     setHistory((h) => [...h, { input, output }]);
     setCmdHistory((h) => [input, ...h]);
@@ -210,7 +273,9 @@ export function Terminal() {
             <span className={styles.dotYellow} />
             <span className={styles.dotGreen} />
           </div>
-          <span className={styles.titleText}>haoting@portfolio ~ %</span>
+          <span className={styles.titleText}>
+            <span className={styles.titleIcon}>👻</span> haoting@portfolio
+          </span>
         </div>
 
         <div className={styles.body} ref={scrollRef}>
@@ -218,16 +283,17 @@ export function Terminal() {
             <div key={i} className={styles.entry}>
               {entry.input && (
                 <div className={styles.inputLine}>
-                  <span className={styles.prompt}>❯</span> {entry.input}
+                  <div><span className={styles.promptDir}>.../portfolio </span><span className={styles.promptGit}>main </span><span className={styles.promptDirty}>!</span></div>
+                  <div><span className={styles.promptChar}>❯</span> {entry.input}</div>
                 </div>
               )}
-              <pre className={styles.output}>{entry.output}</pre>
+              <pre className={styles.output}>{renderColoredText(entry.output)}</pre>
             </div>
           ))}
 
           <div className={styles.inputLine}>
-            <span className={styles.prompt}>❯</span>
-            <input
+            <div><span className={styles.promptDir}>.../portfolio </span><span className={styles.promptGit}>main </span><span className={styles.promptDirty}>!</span></div>
+            <div className={styles.promptLine2}><span className={styles.promptChar}>❯</span><input
               ref={inputRef}
               className={styles.inputField}
               value={input}
@@ -236,7 +302,7 @@ export function Terminal() {
               spellCheck={false}
               autoComplete="off"
               aria-label="Terminal input"
-            />
+            /></div>
           </div>
         </div>
       </div>

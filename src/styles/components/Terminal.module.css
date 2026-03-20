@@ -1,9 +1,10 @@
+/* Ghostty-style terminal: transparent bg, blur, Catppuccin Dusk */
+
 .overlay {
   position: fixed;
   inset: 0;
   z-index: 400;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
+  background: rgba(0, 0, 0, 0.4);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,29 +13,33 @@
 
 .terminal {
   width: 100%;
-  max-width: 700px;
+  max-width: 720px;
   max-height: 80vh;
-  background: var(--md-sys-color-surface-container-lowest);
-  border-radius: var(--md-sys-shape-corner-large);
-  border: 1px solid var(--md-sys-color-outline-variant);
-  box-shadow: var(--md-sys-elevation-5);
+  background: rgba(38, 40, 45, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 12px;
+  border: 1px solid rgba(96, 100, 110, 0.3);
+  box-shadow:
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.03) inset;
   overflow: hidden;
   display: flex;
   flex-direction: column;
 }
 
+/* macOS transparent titlebar */
 .titleBar {
   display: flex;
   align-items: center;
   gap: var(--spacing-md);
-  padding: 10px var(--spacing-md);
-  background: var(--md-sys-color-surface-container);
-  border-bottom: 1px solid var(--md-sys-color-outline-variant);
+  padding: 12px 14px;
+  background: rgba(47, 50, 56, 0.5);
 }
 
 .dots {
   display: flex;
-  gap: 6px;
+  gap: 7px;
 }
 
 .dotRed, .dotYellow, .dotGreen {
@@ -48,8 +53,12 @@
   cursor: pointer;
 }
 
+.dotRed:hover {
+  background: #F09090;
+}
+
 .dotYellow {
-  background: #E8C97E;
+  background: #DEC47C;
 }
 
 .dotGreen {
@@ -57,51 +66,90 @@
 }
 
 .titleText {
-  font: var(--md-sys-typescale-label-small);
   font-family: var(--font-mono);
+  font-size: 0.75rem;
   color: var(--md-sys-color-on-surface-variant);
+  opacity: 0.6;
 }
 
+.titleIcon {
+  margin-right: 2px;
+}
+
+/* Terminal body */
 .body {
   flex: 1;
   overflow-y: auto;
-  padding: var(--spacing-md);
+  padding: 12px 14px;
   font-family: var(--font-mono);
   font-size: 0.8125rem;
-  line-height: 1.5;
+  line-height: 1.6;
+  color: var(--md-sys-color-on-surface);
 }
 
 .entry {
-  margin-bottom: var(--spacing-sm);
+  margin-bottom: var(--spacing-md);
 }
 
+/* Starship-style prompt */
 .inputLine {
+  margin-bottom: 2px;
+}
+
+.promptDir {
+  color: var(--color-pink);
+}
+
+.promptGit {
+  color: var(--color-sky);
+}
+
+.promptDirty {
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.promptChar {
+  color: var(--color-pink);
+  margin-right: 6px;
+}
+
+.promptLine2 {
   display: flex;
   align-items: center;
-  gap: var(--spacing-sm);
-}
-
-.prompt {
-  color: var(--md-sys-color-primary);
-  flex-shrink: 0;
 }
 
 .output {
   color: var(--md-sys-color-on-surface-variant);
   white-space: pre-wrap;
   word-break: break-word;
-  margin: 2px 0 0 0;
+  margin: 4px 0 0 0;
   font: inherit;
+  line-height: 1.5;
 }
 
 .inputField {
   flex: 1;
+  min-width: 100px;
   background: transparent;
   border: none;
   outline: none;
   color: var(--md-sys-color-on-surface);
   font: inherit;
-  caret-color: var(--md-sys-color-primary);
+  caret-color: var(--color-pink);
+}
+
+/* Scrollbar inside terminal */
+.body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.body::-webkit-scrollbar-thumb {
+  background: rgba(110, 114, 128, 0.3);
+  border-radius: 3px;
 }
 
 @media (max-width: 600px) {
@@ -111,5 +159,9 @@
 
   .terminal {
     max-height: 70vh;
+  }
+
+  .body {
+    font-size: 0.75rem;
   }
 }
