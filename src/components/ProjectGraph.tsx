@@ -139,7 +139,7 @@ export function ProjectGraph() {
                   fill="none"
                   stroke={getEdgeColor(edge.weight)}
                   strokeWidth={strokeW}
-                  opacity={isDimmed ? 0.04 : isHighlighted ? 0.8 : 0.15}
+                  opacity={isDimmed ? 0.05 : isHighlighted ? 0.9 : 0.25 + (edge.weight / maxWeight) * 0.35}
                   filter={isHighlighted ? 'url(#glow)' : undefined}
                   className={styles.edge}
                 />
@@ -202,17 +202,33 @@ export function ProjectGraph() {
                     {project.name}
                   </text>
 
-                  {sharedWith && (
-                    <text
-                      x={(pos.x + positions[hoveredNode!].x) / 2}
-                      y={(pos.y + positions[hoveredNode!].y) / 2 - 10}
-                      textAnchor="middle"
-                      className={styles.edgeLabel}
-                    >
-                      {sharedWith.shared.slice(0, 3).join(', ')}
-                      {sharedWith.shared.length > 3 ? ` +${sharedWith.shared.length - 3}` : ''}
-                    </text>
-                  )}
+                  {sharedWith && (() => {
+                    const labelText = sharedWith.shared.slice(0, 3).join(', ')
+                      + (sharedWith.shared.length > 3 ? ` +${sharedWith.shared.length - 3}` : '');
+                    const lx = (pos.x + positions[hoveredNode!].x) / 2;
+                    const ly = (pos.y + positions[hoveredNode!].y) / 2 - 10;
+                    const padX = 6;
+                    const padY = 3;
+                    const textW = labelText.length * 5.5;
+                    return (
+                      <g>
+                        <rect
+                          x={lx - textW / 2 - padX}
+                          y={ly - 7 - padY}
+                          width={textW + padX * 2}
+                          height={14 + padY * 2}
+                          rx={4}
+                          fill="var(--md-sys-color-surface-container)"
+                          stroke="var(--md-sys-color-outline-variant)"
+                          strokeWidth={0.5}
+                          opacity={0.95}
+                        />
+                        <text x={lx} y={ly} textAnchor="middle" className={styles.edgeLabel}>
+                          {labelText}
+                        </text>
+                      </g>
+                    );
+                  })()}
                 </g>
               );
             })}
