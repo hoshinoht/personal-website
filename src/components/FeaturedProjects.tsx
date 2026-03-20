@@ -4,8 +4,9 @@ import { ExternalLink, ChevronDown } from 'lucide-react';
 import { projects } from '../data/portfolio';
 import { useFilter } from './FilterContext';
 import { Chip } from './ui/Chip';
-import { ProjectGrid } from './ProjectGrid';
 import { cn } from '../lib/utils';
+import { getTechChipColor, getDomainAccentColor } from '../lib/techColors';
+import { ProjectGrid } from './ProjectGrid';
 import styles from '../styles/components/Projects.module.css';
 
 export function FeaturedProjects() {
@@ -38,15 +39,25 @@ export function FeaturedProjects() {
         )}
       </motion.h2>
 
+      <div className={styles.techLegend}>
+        <span className={styles.legendItem}><Chip color="mauve">Languages</Chip></span>
+        <span className={styles.legendItem}><Chip color="teal">Frameworks</Chip></span>
+        <span className={styles.legendItem}><Chip color="lavender">Infrastructure</Chip></span>
+        <span className={styles.legendItem}><Chip color="peach">Protocols</Chip></span>
+        <span className={styles.legendItem}><Chip color="sapphire">Tools & Patterns</Chip></span>
+      </div>
+
       {featured.length > 0 && (
         <div className={styles.featuredGrid}>
           <AnimatePresence mode="popLayout">
             {featured.map((project, i) => {
               const isExpanded = expandedId === project.id;
+              const accentColor = getDomainAccentColor(project.domains);
               return (
                 <motion.div
                   key={project.id}
                   className={cn(styles.featuredCard, isExpanded && styles.featuredCardExpanded)}
+                  style={{ borderLeftColor: accentColor }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0 }}
@@ -75,7 +86,7 @@ export function FeaturedProjects() {
 
                   <div className={styles.techRow}>
                     {project.tech.slice(0, 6).map((t) => (
-                      <Chip key={t} color="sapphire">{t}</Chip>
+                      <Chip key={t} color={getTechChipColor(t)}>{t}</Chip>
                     ))}
                     {project.tech.length > 6 && (
                       <Chip variant="outlined">+{project.tech.length - 6}</Chip>
@@ -95,7 +106,7 @@ export function FeaturedProjects() {
                         {project.tech.length > 6 && (
                           <div className={styles.techRowFull}>
                             {project.tech.slice(6).map((t) => (
-                              <Chip key={t} color="sapphire">{t}</Chip>
+                              <Chip key={t} color={getTechChipColor(t)}>{t}</Chip>
                             ))}
                           </div>
                         )}

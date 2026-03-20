@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import type { Project } from '../data/portfolio';
 import { Chip } from './ui/Chip';
+import { getTechChipColor } from '../lib/techColors';
 import styles from '../styles/components/Projects.module.css';
 
 interface ProjectGridProps {
@@ -23,7 +24,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
           <p className={styles.otherSummary}>{project.summary}</p>
           <div className={styles.otherTech}>
             {project.tech.map((t) => (
-              <Chip key={t} variant="outlined">{t}</Chip>
+              <Chip key={t} color={getTechChipColor(t)}>{t}</Chip>
             ))}
           </div>
         </motion.div>

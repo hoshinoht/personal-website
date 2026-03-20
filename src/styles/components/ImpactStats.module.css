@@ -1,0 +1,36 @@
+.strip {
+  padding: var(--spacing-2xl) var(--spacing-lg);
+  background-color: var(--md-sys-color-surface-dim);
+}
+
+.inner {
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--spacing-lg);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  text-align: center;
+}
+
+.value {
+  font: var(--md-sys-typescale-display-small);
+  letter-spacing: -0.02em;
+}
+
+.label {
+  font: var(--md-sys-typescale-label-medium);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+@media (max-width: 600px) {
+  .inner {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

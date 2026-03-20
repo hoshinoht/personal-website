@@ -27,6 +27,21 @@
   margin-top: var(--spacing-3xl);
 }
 
+.techLegend {
+  display: flex;
+  gap: var(--spacing-lg);
+  margin-bottom: var(--spacing-xl);
+  flex-wrap: wrap;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-xs);
+  font: var(--md-sys-typescale-label-small);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
 /* Featured projects grid */
 .featuredGrid {
   display: grid;
@@ -41,6 +56,7 @@
   transition: all var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
   display: flex;
   flex-direction: column;
+  border-left: 3px solid var(--md-sys-color-outline-variant);
 }
 
 .featuredCard:hover {

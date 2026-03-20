@@ -8,14 +8,34 @@
   overflow: hidden;
 }
 
+/* Animated mesh gradient background */
 .heroBackground {
   position: absolute;
-  inset: 0;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
   background:
-    radial-gradient(ellipse at 20% 50%, rgba(196, 162, 212, 0.08) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 20%, rgba(110, 196, 184, 0.06) 0%, transparent 50%),
-    radial-gradient(ellipse at 60% 80%, rgba(176, 188, 232, 0.05) 0%, transparent 50%);
+    radial-gradient(ellipse 600px 400px at 25% 40%, rgba(196, 162, 212, 0.12) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 350px at 75% 25%, rgba(110, 196, 184, 0.10) 0%, transparent 70%),
+    radial-gradient(ellipse 550px 380px at 55% 75%, rgba(176, 188, 232, 0.08) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 300px at 85% 70%, rgba(92, 184, 228, 0.06) 0%, transparent 70%);
+  animation: meshDrift 20s ease-in-out infinite alternate;
   pointer-events: none;
+}
+
+@keyframes meshDrift {
+  0% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  33% {
+    transform: translate(-3%, 2%) rotate(1deg);
+  }
+  66% {
+    transform: translate(2%, -2%) rotate(-0.5deg);
+  }
+  100% {
+    transform: translate(-1%, 1%) rotate(0.5deg);
+  }
 }
 
 .heroContent {
@@ -79,6 +99,7 @@
   border-radius: var(--md-sys-shape-corner-extra-large);
   object-fit: cover;
   border: 3px solid var(--md-sys-color-outline-variant);
+  box-shadow: 0 0 40px rgba(196, 162, 212, 0.1);
 }
 
 @media (max-width: 768px) {
@@ -100,5 +121,11 @@
   .photo {
     width: 200px;
     height: 200px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .heroBackground {
+    animation: none;
   }
 }
