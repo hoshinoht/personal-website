@@ -9,7 +9,6 @@ import { getTechChipColor, getDomainAccentColor } from '../lib/techColors';
 import { highlightMetrics } from '../lib/highlightMetrics';
 import { ProjectGrid } from './ProjectGrid';
 import { ProjectGraph } from './ProjectGraph';
-import { ProjectTimeline } from './ProjectTimeline';
 import styles from '../styles/components/Projects.module.css';
 
 export function FeaturedProjects() {
@@ -51,7 +50,6 @@ export function FeaturedProjects() {
       </div>
 
       <ProjectGraph />
-      <ProjectTimeline />
 
       {featured.length > 0 && (
         <div className={styles.featuredGrid}>

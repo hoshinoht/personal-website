@@ -11,6 +11,7 @@ import { KonamiEgg } from './components/KonamiEgg';
 import { Hero } from './components/Hero';
 import { StickyFilter } from './components/StickyFilter';
 import { ImpactStats } from './components/ImpactStats';
+import { ProjectTimeline } from './components/ProjectTimeline';
 import { ExperienceTimeline } from './components/ExperienceTimeline';
 import { FeaturedProjects } from './components/FeaturedProjects';
 import { Skills } from './components/Skills';
@@ -34,6 +35,7 @@ export default function App() {
         <Hero />
         <StickyFilter />
         <ImpactStats />
+        <ProjectTimeline />
         <SectionDivider />
         <ExperienceTimeline />
         <SectionDivider />

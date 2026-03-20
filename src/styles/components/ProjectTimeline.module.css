@@ -1,5 +1,13 @@
 .wrapper {
-  margin-bottom: var(--spacing-xl);
+  padding: var(--spacing-2xl) var(--spacing-lg) var(--spacing-lg);
+  max-width: var(--content-max-width);
+  margin: 0 auto;
+}
+
+.heading {
+  font: var(--md-sys-typescale-display-small);
+  color: var(--md-sys-color-on-surface);
+  margin-bottom: var(--spacing-lg);
 }
 
 .scroll {
@@ -10,8 +18,8 @@
 .track {
   position: relative;
   min-width: 800px;
-  min-height: 200px;
   padding-top: 4px;
+  margin-left: 64px;
 }
 
 .yearRow {
@@ -24,6 +32,7 @@
   transform: translateX(-50%);
   font: var(--md-sys-typescale-label-small);
   color: var(--md-sys-color-on-surface-variant);
+  font-weight: 600;
 }
 
 .yearLine {
@@ -32,12 +41,31 @@
   bottom: 0;
   width: 1px;
   background: var(--md-sys-color-outline-variant);
-  opacity: 0.3;
+  opacity: 0.25;
 }
 
+/* Lane labels for compact view */
+.laneLabels {
+  position: absolute;
+  left: -60px;
+  top: 0;
+  width: 56px;
+}
+
+.laneLabel {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  font: var(--md-sys-typescale-label-small);
+  color: var(--md-sys-color-outline);
+  text-align: right;
+  width: 56px;
+  justify-content: flex-end;
+}
+
+/* Project / experience bars */
 .bar {
   position: absolute;
-  height: 20px;
   border-radius: var(--md-sys-shape-corner-full);
   transform-origin: left center;
   display: flex;
@@ -45,51 +73,70 @@
   padding: 0 8px;
   cursor: default;
   transition: filter var(--md-sys-motion-duration-short);
+  overflow: hidden;
 }
 
 .bar:hover {
-  filter: brightness(1.2);
+  filter: brightness(1.25);
   z-index: 2;
 }
 
 .barLabel {
-  font: var(--md-sys-typescale-label-small);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 600;
   color: var(--md-sys-color-on-primary);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-weight: 600;
-  font-size: 0.6rem;
 }
 
-/* Life event background bands */
-.eventBand {
+/* NS / life event bar — distinct style */
+.nsBar {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  background: repeating-linear-gradient(
-    -45deg,
-    transparent,
-    transparent 4px,
-    var(--md-sys-color-outline-variant) 4px,
-    var(--md-sys-color-outline-variant) 5px
-  );
-  opacity: 0.12;
-  border-radius: var(--md-sys-shape-corner-medium);
-  pointer-events: none;
+  border-radius: var(--md-sys-shape-corner-full);
+  transform-origin: left center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px;
+  cursor: default;
+  overflow: hidden;
+  background: var(--md-sys-color-surface-container-highest);
+  border: 1.5px dashed var(--md-sys-color-outline);
 }
 
-.eventLabel {
-  position: absolute;
-  bottom: 4px;
-  left: 50%;
-  transform: translateX(-50%);
-  font: var(--md-sys-typescale-label-small);
+.nsBar .barLabel {
   color: var(--md-sys-color-on-surface-variant);
-  white-space: nowrap;
-  pointer-events: auto;
-  opacity: 0.6;
-  font-size: 0.6rem;
+  font-weight: 500;
+}
+
+.expandBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: var(--spacing-sm);
+  padding: 6px 14px;
+  border: 1px solid var(--md-sys-color-outline-variant);
+  border-radius: var(--md-sys-shape-corner-full);
+  background: transparent;
+  color: var(--md-sys-color-on-surface-variant);
+  font: var(--md-sys-typescale-label-medium);
+  cursor: pointer;
+  transition: all var(--md-sys-motion-duration-short);
+}
+
+.expandBtn:hover {
+  background: var(--md-sys-color-surface-container);
+  color: var(--md-sys-color-on-surface);
+}
+
+.expandIcon {
+  transition: transform var(--md-sys-motion-duration-short);
+}
+
+.expandIconOpen {
+  transform: rotate(180deg);
 }
 
 @media (max-width: 768px) {
