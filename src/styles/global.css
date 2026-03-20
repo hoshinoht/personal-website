@@ -74,6 +74,11 @@ body {
   animation: blink 1s step-end infinite;
 }
 
+/* ─── Light theme color-scheme ─── */
+[data-theme='light'] {
+  color-scheme: light;
+}
+
 /* ─── Print ─── */
 @media print {
   body {

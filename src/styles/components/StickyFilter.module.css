@@ -7,7 +7,7 @@
 
 .bar {
   padding: 12px 24px;
-  background-color: rgba(38, 40, 45, 0.85);
+  background-color: color-mix(in srgb, var(--md-sys-color-background) 85%, transparent);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--md-sys-color-outline-variant);

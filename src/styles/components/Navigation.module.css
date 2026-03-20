@@ -10,11 +10,11 @@
   align-items: center;
   gap: 10px;
   padding: 12px 8px;
-  background: rgba(47, 50, 56, 0.6);
+  background: color-mix(in srgb, var(--md-sys-color-surface-container) 60%, transparent);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-radius: var(--md-sys-shape-corner-extra-large);
-  border: 1px solid rgba(110, 114, 128, 0.2);
+  border: 1px solid var(--md-sys-color-outline-variant);
 }
 
 .dot {
@@ -47,13 +47,14 @@
   right: 28px;
   top: 50%;
   transform: translateY(-50%);
-  background-color: rgba(47, 50, 56, 0.9);
+  background-color: var(--md-sys-color-surface-container-highest);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   color: var(--md-sys-color-on-surface);
   padding: 5px 10px;
   border-radius: var(--md-sys-shape-corner-small);
   font: var(--md-sys-typescale-label-small);
+  border: 1px solid var(--md-sys-color-outline-variant);
   white-space: nowrap;
   pointer-events: none;
   opacity: 0;
