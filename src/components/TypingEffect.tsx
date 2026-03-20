@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import styles from '../styles/components/Hero.module.css';
+import styles from '../styles/components/Hero.module.scss';
 
 interface TypingEffectProps {
   roles: string[];

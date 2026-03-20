@@ -64,3 +64,13 @@
   font: var(--md-sys-typescale-body-small);
   color: var(--md-sys-color-outline);
 }
+
+@media (max-width: 768px) {
+  .footer {
+    padding-bottom: calc(var(--spacing-2xl) + 56px + env(safe-area-inset-bottom));
+  }
+
+  .shortcuts {
+    display: none;
+  }
+}

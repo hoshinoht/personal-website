@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Award } from 'lucide-react';
 import { education, certifications } from '../data/portfolio';
-import styles from '../styles/components/Education.module.css';
+import styles from '../styles/components/Education.module.scss';
 
 export function Education() {
   return (

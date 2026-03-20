@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { cn } from '../../lib/utils';
-import styles from '../../styles/components/Button.module.css';
+import styles from '../../styles/components/Button.module.scss';
 
 interface ButtonProps {
   variant?: 'filled' | 'tonal' | 'outlined' | 'text';

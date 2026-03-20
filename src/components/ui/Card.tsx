@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { cn } from '../../lib/utils';
-import styles from '../../styles/components/Card.module.css';
+import styles from '../../styles/components/Card.module.scss';
 
 interface CardProps {
   variant?: 'elevated' | 'filled' | 'outlined';

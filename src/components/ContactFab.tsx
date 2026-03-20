@@ -3,7 +3,7 @@ import { Mail, Github, Linkedin, MessageCircle } from 'lucide-react';
 import { bio } from '../data/portfolio';
 import { useScrolledPast } from '../lib/useScrolledPast';
 import { cn } from '../lib/utils';
-import styles from '../styles/components/ContactFab.module.css';
+import styles from '../styles/components/ContactFab.module.scss';
 
 const links = [
   { icon: Mail, label: 'Email Me', href: `mailto:${bio.email}` },

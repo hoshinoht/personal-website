@@ -1,10 +1,13 @@
-/* Glassmorphism nav rail */
+// Desktop: glassmorphism dot rail on right
 .nav {
+  z-index: 100;
+}
+
+.dotNav {
   position: fixed;
   right: 20px;
   top: 50%;
   transform: translateY(-50%);
-  z-index: 100;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -24,14 +27,14 @@
   background-color: var(--md-sys-color-outline);
   border: none;
   cursor: pointer;
-  transition: all var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
+  transition: all 0.2s;
   padding: 0;
   position: relative;
-}
 
-.dot:hover {
-  background-color: var(--md-sys-color-on-surface-variant);
-  transform: scale(1.4);
+  &:hover {
+    background-color: var(--md-sys-color-on-surface-variant);
+    transform: scale(1.4);
+  }
 }
 
 .dotActive {
@@ -54,36 +57,64 @@
   padding: 5px 10px;
   border-radius: var(--md-sys-shape-corner-small);
   font: var(--md-sys-typescale-label-small);
-  border: 1px solid var(--md-sys-color-outline-variant);
   white-space: nowrap;
   pointer-events: none;
   opacity: 0;
-  transition: opacity var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
-  border: 1px solid rgba(110, 114, 128, 0.2);
+  transition: opacity 0.15s;
+  border: 1px solid var(--md-sys-color-outline-variant);
 }
 
 .dot:hover .tooltip {
   opacity: 1;
 }
 
+// Mobile: hidden on desktop
+.mobileBar {
+  display: none;
+}
+
 @media (max-width: 768px) {
-  .nav {
-    right: 8px;
-    gap: 6px;
-    padding: 8px 6px;
-  }
-
-  .dot {
-    width: 8px;
-    height: 8px;
-  }
-
-  .dotActive {
-    width: 8px;
-    height: 20px;
-  }
-
-  .tooltip {
+  .dotNav {
     display: none;
+  }
+
+  .mobileBar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    padding: 6px 0;
+    padding-bottom: calc(6px + env(safe-area-inset-bottom));
+    background: color-mix(in srgb, var(--md-sys-color-background) 90%, transparent);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border-top: 1px solid var(--md-sys-color-outline-variant);
+  }
+
+  .mobileBtn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 4px 8px;
+    border: none;
+    background: transparent;
+    color: var(--md-sys-color-outline);
+    cursor: pointer;
+    transition: color 0.15s;
+    border-radius: var(--md-sys-shape-corner-medium);
+  }
+
+  .mobileBtnActive {
+    color: var(--md-sys-color-primary);
+  }
+
+  .mobileLabel {
+    font: var(--md-sys-typescale-label-small);
+    font-size: 0.6rem;
   }
 }

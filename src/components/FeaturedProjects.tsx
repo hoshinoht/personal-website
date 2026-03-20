@@ -1,6 +1,6 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ExternalLink, ChevronDown } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Github, ChevronDown } from 'lucide-react';
 import { projects } from '../data/portfolio';
 import { useFilter } from './FilterContext';
 import { Chip } from './ui/Chip';
@@ -9,7 +9,7 @@ import { getTechChipColor, getDomainAccentColor } from '../lib/techColors';
 import { highlightMetrics } from '../lib/highlightMetrics';
 import { ProjectGrid } from './ProjectGrid';
 import { ProjectGraph } from './ProjectGraph';
-import styles from '../styles/components/Projects.module.css';
+import styles from '../styles/components/Projects.module.scss';
 
 export function FeaturedProjects() {
   const { activeDomain } = useFilter();
@@ -53,27 +53,14 @@ export function FeaturedProjects() {
 
       {featured.length > 0 && (
         <div className={styles.featuredGrid}>
-          <AnimatePresence mode="popLayout">
             {featured.map((project, i) => {
               const isExpanded = expandedId === project.id;
               const accentColor = getDomainAccentColor(project.domains);
               return (
-                <motion.div
+                <div
                   key={project.id}
                   className={cn(styles.featuredCard, isExpanded && styles.featuredCardExpanded)}
-                  style={{ borderLeftColor: accentColor }}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3, delay: i * 0.06 }}
-                  onMouseMove={(e) => {
-                    const el = e.currentTarget;
-                    const rect = el.getBoundingClientRect();
-                    const x = (e.clientX - rect.left) / rect.width - 0.5;
-                    const y = (e.clientY - rect.top) / rect.height - 0.5;
-                    el.style.transform = `perspective(800px) rotateX(${-y * 3}deg) rotateY(${x * 3}deg)`;
-                  }}
-                  onMouseLeave={(e) => { e.currentTarget.style.transform = ''; }}
+                  style={{ borderLeftColor: accentColor, animationDelay: `${i * 60}ms` }}
                 >
                   <div
                     className={styles.cardClickable}
@@ -105,58 +92,48 @@ export function FeaturedProjects() {
                     )}
                   </div>
 
-                  <AnimatePresence initial={false}>
-                    {isExpanded && (
-                      <motion.div
-                        className={styles.expandedContent}
-                        initial={{ height: 0, opacity: 0 }}
-                        animate={{ height: 'auto', opacity: 1 }}
-                        exit={{ height: 0, opacity: 0 }}
-                        transition={{ duration: 0.25, ease: [0.2, 0, 0, 1] }}
-                        style={{ overflow: 'hidden' }}
-                      >
-                        {project.tech.length > 6 && (
-                          <div className={styles.techRowFull}>
-                            {project.tech.slice(6).map((t) => (
-                              <Chip key={t} color={getTechChipColor(t)}>{t}</Chip>
-                            ))}
-                          </div>
-                        )}
+                  {isExpanded && (
+                    <div className={styles.expandedContent}>
+                      {project.tech.length > 6 && (
+                        <div className={styles.techRowFull}>
+                          {project.tech.slice(6).map((t) => (
+                            <Chip key={t} color={getTechChipColor(t)}>{t}</Chip>
+                          ))}
+                        </div>
+                      )}
 
-                        {project.responsibilities.length > 0 && (
-                          <div className={styles.responsibilityList}>
-                            {project.responsibilities.map((r, j) => (
-                              <p key={j} className={styles.responsibility}>{highlightMetrics(r)}</p>
-                            ))}
-                          </div>
-                        )}
+                      {project.responsibilities.length > 0 && (
+                        <div className={styles.responsibilityList}>
+                          {project.responsibilities.map((r, j) => (
+                            <p key={j} className={styles.responsibility}>{highlightMetrics(r)}</p>
+                          ))}
+                        </div>
+                      )}
 
-                        {project.impact.length > 0 && (
-                          <div className={styles.impactList}>
-                            {project.impact.map((imp, j) => (
-                              <p key={j} className={styles.impact}>{highlightMetrics(imp, 'impact')}</p>
-                            ))}
-                          </div>
-                        )}
+                      {project.impact.length > 0 && (
+                        <div className={styles.impactList}>
+                          {project.impact.map((imp, j) => (
+                            <p key={j} className={styles.impact}>{highlightMetrics(imp, 'impact')}</p>
+                          ))}
+                        </div>
+                      )}
 
-                        {project.repo && (
-                          <a
-                            href={project.repo}
-                            className={styles.repoLink}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            onClick={(e) => e.stopPropagation()}
-                          >
-                            <ExternalLink size={14} /> View on GitHub
-                          </a>
-                        )}
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </motion.div>
+                      {project.repo && (
+                        <a
+                          href={project.repo}
+                          className={styles.repoLink}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          <Github size={14} /> View on GitHub
+                        </a>
+                      )}
+                    </div>
+                  )}
+                </div>
               );
             })}
-          </AnimatePresence>
         </div>
       )}
 

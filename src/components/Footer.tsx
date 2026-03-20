@@ -1,6 +1,6 @@
 import { Github, Linkedin, Mail } from 'lucide-react';
 import { bio } from '../data/portfolio';
-import styles from '../styles/components/Footer.module.css';
+import styles from '../styles/components/Footer.module.scss';
 
 export function Footer() {
   return (

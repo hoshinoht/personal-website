@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { GitCommit, Code, Zap, Container } from 'lucide-react';
-import styles from '../styles/components/ImpactStats.module.css';
+import styles from '../styles/components/ImpactStats.module.scss';
 
 const stats = [
   { icon: GitCommit, value: '700+', label: 'Commits', color: 'var(--md-sys-color-primary)' },

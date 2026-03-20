@@ -1,9 +1,10 @@
 import { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { FileText, X, Sparkles } from 'lucide-react';
 import { projects, experiences, skillCategories } from '../data/portfolio';
 import { useScrolledPast } from '../lib/useScrolledPast';
-import styles from '../styles/components/JdMatcher.module.css';
+import { cn } from '../lib/utils';
+import styles from '../styles/components/JdMatcher.module.scss';
 
 interface MatchResult {
   type: 'project' | 'experience' | 'skill';
@@ -19,7 +20,6 @@ function extractKeywords(text: string): string[] {
     .split(/\s+/)
     .filter((w) => w.length > 1);
 
-  // Build n-grams (1-3 words) for multi-word tech matches
   const ngrams: string[] = [...words];
   for (let i = 0; i < words.length - 1; i++) {
     ngrams.push(`${words[i]} ${words[i + 1]}`);
@@ -38,7 +38,6 @@ function scoreMatch(keywords: string[], targets: string[]): { score: number; mat
     if (kw.has(tLower)) {
       matched.push(t);
     } else {
-      // Partial match
       for (const k of kw) {
         if (k.includes(tLower) || tLower.includes(k)) {
           matched.push(t);
@@ -87,6 +86,7 @@ export function JdMatcher() {
   const [open, setOpen] = useState(false);
   const [jdText, setJdText] = useState('');
   const [results, setResults] = useState<MatchResult[] | null>(null);
+  const visible = useScrolledPast('hero');
 
   const analyze = () => {
     if (jdText.trim().length < 10) return;
@@ -98,99 +98,80 @@ export function JdMatcher() {
     setResults(null);
   };
 
-  const visible = useScrolledPast('hero');
-
   return (
     <>
-      <AnimatePresence>
-        {visible && (
-          <motion.button
-            className={styles.fab}
-            onClick={() => setOpen(true)}
-            aria-label="Match to job description"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 20 }}
-            transition={{ duration: 0.3 }}
-            title="Match my portfolio to a job description"
-          >
-            <Sparkles size={20} />
-          </motion.button>
-        )}
-      </AnimatePresence>
+      <button
+        className={cn(styles.fab, visible && styles.fabVisible)}
+        onClick={() => setOpen(true)}
+        aria-label="Match to job description"
+        title="Match my portfolio to a job description"
+      >
+        <Sparkles size={20} />
+      </button>
 
-      <AnimatePresence>
-        {open && (
+      {open && (
+        <div className={styles.overlay} onClick={() => setOpen(false)}>
           <motion.div
-            className={styles.overlay}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            onClick={() => setOpen(false)}
+            className={styles.modal}
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.25, ease: [0.2, 0, 0, 1] }}
+            onClick={(e) => e.stopPropagation()}
           >
-            <motion.div
-              className={styles.modal}
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 30 }}
-              transition={{ duration: 0.25, ease: [0.2, 0, 0, 1] }}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className={styles.header}>
-                <div className={styles.headerLeft}>
-                  <FileText size={20} />
-                  <h2 className={styles.title}>Match to Job Description</h2>
-                </div>
-                <button className={styles.closeBtn} onClick={() => setOpen(false)} aria-label="Close">
-                  <X size={18} />
-                </button>
+            <div className={styles.header}>
+              <div className={styles.headerLeft}>
+                <FileText size={20} />
+                <h2 className={styles.title}>Match to Job Description</h2>
               </div>
+              <button className={styles.closeBtn} onClick={() => setOpen(false)} aria-label="Close">
+                <X size={18} />
+              </button>
+            </div>
 
-              <p className={styles.description}>
-                Paste a job description and I'll show you which of my projects, experience, and skills are most relevant.
-              </p>
+            <p className={styles.description}>
+              Paste a job description and I'll show you which of my projects, experience, and skills are most relevant.
+            </p>
 
-              <textarea
-                className={styles.textarea}
-                placeholder="Paste a job description here..."
-                value={jdText}
-                onChange={(e) => setJdText(e.target.value)}
-                rows={6}
-              />
+            <textarea
+              className={styles.textarea}
+              placeholder="Paste a job description here..."
+              value={jdText}
+              onChange={(e) => setJdText(e.target.value)}
+              rows={6}
+            />
 
-              <div className={styles.actions}>
-                <button className={styles.analyzeBtn} onClick={analyze} disabled={jdText.trim().length < 10}>
-                  <Sparkles size={16} /> Analyze Match
-                </button>
-                {results && (
-                  <button className={styles.resetBtn} onClick={reset}>Clear</button>
-                )}
-              </div>
-
+            <div className={styles.actions}>
+              <button className={styles.analyzeBtn} onClick={analyze} disabled={jdText.trim().length < 10}>
+                <Sparkles size={16} /> Analyze Match
+              </button>
               {results && (
-                <div className={styles.results}>
-                  <p className={styles.resultCount}>
-                    {results.length} matching items found
-                  </p>
-                  {results.slice(0, 15).map((r, i) => (
-                    <div key={`${r.type}-${r.name}-${i}`} className={styles.resultItem}>
-                      <div className={styles.resultHeader}>
-                        <span className={styles.resultName}>{r.name}</span>
-                        <span className={styles.resultType}>{r.type}</span>
-                      </div>
-                      <div className={styles.matchedKeywords}>
-                        {r.matchedKeywords.map((kw) => (
-                          <span key={kw} className={styles.keyword}>{kw}</span>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                <button className={styles.resetBtn} onClick={reset}>Clear</button>
               )}
-            </motion.div>
+            </div>
+
+            {results && (
+              <div className={styles.results}>
+                <p className={styles.resultCount}>
+                  {results.length} matching items found
+                </p>
+                {results.slice(0, 15).map((r, i) => (
+                  <div key={`${r.type}-${r.name}-${i}`} className={styles.resultItem}>
+                    <div className={styles.resultHeader}>
+                      <span className={styles.resultName}>{r.name}</span>
+                      <span className={styles.resultType}>{r.type}</span>
+                    </div>
+                    <div className={styles.matchedKeywords}>
+                      {r.matchedKeywords.map((kw) => (
+                        <span key={kw} className={styles.keyword}>{kw}</span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </motion.div>
-        )}
-      </AnimatePresence>
+        </div>
+      )}
     </>
   );
 }

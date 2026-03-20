@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { GitCommit } from 'lucide-react';
-import styles from '../styles/components/GitHubStatus.module.css';
+import styles from '../styles/components/GitHubStatus.module.scss';
 
 interface GithubEvent {
   type: string;

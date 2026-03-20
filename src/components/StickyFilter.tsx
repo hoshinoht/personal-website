@@ -11,7 +11,7 @@ import {
 import { domains, type Domain } from '../data/portfolio';
 import { useFilter } from './FilterContext';
 import { cn } from '../lib/utils';
-import styles from '../styles/components/StickyFilter.module.css';
+import styles from '../styles/components/StickyFilter.module.scss';
 
 const domainIcons: Record<Domain, typeof Brain> = {
   'ML & AI': Brain,

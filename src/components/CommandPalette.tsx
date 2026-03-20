@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
 import { Search, Briefcase, FolderGit2, Wrench, GraduationCap, X } from 'lucide-react';
 import { experiences, projects, skillCategories, education, sections } from '../data/portfolio';
-import styles from '../styles/components/CommandPalette.module.css';
+import styles from '../styles/components/CommandPalette.module.scss';
 
 interface SearchResult {
   type: 'section' | 'experience' | 'project' | 'skill' | 'education';

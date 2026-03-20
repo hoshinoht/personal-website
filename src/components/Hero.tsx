@@ -5,7 +5,7 @@ import { Button } from './ui/Button';
 import { TypingEffect } from './TypingEffect';
 import { GitHubStatus } from './GitHubStatus';
 import { CurrentlyLearning } from './CurrentlyLearning';
-import styles from '../styles/components/Hero.module.css';
+import styles from '../styles/components/Hero.module.scss';
 
 function getGreeting(): string {
   const hour = new Date().getHours();

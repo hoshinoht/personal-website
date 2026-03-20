@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { bio, experiences, projects, skillCategories, certifications, education } from '../data/portfolio';
-import styles from '../styles/components/Terminal.module.css';
+import styles from '../styles/components/Terminal.module.scss';
 
 const HELP_TEXT = `Available commands:
   whoami       — about me

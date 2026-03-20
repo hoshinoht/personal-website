@@ -14,12 +14,21 @@
   align-items: center;
   justify-content: center;
   box-shadow: var(--md-sys-elevation-3);
-  transition: all var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
-}
+  opacity: 0;
+  transform: translateY(16px);
+  pointer-events: none;
+  transition: all 0.3s;
 
-.fab:hover {
-  box-shadow: var(--md-sys-elevation-4);
-  transform: scale(1.05);
+  &Visible {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+  }
+
+  &:hover {
+    box-shadow: var(--md-sys-elevation-4);
+    filter: brightness(1.1);
+  }
 }
 
 .overlay {
@@ -193,13 +202,15 @@
   color: var(--color-green);
 }
 
+@media (max-width: 768px) {
+  .fab {
+    bottom: calc(56px + env(safe-area-inset-bottom) + 12px);
+    left: 16px;
+  }
+}
+
 @media (max-width: 600px) {
   .overlay {
     padding: var(--spacing-md);
-  }
-
-  .fab {
-    bottom: 16px;
-    left: 16px;
   }
 }

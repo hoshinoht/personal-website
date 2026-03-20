@@ -102,11 +102,19 @@
 
 @media (max-width: 768px) {
   .bar {
-    padding: 10px 16px;
+    padding: 8px 0;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .inner {
-    justify-content: center;
+    flex-wrap: nowrap;
+    padding: 0 12px;
+    gap: 6px;
   }
 
   .label {
@@ -116,5 +124,6 @@
   .pill {
     padding: 5px 10px;
     font: var(--md-sys-typescale-label-small);
+    flex-shrink: 0;
   }
 }

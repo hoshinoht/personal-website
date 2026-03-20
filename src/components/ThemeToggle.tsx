@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { Moon, Sun } from 'lucide-react';
-import styles from '../styles/components/ThemeToggle.module.css';
+import styles from '../styles/components/ThemeToggle.module.scss';
 
 export function ThemeToggle() {
   const [theme, setTheme] = useState<'dark' | 'light'>(() => {

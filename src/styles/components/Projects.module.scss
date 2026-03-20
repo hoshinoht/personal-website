@@ -53,10 +53,12 @@
   background-color: var(--md-sys-color-surface-container);
   border-radius: var(--md-sys-shape-corner-extra-large);
   padding: var(--spacing-md) var(--spacing-lg);
-  transition: all var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
+  transition: background-color var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard),
+              padding var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
   display: flex;
   flex-direction: column;
   border-left: 3px solid var(--md-sys-color-outline-variant);
+  animation: cardFadeIn 0.4s var(--md-sys-motion-easing-standard) both;
 }
 
 .featuredCard:hover {
@@ -178,15 +180,19 @@
 .repoLink {
   display: inline-flex;
   align-items: center;
-  gap: var(--spacing-xs);
+  gap: 6px;
   font: var(--md-sys-typescale-label-medium);
   color: var(--md-sys-color-primary);
-  margin-top: var(--spacing-sm);
-  transition: color var(--md-sys-motion-duration-short);
-}
+  margin-top: var(--spacing-md);
+  padding: 6px 16px;
+  border: 1px solid var(--md-sys-color-primary);
+  border-radius: var(--md-sys-shape-corner-full);
+  transition: all 0.15s;
 
-.repoLink:hover {
-  color: var(--md-sys-color-secondary);
+  &:hover {
+    background: var(--md-sys-color-primary);
+    color: var(--md-sys-color-on-primary);
+  }
 }
 
 /* Other projects grid */
@@ -200,7 +206,8 @@
   background-color: var(--md-sys-color-surface-container);
   border-radius: var(--md-sys-shape-corner-large);
   padding: var(--spacing-md);
-  transition: all var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
+  transition: background-color var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
+  animation: cardFadeIn 0.3s var(--md-sys-motion-easing-standard) both;
 }
 
 .otherCard:hover {
@@ -236,13 +243,50 @@
 }
 
 @media (max-width: 768px) {
+  .heading {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .techLegend {
+    display: none;
+  }
+
+  .featuredCard {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .featuredCardExpanded {
+    padding: var(--spacing-md);
+  }
+
+  .projectSummary {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
   .otherGrid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
+  }
+
+  .otherCard {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .featuredCard, .otherCard {
+    position: relative;
+    z-index: 0;
   }
 }
 
-@media (max-width: 480px) {
-  .otherGrid {
-    grid-template-columns: 1fr;
+@keyframes cardFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }

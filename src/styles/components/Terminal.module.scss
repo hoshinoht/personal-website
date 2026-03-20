@@ -1,4 +1,4 @@
-/* Ghostty-style terminal: transparent bg, blur, Catppuccin Dusk */
+// Ghostty-style terminal: transparent bg, blur, Catppuccin Dusk
 
 .overlay {
   position: fixed;
@@ -28,7 +28,7 @@
   flex-direction: column;
 }
 
-/* macOS transparent titlebar */
+// macOS transparent titlebar
 .titleBar {
   display: flex;
   align-items: center;
@@ -51,19 +51,14 @@
 .dotRed {
   background: #E27878;
   cursor: pointer;
+
+  &:hover {
+    background: #F09090;
+  }
 }
 
-.dotRed:hover {
-  background: #F09090;
-}
-
-.dotYellow {
-  background: #DEC47C;
-}
-
-.dotGreen {
-  background: #82C8A0;
-}
+.dotYellow { background: #DEC47C; }
+.dotGreen { background: #82C8A0; }
 
 .titleText {
   font-family: var(--font-mono);
@@ -76,7 +71,7 @@
   margin-right: 2px;
 }
 
-/* Terminal body */
+// Terminal body
 .body {
   flex: 1;
   overflow-y: auto;
@@ -85,28 +80,27 @@
   font-size: 0.8125rem;
   line-height: 1.6;
   color: var(--md-sys-color-on-surface);
+
+  &::-webkit-scrollbar { width: 6px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(110, 114, 128, 0.3);
+    border-radius: 3px;
+  }
 }
 
 .entry {
   margin-bottom: var(--spacing-md);
 }
 
-/* Starship-style prompt */
+// Starship-style prompt
 .inputLine {
   margin-bottom: 2px;
 }
 
-.promptDir {
-  color: var(--color-pink);
-}
-
-.promptGit {
-  color: var(--color-sky);
-}
-
-.promptDirty {
-  color: var(--md-sys-color-on-surface-variant);
-}
+.promptDir { color: var(--color-pink); }
+.promptGit { color: var(--color-sky); }
+.promptDirty { color: var(--md-sys-color-on-surface-variant); }
 
 .promptChar {
   color: var(--color-pink);
@@ -138,30 +132,8 @@
   caret-color: var(--color-pink);
 }
 
-/* Scrollbar inside terminal */
-.body::-webkit-scrollbar {
-  width: 6px;
-}
-
-.body::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-.body::-webkit-scrollbar-thumb {
-  background: rgba(110, 114, 128, 0.3);
-  border-radius: 3px;
-}
-
 @media (max-width: 600px) {
-  .overlay {
-    padding: var(--spacing-md);
-  }
-
-  .terminal {
-    max-height: 70vh;
-  }
-
-  .body {
-    font-size: 0.75rem;
-  }
+  .overlay { padding: var(--spacing-md); }
+  .terminal { max-height: 70vh; }
+  .body { font-size: 0.75rem; }
 }

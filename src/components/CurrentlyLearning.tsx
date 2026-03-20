@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BookOpen } from 'lucide-react';
-import styles from '../styles/components/CurrentlyLearning.module.css';
+import styles from '../styles/components/CurrentlyLearning.module.scss';
 
 const topics = [
   'Rust async runtimes',

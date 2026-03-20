@@ -13,16 +13,16 @@
 .timeline {
   position: relative;
   padding-left: 32px;
-}
 
-.timeline::before {
-  content: '';
-  position: absolute;
-  left: 6px;
-  top: 8px;
-  bottom: 8px;
-  width: 2px;
-  background-color: var(--md-sys-color-outline-variant);
+  &::before {
+    content: '';
+    position: absolute;
+    left: 6px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background-color: var(--md-sys-color-outline-variant);
+  }
 }
 
 .timelineItem {
@@ -48,15 +48,15 @@
   padding: var(--spacing-md) var(--spacing-lg);
   cursor: pointer;
   transition: all var(--md-sys-motion-duration-medium) var(--md-sys-motion-easing-standard);
-}
 
-.card:hover {
-  background-color: var(--md-sys-color-surface-container-high);
-}
+  &:hover {
+    background-color: var(--md-sys-color-surface-container-high);
+  }
 
-.cardExpanded {
-  padding: var(--spacing-lg);
-  background-color: var(--md-sys-color-surface-container-high);
+  &Expanded {
+    padding: var(--spacing-lg);
+    background-color: var(--md-sys-color-surface-container-high);
+  }
 }
 
 .cardHeader {
@@ -111,10 +111,10 @@
   color: var(--md-sys-color-on-surface-variant);
   transition: transform var(--md-sys-motion-duration-short) var(--md-sys-motion-easing-standard);
   flex-shrink: 0;
-}
 
-.chevronOpen {
-  transform: rotate(180deg);
+  &Open {
+    transform: rotate(180deg);
+  }
 }
 
 .skills {
@@ -138,21 +138,37 @@
   color: var(--md-sys-color-on-surface-variant);
   padding-left: var(--spacing-md);
   position: relative;
-}
 
-.bullet::before {
-  content: '▸';
-  position: absolute;
-  left: 0;
-  color: var(--md-sys-color-primary);
+  &::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--md-sys-color-primary);
+  }
 }
 
 @media (max-width: 768px) {
+  .heading {
+    margin-bottom: var(--spacing-xl);
+  }
+
+  .card {
+    padding: var(--spacing-sm) var(--spacing-md);
+  }
+
+  .cardExpanded {
+    padding: var(--spacing-md);
+  }
+
   .cardHeader {
     flex-direction: column;
   }
 
   .meta {
     flex-wrap: wrap;
+  }
+
+  .skills {
+    gap: 4px;
   }
 }

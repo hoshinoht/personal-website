@@ -1,8 +1,7 @@
 import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
 import { projects } from '../data/portfolio';
 import { getDomainAccentColor } from '../lib/techColors';
-import styles from '../styles/components/ProjectGraph.module.css';
+import styles from '../styles/components/ProjectGraph.module.scss';
 
 const allProjects = projects;
 
@@ -81,15 +80,9 @@ export function ProjectGraph() {
         {open ? 'Hide' : 'View'} connections
       </button>
 
-      <AnimatePresence>
-        {open && (
-          <motion.div
+      {open && (
+          <div
             className={styles.container}
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.2, 0, 0, 1] }}
-            style={{ overflow: 'hidden' }}
           >
             <svg
               viewBox={`0 0 ${width} ${height}`}
@@ -240,9 +233,8 @@ export function ProjectGraph() {
               <span className={styles.legendDot} style={{ width: 12, height: 12 }} /> Featured
               <span className={styles.legendDot} style={{ width: 8, height: 8 }} /> Other
             </div>
-          </motion.div>
+          </div>
         )}
-      </AnimatePresence>
     </>
   );
 }

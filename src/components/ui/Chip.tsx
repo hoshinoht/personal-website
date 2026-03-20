@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react';
 import { cn } from '../../lib/utils';
-import styles from '../../styles/components/Chip.module.css';
+import styles from '../../styles/components/Chip.module.scss';
 
 type ChipVariant = 'filled' | 'tonal' | 'outlined';
 type ChipColor = 'green' | 'peach' | 'sky' | 'pink' | 'sapphire' | 'mauve' | 'teal' | 'lavender';

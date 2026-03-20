@@ -1,11 +1,11 @@
 import { useState, useMemo } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import { ChevronDown } from 'lucide-react';
 import { projects, experiences, education, type Domain } from '../data/portfolio';
 import { useFilter } from './FilterContext';
 import { getDomainAccentColor } from '../lib/techColors';
 import { cn } from '../lib/utils';
-import styles from '../styles/components/ProjectTimeline.module.css';
+import styles from '../styles/components/ProjectTimeline.module.scss';
 
 interface TimelineEntry {
   id: string;
@@ -39,7 +39,7 @@ function buildEntries(activeDomain: Domain | null): TimelineEntry[] {
   // Education
   for (const edu of education) {
     entries.push({
-      id: `edu-${edu.institution.slice(0, 10)}`,
+      id: `edu-${edu.field.replace(/\s+/g, '-').toLowerCase()}`,
       name: edu.institution.includes('Technical') ? 'ITE' : edu.institution.includes('Polytechnic') ? 'Singapore Poly' : 'SIT–UofG',
       ...parsePeriod(edu.period),
       color: 'var(--color-sky)',
@@ -197,22 +197,22 @@ export function ProjectTimeline() {
           ))}
 
           {expanded ? (
-            <AnimatePresence>
+            <>
               {allEntries.map((entry, i) => (
                 <motion.div
                   key={entry.id}
                   className={entry.kind === 'life' ? styles.nsBar : styles.bar}
                   style={barStyle(entry, topOffset + i * (rowH + gap))}
                   initial={{ scaleX: 0, opacity: 0 }}
-                  animate={{ scaleX: 1, opacity: entry.kind === 'project' && !entry.featured ? 0.55 : 1 }}
-                  exit={{ scaleX: 0, opacity: 0 }}
+                  whileInView={{ scaleX: 1, opacity: entry.kind === 'project' && !entry.featured ? 0.55 : 1 }}
+                  viewport={{ once: true }}
                   transition={{ duration: 0.25, delay: i * 0.01 }}
                   title={entry.name}
                 >
                   <span className={styles.barLabel}>{entry.name}</span>
                 </motion.div>
               ))}
-            </AnimatePresence>
+            </>
           ) : (
             /* ─── COMPACT: 4 swim lanes, 1 row each ─── */
             <>
