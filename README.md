@@ -62,12 +62,7 @@ bun run build
 
 ## Deployment
 
-Deployed to GitHub Pages via GitHub Actions. Custom domain `hoshinoht.dev` via Cloudflare DNS.
-
-### Cloudflare DNS Setup
-1. CNAME record: `@` → `hoshinoht.github.io`
-2. GitHub repo Settings → Pages → Custom domain: `hoshinoht.dev`
-3. Enable "Enforce HTTPS"
+Deployed to GitHub Pages via GitHub Actions.
 
 ## License
 
