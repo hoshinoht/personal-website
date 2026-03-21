@@ -24,7 +24,7 @@ export function Navigation() {
   useEffect(() => {
     const onScroll = () => {
       const offset = window.scrollY + window.innerHeight / 3;
-      let active = sections[0].id;
+      let active: string = sections[0].id;
       for (const { id } of sections) {
         const el = document.getElementById(id);
         if (el && el.offsetTop <= offset) {
