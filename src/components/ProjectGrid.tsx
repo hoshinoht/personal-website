@@ -13,6 +13,7 @@ export function ProjectGrid({ projects }: ProjectGridProps) {
     <div className={styles.otherGrid}>
       {projects.map((project, i) => (
         <motion.div
+          id={`project-${project.id}`}
           key={project.id}
           className={styles.otherCard}
           initial={{ opacity: 0, y: 15 }}

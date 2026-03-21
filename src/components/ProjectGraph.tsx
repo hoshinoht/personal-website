@@ -161,6 +161,12 @@ export function ProjectGraph() {
                   key={project.id}
                   onMouseEnter={() => setHoveredNode(i)}
                   onMouseLeave={() => setHoveredNode(null)}
+                  onClick={() => {
+                    window.dispatchEvent(new CustomEvent('expand-project', { detail: project.id }));
+                    setTimeout(() => {
+                      document.getElementById(`project-${project.id}`)?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 100);
+                  }}
                   style={{ cursor: 'pointer' }}
                 >
                   {/* Invisible larger hit area */}

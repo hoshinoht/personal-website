@@ -68,6 +68,7 @@ export function FeaturedProjects() {
               const accentColor = getDomainAccentColor(project.domains);
               return (
                 <motion.div
+                  id={`project-${project.id}`}
                   key={project.id}
                   className={cn(styles.featuredCard, isExpanded && styles.featuredCardExpanded)}
                   style={{ borderLeftColor: accentColor }}
