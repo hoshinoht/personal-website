@@ -121,6 +121,21 @@
   line-height: 1.5;
 }
 
+// Neofetch layout
+.neofetch {
+  display: flex;
+  gap: var(--spacing-md);
+  align-items: center;
+}
+
+.neofetchImg {
+  width: 120px;
+  height: 120px;
+  border-radius: 8px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
 .inputField {
   flex: 1;
   min-width: 100px;

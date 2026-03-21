@@ -94,7 +94,7 @@ function processCommand(input: string): string {
       return 'Permission denied. This portfolio is protected under CC BY-NC-ND 4.0.';
 
     case 'neofetch':
-      return `\x1b[mauve]${bio.name}\x1b[reset]@\x1b[teal]portfolio\x1b[reset]\n──────────────────\n\x1b[pink]OS\x1b[reset]      React 19 + Vite 6\n\x1b[pink]Theme\x1b[reset]   Catppuccin Dusk\n\x1b[pink]Shell\x1b[reset]   Starship + zsh\n\x1b[pink]Term\x1b[reset]    Ghostty\n\x1b[pink]Font\x1b[reset]    Google Sans Code\n\x1b[pink]Projects\x1b[reset] ${projects.length}\n\x1b[pink]Skills\x1b[reset]  ${skillCategories.reduce((n, c) => n + c.skills.length, 0)}\n\x1b[pink]Commits\x1b[reset] 700+`;
+      return `__NEOFETCH__\x1b[mauve]${bio.name}\x1b[reset]@\x1b[teal]portfolio\x1b[reset]\n──────────────────\n\x1b[pink]OS\x1b[reset]       React 19 + Vite 6\n\x1b[pink]Theme\x1b[reset]    Catppuccin Dusk\n\x1b[pink]Shell\x1b[reset]    Starship + zsh\n\x1b[pink]Term\x1b[reset]     Ghostty\n\x1b[pink]Font\x1b[reset]     Google Sans Code\n\x1b[pink]Projects\x1b[reset] ${projects.length}\n\x1b[pink]Skills\x1b[reset]   ${skillCategories.reduce((n, c) => n + c.skills.length, 0)}\n\x1b[pink]Commits\x1b[reset]  700+\n\x1b[pink]Override\x1b[reset] ↑↑↓↓←→←→BA`;
 
     case 'hack':
       return '█▓▒░ ACCESSING MAINFRAME ░▒▓█\n\n[████████████████████] 100%\n\nACCESS GRANTED.\n\nJust kidding. But if you\'re reading this, you\'re my kind of person.\nFeel free to reach out — I love building things with curious people.';
@@ -296,7 +296,14 @@ export function Terminal() {
                   <div><span className={styles.promptChar}>❯</span> {entry.input}</div>
                 </div>
               )}
-              <pre className={styles.output}>{renderColoredText(entry.output)}</pre>
+              {entry.output.startsWith('__NEOFETCH__') ? (
+                <div className={styles.neofetch}>
+                  <img src="/images/profile.png" alt="" className={styles.neofetchImg} />
+                  <pre className={styles.output}>{renderColoredText(entry.output.replace('__NEOFETCH__', ''))}</pre>
+                </div>
+              ) : (
+                <pre className={styles.output}>{renderColoredText(entry.output)}</pre>
+              )}
             </div>
           ))}
 
