@@ -146,7 +146,7 @@ export function ProjectGraph() {
               );
             })}
 
-            {/* Nodes */}
+            {/* Nodes — interactive hit areas + visible circles */}
             {positions.map((pos, i) => {
               const project = allProjects[i];
               const isFeatured = project.featured;
@@ -154,20 +154,7 @@ export function ProjectGraph() {
               const isHovered = hoveredNode === i;
               const color = getDomainAccentColor(project.domains);
               const nodeR = isFeatured ? (isHovered ? 20 : 15) : (isHovered ? 14 : 9);
-
-              const sharedWith = hoveredNode !== null && hoveredNode !== i
-                ? activeEdges.find(
-                    (e) => (e.from === hoveredNode && e.to === i) || (e.to === hoveredNode && e.from === i),
-                  )
-                : null;
-
-              const cx = width / 2;
-              const cy = height / 2;
-              const angle = Math.atan2(pos.y - cy, pos.x - cx);
-              const labelOffset = nodeR + 14;
-              const lx = pos.x + Math.cos(angle) * labelOffset;
-              const ly = pos.y + Math.sin(angle) * labelOffset;
-              const anchor = Math.abs(angle) > Math.PI / 2 + 0.3 ? 'end' : Math.abs(angle) < Math.PI / 2 - 0.3 ? 'start' : 'middle';
+              const hitR = Math.max(nodeR, 20);
 
               return (
                 <g
@@ -176,6 +163,9 @@ export function ProjectGraph() {
                   onMouseLeave={() => setHoveredNode(null)}
                   style={{ cursor: 'pointer' }}
                 >
+                  {/* Invisible larger hit area */}
+                  <circle cx={pos.x} cy={pos.y} r={hitR} fill="transparent" />
+
                   {isHovered && (
                     <circle cx={pos.x} cy={pos.y} r={nodeR + 6} fill="none" stroke={color} strokeWidth={2} opacity={0.4} />
                   )}
@@ -191,47 +181,76 @@ export function ProjectGraph() {
                   {isFeatured && (
                     <circle cx={pos.x} cy={pos.y} r={3} fill="var(--md-sys-color-on-primary)" opacity={isActive ? 0.8 : 0.1} />
                   )}
-
-                  <text
-                    x={lx} y={ly}
-                    textAnchor={anchor}
-                    dominantBaseline="central"
-                    className={isFeatured ? styles.labelFeatured : styles.label}
-                    opacity={isActive ? 1 : 0.15}
-                  >
-                    {project.name}
-                  </text>
-
-                  {sharedWith && (() => {
-                    const labelText = sharedWith.shared.slice(0, 3).join(', ')
-                      + (sharedWith.shared.length > 3 ? ` +${sharedWith.shared.length - 3}` : '');
-                    const lx = (pos.x + positions[hoveredNode!].x) / 2;
-                    const ly = (pos.y + positions[hoveredNode!].y) / 2 - 10;
-                    const padX = 6;
-                    const padY = 3;
-                    const textW = labelText.length * 5.5;
-                    return (
-                      <g>
-                        <rect
-                          x={lx - textW / 2 - padX}
-                          y={ly - 7 - padY}
-                          width={textW + padX * 2}
-                          height={14 + padY * 2}
-                          rx={4}
-                          fill="var(--md-sys-color-surface-container)"
-                          stroke="var(--md-sys-color-outline-variant)"
-                          strokeWidth={0.5}
-                          opacity={0.95}
-                        />
-                        <text x={lx} y={ly} textAnchor="middle" className={styles.edgeLabel}>
-                          {labelText}
-                        </text>
-                      </g>
-                    );
-                  })()}
                 </g>
               );
             })}
+
+            {/* Labels + edge labels — non-interactive overlay */}
+            <g pointerEvents="none">
+              {positions.map((pos, i) => {
+                const project = allProjects[i];
+                const isFeatured = project.featured;
+                const isActive = connectedNodes === null || connectedNodes.has(i);
+                const isHovered = hoveredNode === i;
+                const nodeR = isFeatured ? (isHovered ? 20 : 15) : (isHovered ? 14 : 9);
+
+                const sharedWith = hoveredNode !== null && hoveredNode !== i
+                  ? activeEdges.find(
+                      (e) => (e.from === hoveredNode && e.to === i) || (e.to === hoveredNode && e.from === i),
+                    )
+                  : null;
+
+                const cx = width / 2;
+                const cy = height / 2;
+                const angle = Math.atan2(pos.y - cy, pos.x - cx);
+                const labelOffset = nodeR + 14;
+                const lx = pos.x + Math.cos(angle) * labelOffset;
+                const ly = pos.y + Math.sin(angle) * labelOffset;
+                const anchor = Math.abs(angle) > Math.PI / 2 + 0.3 ? 'end' : Math.abs(angle) < Math.PI / 2 - 0.3 ? 'start' : 'middle';
+
+                return (
+                  <g key={project.id}>
+                    <text
+                      x={lx} y={ly}
+                      textAnchor={anchor}
+                      dominantBaseline="central"
+                      className={isFeatured ? styles.labelFeatured : styles.label}
+                      opacity={isActive ? 1 : 0.15}
+                    >
+                      {project.name}
+                    </text>
+
+                    {sharedWith && (() => {
+                      const labelText = sharedWith.shared.slice(0, 3).join(', ')
+                        + (sharedWith.shared.length > 3 ? ` +${sharedWith.shared.length - 3}` : '');
+                      const elx = (pos.x + positions[hoveredNode!].x) / 2;
+                      const ely = (pos.y + positions[hoveredNode!].y) / 2 - 10;
+                      const padX = 6;
+                      const padY = 3;
+                      const textW = labelText.length * 5.5;
+                      return (
+                        <g>
+                          <rect
+                            x={elx - textW / 2 - padX}
+                            y={ely - 7 - padY}
+                            width={textW + padX * 2}
+                            height={14 + padY * 2}
+                            rx={4}
+                            fill="var(--md-sys-color-surface-container)"
+                            stroke="var(--md-sys-color-outline-variant)"
+                            strokeWidth={0.5}
+                            opacity={0.95}
+                          />
+                          <text x={elx} y={ely} textAnchor="middle" className={styles.edgeLabel}>
+                            {labelText}
+                          </text>
+                        </g>
+                      );
+                    })()}
+                  </g>
+                );
+              })}
+            </g>
           </svg>
 
           <div className={styles.legend}>

@@ -22,23 +22,22 @@ export function Navigation() {
   });
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            setActiveSection(entry.target.id);
-          }
-        });
-      },
-      { threshold: 0.3, rootMargin: '-10% 0px -10% 0px' },
-    );
+    const onScroll = () => {
+      const offset = window.scrollY + window.innerHeight / 3;
+      let active = sections[0].id;
+      for (const { id } of sections) {
+        const el = document.getElementById(id);
+        if (el && el.offsetTop <= offset) {
+          active = id;
+        }
+      }
+      setActiveSection(active);
+    };
 
-    sections.forEach(({ id }) => {
-      const el = document.getElementById(id);
-      if (el) observer.observe(el);
-    });
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
 
-    return () => observer.disconnect();
+    return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
   const scrollTo = (id: string) => {
