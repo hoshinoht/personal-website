@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Po Haoting — Computing Science undergraduate, ML Research Assistant, and software engineer. Portfolio showcasing projects in distributed systems, IoT, ML, and cloud infrastructure." />
+    <meta name="description" content="Po Haoting — Software engineer and ML Research Assistant. Portfolio of distributed systems, IoT, ML, and cloud infrastructure projects." />
 
     <!-- Open Graph -->
     <meta property="og:title" content="Po Haoting — Software Engineer" />
@@ -19,10 +19,40 @@
     <meta name="twitter:image" content="https://hoshinoht.dev/images/profile.png" />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/images/profile.png" />
+    <link rel="canonical" href="https://hoshinoht.dev/" />
     <title>Po Haoting — Software Engineer</title>
+    <style>
+      #fallback{max-width:680px;margin:0 auto;padding:10vh 24px;font-family:Inter,system-ui,sans-serif;color:#F3F5FC}
+      #fallback h1{font-size:2.5rem;font-weight:700;margin:0 0 .25em;color:#C4A2D4}
+      #fallback .subtitle{font-size:1rem;color:#B2B6C1;margin:0 0 1.5em}
+      #fallback .bio{font-size:.95rem;line-height:1.7;color:#B2B6C1;margin:0 0 2.5em}
+      #fallback nav{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:3em}
+      #fallback nav a{color:#C4A2D4;text-decoration:none;padding:6px 16px;border:1px solid #3E4049;border-radius:20px;font-size:.85rem;transition:border-color .2s}
+      #fallback nav a:hover{border-color:#C4A2D4}
+      #fallback h2{font-size:1.25rem;font-weight:600;color:#F3F5FC;margin:0 0 1em;padding-top:1em;border-top:1px solid #3E4049}
+    </style>
   </head>
-  <body>
-    <div id="root"></div>
+  <body style="margin:0;background:#26282D">
+    <div id="root">
+      <div id="fallback">
+        <section id="hero">
+          <h1>Po Haoting</h1>
+          <p class="subtitle">Software Engineer · ML Research Assistant · Cloud Architect</p>
+          <p class="bio">Computing Science undergraduate at SIT–University of Glasgow, currently developing custom model architectures for long-horizon time-series prediction as an ML Research Assistant. Former cloud software engineering intern at Razer and WorldSkills Singapore 2018 competitor. Ngee Ann Kongsi Scholar and SCDF &amp; Dell Innovation Challenge 2025 Top 10 Finalist.</p>
+        </section>
+        <nav>
+          <a href="#experience">Experience</a>
+          <a href="#projects">Projects</a>
+          <a href="#skills">Skills</a>
+          <a href="#education">Education</a>
+        </nav>
+        <section id="experience"><h2>Experience</h2></section>
+        <section id="projects"><h2>Projects</h2></section>
+        <section id="skills"><h2>Skills</h2></section>
+        <section id="education"><h2>Education</h2></section>
+      </div>
+    </div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
