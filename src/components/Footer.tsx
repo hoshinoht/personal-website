@@ -23,7 +23,12 @@ export function Footer() {
           <span className={styles.shortcut}><kbd>J</kbd><kbd>K</kbd> Navigate</span>
         </div>
         <p className={styles.copyright}>
-          &copy; {new Date().getFullYear()} Po Haoting. Built with React & Vite.
+          &copy; {new Date().getFullYear()} Po Haoting. Except where otherwise noted, content on this site is licensed under a{' '}
+          <a href="https://creativecommons.org/licenses/by-nc-nd/4.0/" target="_blank" rel="noopener noreferrer">
+            CC BY-NC-ND 4.0 License
+          </a>.
+          <br />
+          Built with React &amp; Vite.
         </p>
       </div>
     </footer>
