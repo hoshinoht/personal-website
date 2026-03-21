@@ -63,7 +63,8 @@ export function AsteroidsGame({ onComplete }: { onComplete: () => void }) {
         return;
       }
       gs.keys.add(e.key);
-      if (e.key === ' ') { e.preventDefault(); gs.firing = true; }
+      if (e.key === ' ' || e.key.startsWith('Arrow')) e.preventDefault();
+      if (e.key === ' ') gs.firing = true;
       if (e.key === 'Escape') onComplete();
     };
     const onKeyUp = (e: KeyboardEvent) => { gs.keys.delete(e.key); if (e.key === ' ') gs.firing = false; };

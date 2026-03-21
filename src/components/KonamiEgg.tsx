@@ -19,6 +19,7 @@ export function KonamiEgg() {
 
   const handleComplete = useCallback(() => {
     setGameActive(false);
+    document.body.style.overflow = '';
     setFadeIn(true);
     setTimeout(() => setFadeIn(false), 1200);
   }, []);
@@ -32,6 +33,7 @@ export function KonamiEgg() {
         const next = [...prev, e.key].slice(-KONAMI.length);
         if (next.length === KONAMI.length && next.every((k, i) => k === KONAMI[i])) {
           if (isDesktop()) {
+            document.body.style.overflow = 'hidden';
             setGameActive(true);
           }
         }
@@ -39,7 +41,10 @@ export function KonamiEgg() {
       });
     };
     window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
+    return () => {
+      window.removeEventListener('keydown', handler);
+      document.body.style.overflow = '';
+    };
   }, [gameActive]);
 
   return (

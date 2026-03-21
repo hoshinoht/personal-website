@@ -173,9 +173,16 @@ export function update(gs: GameState, dt: number, W: number, H: number, engine: 
       else t.y += (targetY - t.y) * 2 * dt;
     } else {
       t.y += t.speed * dt;
+      if (t.y > H + 10) {
+        gs.lives--;
+        gs.screenShakeUntil = now + 200;
+        if (gs.lives <= 0) { gs.deathX = gs.ship.x; gs.deathY = gs.ship.y; }
+        return false;
+      }
     }
-    return t.y < H + 60;
+    return true;
   });
+  if (gs.lives <= 0) return 'dead';
 
   // Targets fire
   for (const t of gs.targets) {
