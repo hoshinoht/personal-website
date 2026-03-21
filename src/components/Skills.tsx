@@ -49,10 +49,9 @@ export function Skills() {
               key={category.name}
               className={styles.category}
               initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
+              whileInView={{ opacity: isRelevant ? 1 : 0.15, y: 0 }}
               viewport={{ once: true, margin: '-30px' }}
               transition={{ duration: 0.3, delay: i * 0.04 }}
-              style={{ opacity: isRelevant ? undefined : 0.35 }}
             >
               <h3 className={styles.categoryName}>{category.name}</h3>
               <div className={styles.chips}>

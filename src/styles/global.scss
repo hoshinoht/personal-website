@@ -20,6 +20,7 @@ body {
 main {
   position: relative;
   z-index: 1;
+  overflow-anchor: none;
 }
 
 ::selection {

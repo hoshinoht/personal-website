@@ -27,11 +27,11 @@
 }
 
 /* Accent variants */
-.green { background-color: rgba(130, 200, 160, 0.15); color: #82C8A0; }
-.peach { background-color: rgba(221, 160, 92, 0.15); color: #DDA05C; }
-.sky { background-color: rgba(117, 214, 246, 0.15); color: #75D6F6; }
-.pink { background-color: rgba(243, 189, 202, 0.15); color: #F3BDCA; }
-.sapphire { background-color: rgba(92, 184, 228, 0.15); color: #5CB8E4; }
-.mauve { background-color: rgba(196, 162, 212, 0.15); color: #C4A2D4; }
-.teal { background-color: rgba(110, 196, 184, 0.15); color: #6EC4B8; }
-.lavender { background-color: rgba(176, 188, 232, 0.15); color: #B0BCE8; }
+.green { background-color: color-mix(in srgb, var(--color-green) 15%, transparent); color: var(--color-green); }
+.peach { background-color: color-mix(in srgb, var(--color-peach) 15%, transparent); color: var(--color-peach); }
+.sky { background-color: color-mix(in srgb, var(--color-sky) 15%, transparent); color: var(--color-sky); }
+.pink { background-color: color-mix(in srgb, var(--color-pink) 15%, transparent); color: var(--color-pink); }
+.sapphire { background-color: color-mix(in srgb, var(--color-sapphire) 15%, transparent); color: var(--color-sapphire); }
+.mauve { background-color: color-mix(in srgb, var(--color-mauve) 15%, transparent); color: var(--color-mauve); }
+.teal { background-color: color-mix(in srgb, var(--color-teal) 15%, transparent); color: var(--color-teal); }
+.lavender { background-color: color-mix(in srgb, var(--color-lavender) 15%, transparent); color: var(--color-lavender); }
