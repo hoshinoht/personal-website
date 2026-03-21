@@ -207,7 +207,7 @@ export function ProjectTimeline() {
                   whileInView={{ scaleX: 1, opacity: entry.kind === 'project' && !entry.featured ? 0.55 : 1 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.25, delay: i * 0.01 }}
-                  title={entry.name}
+                  data-name={entry.name}
                 >
                   <span className={styles.barLabel}>{entry.name}</span>
                 </motion.div>
@@ -236,7 +236,7 @@ export function ProjectTimeline() {
                     key={entry.id}
                     className={entry.kind === 'life' ? styles.nsBar : styles.bar}
                     style={barStyle(entry, top)}
-                    title={entry.name}
+                    data-name={entry.name}
                   >
                     <span className={styles.barLabel}>{entry.name}</span>
                   </div>
