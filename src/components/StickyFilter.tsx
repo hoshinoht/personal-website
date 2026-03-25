@@ -7,6 +7,7 @@ import {
   Gamepad2,
   Globe,
   LayoutGrid,
+  Search,
 } from 'lucide-react';
 import { domains, type Domain } from '../data/portfolio';
 import { useFilter } from './FilterContext';
@@ -60,6 +61,15 @@ export function StickyFilter() {
               </button>
             );
           })}
+
+          <button
+            className={cn(styles.pill, styles.searchHint)}
+            onClick={() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))}
+            aria-label="Open search"
+          >
+            <Search className={styles.icon} />
+            <kbd className={styles.kbd}>⌘K</kbd>
+          </button>
         </div>
       </div>
     </div>

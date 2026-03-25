@@ -121,6 +121,7 @@ type Lane = { label: string; entries: TimelineEntry[] };
 
 export function ProjectTimeline() {
   const { activeDomain } = useFilter();
+  const [visible, setVisible] = useState(false);
   const [expanded, setExpanded] = useState(false);
 
   const allEntries = useMemo(() => buildEntries(activeDomain), [activeDomain]);
@@ -179,78 +180,86 @@ export function ProjectTimeline() {
 
   return (
     <div className={styles.wrapper}>
-      <h2 className={styles.heading}>Timeline</h2>
-      <div className={styles.scroll}>
-        <div className={styles.track} style={{ minHeight: `${trackHeight}px` }}>
-          {/* Year labels */}
-          <div className={styles.yearRow}>
-            {yearMarkers.map((m) => (
-              <span key={m.year} className={styles.yearLabel} style={{ left: `${m.percent}%` }}>
-                {m.year}
-              </span>
-            ))}
-          </div>
+      <button className={styles.expandBtn} onClick={() => setVisible((p) => !p)}>
+        {visible ? 'Hide timeline' : `View timeline (${allEntries.length} entries)`}
+        <ChevronDown size={14} className={cn(styles.expandIcon, visible && styles.expandIconOpen)} />
+      </button>
 
-          {/* Year grid lines */}
-          {yearMarkers.map((m) => (
-            <div key={`l-${m.year}`} className={styles.yearLine} style={{ left: `${m.percent}%` }} />
-          ))}
-
-          {expanded ? (
-            <>
-              {allEntries.map((entry, i) => (
-                <motion.div
-                  key={entry.id}
-                  className={entry.kind === 'life' ? styles.nsBar : styles.bar}
-                  style={barStyle(entry, topOffset + i * (rowH + gap))}
-                  initial={{ scaleX: 0, opacity: 0 }}
-                  whileInView={{ scaleX: 1, opacity: entry.kind === 'project' && !entry.featured ? 0.55 : 1 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.25, delay: i * 0.01 }}
-                  data-name={entry.name}
-                >
-                  <span className={styles.barLabel}>{entry.name}</span>
-                </motion.div>
-              ))}
-            </>
-          ) : (
-            /* ─── COMPACT: 4 swim lanes, 1 row each ─── */
-            <>
-              {/* Lane labels */}
-              <div className={styles.laneLabels}>
-                {compactLanes.map((lane, i) => (
-                  <span
-                    key={lane.label}
-                    className={styles.laneLabel}
-                    style={{ top: `${topOffset + i * (rowH + gap)}px`, height: `${rowH}px` }}
-                  >
-                    {lane.label}
+      {visible && (
+        <>
+          <div className={styles.scroll}>
+            <div className={styles.track} style={{ minHeight: `${trackHeight}px` }}>
+              {/* Year labels */}
+              <div className={styles.yearRow}>
+                {yearMarkers.map((m) => (
+                  <span key={m.year} className={styles.yearLabel} style={{ left: `${m.percent}%` }}>
+                    {m.year}
                   </span>
                 ))}
               </div>
 
-              {compactLanes.map((lane, laneIdx) => {
-                const top = topOffset + laneIdx * (rowH + gap);
-                return lane.entries.map((entry) => (
-                  <div
-                    key={entry.id}
-                    className={entry.kind === 'life' ? styles.nsBar : styles.bar}
-                    style={barStyle(entry, top)}
-                    data-name={entry.name}
-                  >
-                    <span className={styles.barLabel}>{entry.name}</span>
-                  </div>
-                ));
-              })}
-            </>
-          )}
-        </div>
-      </div>
+              {/* Year grid lines */}
+              {yearMarkers.map((m) => (
+                <div key={`l-${m.year}`} className={styles.yearLine} style={{ left: `${m.percent}%` }} />
+              ))}
 
-      <button className={styles.expandBtn} onClick={() => setExpanded((p) => !p)}>
-        {expanded ? 'Compact view' : `Expand all ${allEntries.length} entries`}
-        <ChevronDown size={14} className={cn(styles.expandIcon, expanded && styles.expandIconOpen)} />
-      </button>
+              {expanded ? (
+                <>
+                  {allEntries.map((entry, i) => (
+                    <motion.div
+                      key={entry.id}
+                      className={entry.kind === 'life' ? styles.nsBar : styles.bar}
+                      style={barStyle(entry, topOffset + i * (rowH + gap))}
+                      initial={{ scaleX: 0, opacity: 0 }}
+                      whileInView={{ scaleX: 1, opacity: entry.kind === 'project' && !entry.featured ? 0.55 : 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.25, delay: i * 0.01 }}
+                      data-name={entry.name}
+                    >
+                      <span className={styles.barLabel}>{entry.name}</span>
+                    </motion.div>
+                  ))}
+                </>
+              ) : (
+                /* ─── COMPACT: 4 swim lanes, 1 row each ─── */
+                <>
+                  {/* Lane labels */}
+                  <div className={styles.laneLabels}>
+                    {compactLanes.map((lane, i) => (
+                      <span
+                        key={lane.label}
+                        className={styles.laneLabel}
+                        style={{ top: `${topOffset + i * (rowH + gap)}px`, height: `${rowH}px` }}
+                      >
+                        {lane.label}
+                      </span>
+                    ))}
+                  </div>
+
+                  {compactLanes.map((lane, laneIdx) => {
+                    const top = topOffset + laneIdx * (rowH + gap);
+                    return lane.entries.map((entry) => (
+                      <div
+                        key={entry.id}
+                        className={entry.kind === 'life' ? styles.nsBar : styles.bar}
+                        style={barStyle(entry, top)}
+                        data-name={entry.name}
+                      >
+                        <span className={styles.barLabel}>{entry.name}</span>
+                      </div>
+                    ));
+                  })}
+                </>
+              )}
+            </div>
+          </div>
+
+          <button className={styles.expandBtn} onClick={() => setExpanded((p) => !p)}>
+            {expanded ? 'Compact view' : `Expand all ${allEntries.length} entries`}
+            <ChevronDown size={14} className={cn(styles.expandIcon, expanded && styles.expandIconOpen)} />
+          </button>
+        </>
+      )}
     </div>
   );
 }

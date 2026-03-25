@@ -28,7 +28,10 @@ export function Footer() {
             CC BY-NC-ND 4.0 License
           </a>.
           <br />
-          Built with React &amp; Vite.
+          Built with React &amp; Vite.{' '}
+          <a href="https://github.com/hoshinoht/personal-website" target="_blank" rel="noopener noreferrer">
+            View source
+          </a>.
         </p>
       </div>
     </footer>

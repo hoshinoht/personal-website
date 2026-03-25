@@ -110,10 +110,16 @@
 
   .mobileBtnActive {
     color: var(--md-sys-color-primary);
+
+    .mobileLabel {
+      color: var(--md-sys-color-primary);
+      font-weight: 600;
+    }
   }
 
   .mobileLabel {
     font: var(--md-sys-typescale-label-small);
     font-size: 0.6rem;
+    transition: color 0.15s;
   }
 }

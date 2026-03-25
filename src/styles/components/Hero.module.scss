@@ -129,6 +129,21 @@
     width: 200px;
     height: 200px;
   }
+
+  .statusRow {
+    justify-content: center;
+  }
+}
+
+@media (max-width: 480px) {
+  .photo {
+    width: 140px;
+    height: 140px;
+  }
+
+  .name {
+    font-size: 2.5rem;
+  }
 }
 
 :global([data-theme='light']) .heroBackground {

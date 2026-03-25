@@ -1,6 +1,6 @@
 .divider {
   max-width: var(--content-max-width);
-  margin: 0 auto;
+  margin: var(--spacing-2xl) auto;
   height: 1px;
   background: linear-gradient(
     90deg,
@@ -9,4 +9,10 @@
     var(--md-sys-color-outline-variant) 80%,
     transparent 100%
   );
+}
+
+@media (max-width: 768px) {
+  .divider {
+    margin: var(--spacing-lg) auto;
+  }
 }

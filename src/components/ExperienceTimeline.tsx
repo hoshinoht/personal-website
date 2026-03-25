@@ -75,6 +75,10 @@ export function ExperienceTimeline() {
                   ))}
                 </div>
 
+                {!isExpanded && i === 0 && (
+                  <p className={styles.expandHint}>Tap to expand</p>
+                )}
+
                 {isExpanded && (
                   <div className={styles.bullets}>
                     {exp.bullets.map((bullet, j) => (

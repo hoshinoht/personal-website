@@ -45,23 +45,28 @@ export function Skills() {
         {skillCategories.map((category, i) => {
           const isRelevant = !relevantCategoryNames || relevantCategoryNames.has(category.name);
           return (
-            <motion.div
+            <div
               key={category.name}
-              className={styles.category}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: isRelevant ? 1 : 0.15, y: 0 }}
-              viewport={{ once: true, margin: '-30px' }}
-              transition={{ duration: 0.3, delay: i * 0.04 }}
+              className={styles.categoryWrap}
+              style={{ opacity: isRelevant ? 1 : 0.15 }}
             >
-              <h3 className={styles.categoryName}>{category.name}</h3>
-              <div className={styles.chips}>
-                {category.skills.map((skill) => (
-                  <Chip key={skill.name} variant={proficiencyVariant[skill.proficiency]}>
-                    {skill.name}
-                  </Chip>
-                ))}
-              </div>
-            </motion.div>
+              <motion.div
+                className={styles.category}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: '-30px' }}
+                transition={{ duration: 0.3, delay: i * 0.04 }}
+              >
+                <h3 className={styles.categoryName}>{category.name}</h3>
+                <div className={styles.chips}>
+                  {category.skills.map((skill) => (
+                    <Chip key={skill.name} variant={proficiencyVariant[skill.proficiency]}>
+                      {skill.name}
+                    </Chip>
+                  ))}
+                </div>
+              </motion.div>
+            </div>
           );
         })}
       </div>

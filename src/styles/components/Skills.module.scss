@@ -16,11 +16,16 @@
   gap: var(--spacing-lg);
 }
 
+.categoryWrap {
+  transition: opacity 0.3s;
+  min-width: 0;
+}
+
 .category {
   background-color: var(--md-sys-color-surface-container);
   border-radius: var(--md-sys-shape-corner-extra-large);
   padding: var(--spacing-lg);
-  transition: opacity 0.3s, scale 0.3s;
+  height: 100%;
 }
 
 .categoryName {

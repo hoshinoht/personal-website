@@ -94,6 +94,24 @@
   box-shadow: 0 0 12px rgba(196, 162, 212, 0.3);
 }
 
+.searchHint {
+  margin-left: auto;
+  border-color: transparent;
+  color: var(--md-sys-color-outline);
+  gap: 4px;
+}
+
+.searchHint:hover {
+  border-color: var(--md-sys-color-outline-variant);
+  color: var(--md-sys-color-on-surface-variant);
+}
+
+.kbd {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: inherit;
+}
+
 @keyframes iconPop {
   0% { transform: scale(0.6) rotate(-15deg); }
   50% { transform: scale(1.2) rotate(5deg); }
@@ -102,7 +120,7 @@
 
 @media (max-width: 768px) {
   .bar {
-    padding: 8px 0;
+    padding: 6px 0;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
 
@@ -122,8 +140,13 @@
   }
 
   .pill {
-    padding: 5px 10px;
+    padding: 4px 10px;
     font: var(--md-sys-typescale-label-small);
     flex-shrink: 0;
+  }
+
+  .icon {
+    width: 12px;
+    height: 12px;
   }
 }
