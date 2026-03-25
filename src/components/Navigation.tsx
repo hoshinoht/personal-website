@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Home, Briefcase, FolderGit2, Wrench, GraduationCap, Sun, Moon } from 'lucide-react';
 import { sections } from '../data/portfolio';
 import { useTheme } from '../lib/useTheme';
@@ -17,14 +17,7 @@ export function Navigation() {
   const [activeSection, setActiveSection] = useState('hero');
   const { theme, toggleTheme } = useTheme();
 
-  const sectionEls = useRef<Map<string, HTMLElement>>(new Map());
-
   useEffect(() => {
-    for (const { id } of sections) {
-      const el = document.getElementById(id);
-      if (el) sectionEls.current.set(id, el);
-    }
-
     let ticking = false;
     const onScroll = () => {
       if (ticking) return;
@@ -33,7 +26,7 @@ export function Navigation() {
         const offset = window.scrollY + window.innerHeight / 3;
         let active: string = sections[0].id;
         for (const { id } of sections) {
-          const el = sectionEls.current.get(id);
+          const el = document.getElementById(id);
           if (el && el.offsetTop <= offset) {
             active = id;
           }

@@ -117,7 +117,7 @@
   --spacing-4xl: 96px;
 
   /* ─── Layout ─── */
-  --content-max-width: 1200px;
+  --content-max-width: min(1200px, calc(100vw - 100px));
   --section-padding: 80px 24px;
 
   /* ─── Z-index scale ─── */
