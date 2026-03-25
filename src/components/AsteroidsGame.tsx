@@ -10,6 +10,7 @@ import {
 import { createGameState } from './game/spawner';
 import { update, spawnParticle } from './game/update';
 import { renderBackground, renderGame, renderIntro, renderDeath, renderOutro } from './game/render';
+import { audio } from './game/audio';
 
 function resizeCanvas(canvas: HTMLCanvasElement) {
   const dpr = window.devicePixelRatio || 1;
@@ -51,7 +52,7 @@ export function AsteroidsGame({ onComplete }: { onComplete: () => void }) {
 
     // ─── Input ───
     const makeDeathChoice = (choice: 'y' | 'n') => {
-      if (gs.deathChoice === 0) { gs.deathChoice = choice; gs.deathChoiceAt = performance.now(); }
+      if (gs.deathChoice === 0) { gs.deathChoice = choice; gs.deathChoiceAt = performance.now(); audio.select(); }
     };
     const onKeyDown = (e: KeyboardEvent) => {
       if (phaseRef.current === 'death') {
@@ -77,11 +78,15 @@ export function AsteroidsGame({ onComplete }: { onComplete: () => void }) {
       gs.firing = true;
     };
     const onMouseUp = () => { gs.firing = false; };
+    const onMouseMove = (e: MouseEvent) => {
+      gs.mouseX = e.clientX; gs.mouseY = e.clientY; gs.mouseActive = true;
+    };
 
     window.addEventListener('keydown', onKeyDown);
     window.addEventListener('keyup', onKeyUp);
     canvas.addEventListener('mousedown', onMouseDown);
     canvas.addEventListener('mouseup', onMouseUp);
+    canvas.addEventListener('mousemove', onMouseMove);
 
     // ─── Game loop ───
     function loop() {
@@ -108,14 +113,17 @@ export function AsteroidsGame({ onComplete }: { onComplete: () => void }) {
             const a = Math.random() * Math.PI * 2, spd = 50 + Math.random() * 400;
             spawnParticle(gs, gs.deathX, gs.deathY, Math.cos(a) * spd, Math.sin(a) * spd, 0.8 + Math.random() * 1.2, colors[i % 3], 3 + Math.random() * 5);
           }
+          audio.explosion();
           phaseRef.current = 'death'; phaseStartRef.current = now; gs.firing = false; gs.deathChoice = 0; gs.deathChoiceAt = 0;
         } else if (gs.spawnIndex >= gs.spawnQueue.length && gs.targets.length === 0 && gs.fragments.length === 0) {
           phaseRef.current = 'destroyed'; phaseStartRef.current = now;
         }
       } else if (phase === 'death') {
         gs.particles.filter(p => { p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt; return p.life > 0; });
-        Matter.Engine.update(engineRef.current, dt * 1000);
-        gs.fragments = gs.fragments.filter(f => { f.life -= dt * FRAGMENT_DECAY_DEATH; if (f.life <= 0) { Matter.Composite.remove(engineRef.current.world, f.body); return false; } return true; });
+        if (gs.fragments.length > 0) {
+          Matter.Engine.update(engineRef.current, dt * 1000);
+          gs.fragments = gs.fragments.filter(f => { f.life -= dt * FRAGMENT_DECAY_DEATH; if (f.life <= 0) { Matter.Composite.remove(engineRef.current.world, f.body); return false; } return true; });
+        }
 
         renderDeath(ctx, gs, W, H, phaseElapsed);
 
@@ -144,8 +152,10 @@ export function AsteroidsGame({ onComplete }: { onComplete: () => void }) {
           gs.lastSpawnTime = performance.now();
         }
       } else if (phase === 'destroyed') {
-        Matter.Engine.update(engineRef.current, dt * 1000);
-        gs.fragments = gs.fragments.filter(f => { f.life -= dt * FRAGMENT_DECAY_DEATH; if (f.life <= 0) { Matter.Composite.remove(engineRef.current.world, f.body); return false; } return true; });
+        if (gs.fragments.length > 0) {
+          Matter.Engine.update(engineRef.current, dt * 1000);
+          gs.fragments = gs.fragments.filter(f => { f.life -= dt * FRAGMENT_DECAY_DEATH; if (f.life <= 0) { Matter.Composite.remove(engineRef.current.world, f.body); return false; } return true; });
+        }
         gs.particles.filter(p => { p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt; return p.life > 0; });
         for (const f of gs.fragments) {
           const pos = f.body.position;
@@ -174,6 +184,7 @@ export function AsteroidsGame({ onComplete }: { onComplete: () => void }) {
       window.removeEventListener('keyup', onKeyUp);
       canvas.removeEventListener('mousedown', onMouseDown);
       canvas.removeEventListener('mouseup', onMouseUp);
+      canvas.removeEventListener('mousemove', onMouseMove);
       Matter.Engine.clear(engineRef.current);
     };
   }, [onComplete]);

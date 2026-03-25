@@ -1,8 +1,9 @@
 import type Matter from 'matter-js';
 
 export interface Ship { x: number; y: number }
-export interface Bullet { x: number; y: number; active: boolean }
-export interface EnemyBullet { x: number; y: number; vx: number; vy: number; active: boolean }
+export interface Bullet { x: number; y: number; prevX: number; prevY: number; active: boolean }
+export interface EnemyBullet { x: number; y: number; vx: number; vy: number; prevX: number; prevY: number; active: boolean }
+export type MovePattern = 'straight' | 'weave' | 'dive';
 export interface Target {
   id: number; x: number; y: number;
   width: number; height: number;
@@ -10,6 +11,7 @@ export interface Target {
   color: string; speed: number;
   flashUntil: number;
   fireRate: number;
+  movePattern: MovePattern;
 }
 export interface Particle { x: number; y: number; vx: number; vy: number; life: number; color: string; size: number; active: boolean }
 export interface Fragment {
@@ -72,6 +74,9 @@ export class Pool<T> {
 
 export interface GameState {
   ship: Ship;
+  mouseX: number;
+  mouseY: number;
+  mouseActive: boolean;
   bullets: Pool<Bullet>;
   enemyBullets: Pool<EnemyBullet>;
   particles: Pool<Particle>;
@@ -81,7 +86,7 @@ export interface GameState {
   keys: Set<string>;
   firing: boolean;
   lastBulletTime: number;
-  spawnQueue: Array<{ text: string; color: string; hp: number; fireRate: number; wave: number }>;
+  spawnQueue: Array<{ text: string; color: string; hp: number; fireRate: number; wave: number; movePattern: MovePattern }>;
   spawnIndex: number;
   lastSpawnTime: number;
   nextId: number;
@@ -93,6 +98,8 @@ export interface GameState {
   deathX: number;
   deathY: number;
   bossPhaseTimer: number;
+  bossCharging: boolean;
+  bossChargeStart: number;
   deathChoice: 0 | 'y' | 'n';
   deathChoiceAt: number;
 }

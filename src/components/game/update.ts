@@ -5,15 +5,16 @@ import {
   ENEMY_BULLET_SPEED, SPAWN_INTERVAL, BASE_ACTIVE_TARGETS, MAX_ACTIVE_TARGETS,
   HIT_INVINCIBILITY, SHIP_HIT_RADIUS, HELPER_HIT_RADIUS, PALETTE, FRAGMENT_DECAY,
 } from './constants';
+import { audio } from './audio';
 
 /* ── Pool spawn helpers ── */
 export function spawnEnemyBullet(gs: GameState, x: number, y: number, vx: number, vy: number) {
   const b = gs.enemyBullets.get();
-  b.x = x; b.y = y; b.vx = vx; b.vy = vy; b.active = true;
+  b.x = x; b.y = y; b.prevX = x; b.prevY = y; b.vx = vx; b.vy = vy; b.active = true;
 }
 export function spawnBullet(gs: GameState, x: number, y: number) {
   const b = gs.bullets.get();
-  b.x = x; b.y = y; b.active = true;
+  b.x = x; b.y = y; b.prevX = x; b.prevY = y; b.active = true;
 }
 export function spawnParticle(gs: GameState, x: number, y: number, vx: number, vy: number, life: number, color: string, size: number) {
   const p = gs.particles.get();
@@ -97,7 +98,7 @@ function fireEnemyBullets(t: Target, gs: GameState, now: number) {
 export function update(gs: GameState, dt: number, W: number, H: number, engine: Matter.Engine, now: number): 'dead' | null {
   gs.bossPhaseTimer += dt;
 
-  // Ship movement
+  // Ship movement — WASD overrides mouse, mouse uses smooth interpolation
   let dx = 0, dy = 0;
   if (gs.keys.has('ArrowLeft') || gs.keys.has('a')) dx -= 1;
   if (gs.keys.has('ArrowRight') || gs.keys.has('d')) dx += 1;
@@ -107,6 +108,12 @@ export function update(gs: GameState, dt: number, W: number, H: number, engine: 
     const len = Math.sqrt(dx * dx + dy * dy);
     gs.ship.x = Math.max(SHIP_SIZE / 2, Math.min(W - SHIP_SIZE / 2, gs.ship.x + (dx / len) * SHIP_SPEED * dt));
     gs.ship.y = Math.max(SHIP_SIZE / 2, Math.min(H - SHIP_SIZE / 2, gs.ship.y + (dy / len) * SHIP_SPEED * dt));
+  } else if (gs.mouseActive) {
+    const lerp = 1 - Math.pow(0.001, dt); // smooth ~12x/s interpolation
+    gs.ship.x += (gs.mouseX - gs.ship.x) * lerp;
+    gs.ship.y += (gs.mouseY - gs.ship.y) * lerp;
+    gs.ship.x = Math.max(SHIP_SIZE / 2, Math.min(W - SHIP_SIZE / 2, gs.ship.x));
+    gs.ship.y = Math.max(SHIP_SIZE / 2, Math.min(H - SHIP_SIZE / 2, gs.ship.y));
   }
 
   // Player fire
@@ -114,6 +121,7 @@ export function update(gs: GameState, dt: number, W: number, H: number, engine: 
     gs.lastBulletTime = now;
     spawnBullet(gs, gs.ship.x - 10, gs.ship.y - SHIP_SIZE / 2);
     spawnBullet(gs, gs.ship.x + 10, gs.ship.y - SHIP_SIZE / 2);
+    audio.laser();
   }
 
   // Helper movement & fire
@@ -138,8 +146,8 @@ export function update(gs: GameState, dt: number, W: number, H: number, engine: 
     }
   }
 
-  // Move bullets
-  gs.bullets.filter(b => { b.y -= BULLET_SPEED * dt; return b.y > -20; });
+  // Move bullets (store prev for trails)
+  gs.bullets.filter(b => { b.prevX = b.x; b.prevY = b.y; b.y -= BULLET_SPEED * dt; return b.y > -20; });
 
   // Spawn targets — wave at once, cap ramps with helpers
   const activeCap = Math.min(BASE_ACTIVE_TARGETS + gs.helpers.length * 2, MAX_ACTIVE_TARGETS);
@@ -153,29 +161,51 @@ export function update(gs: GameState, dt: number, W: number, H: number, engine: 
       spawned++;
       const width = Math.max(100, item.text.length * 10 + 32);
       const height = item.hp >= 16 ? 44 : 36;
+      const isBoss = item.hp >= 40;
       gs.targets.push({
         id: gs.nextId++,
-        x: 80 + Math.random() * (W - 160), y: -height - Math.random() * 40,
+        x: isBoss ? W / 2 : 80 + Math.random() * (W - 160),
+        y: -height - Math.random() * 40,
         width, height,
         text: item.text, hp: item.hp, maxHp: item.hp,
         color: item.color, speed: 22 + Math.random() * 18,
         flashUntil: 0, fireRate: item.fireRate,
+        movePattern: item.movePattern,
       });
     }
     gs.lastSpawnTime = now;
   }
 
-  // Move targets (boss stays near top)
+  // Move targets (boss stays at top center, others use movePattern)
   gs.targets = gs.targets.filter(t => {
     if (t.maxHp >= 40) {
+      // Boss: lock to top center
       const targetY = 80;
       if (t.y < targetY) t.y += t.speed * dt;
       else t.y += (targetY - t.y) * 2 * dt;
+      t.x += (W / 2 - t.x) * 3 * dt;
+    } else if (t.movePattern === 'weave') {
+      t.x += Math.sin(now / 500 + t.id * 1.7) * 60 * dt;
+      t.x = Math.max(t.width / 2 + 20, Math.min(W - t.width / 2 - 20, t.x));
+      t.y += t.speed * dt;
+      if (t.y > H + 10) {
+        gs.lives--; gs.screenShakeUntil = now + 200;
+        if (gs.lives <= 0) { gs.deathX = gs.ship.x; gs.deathY = gs.ship.y; }
+        return false;
+      }
+    } else if (t.movePattern === 'dive' && t.y > H * 0.3) {
+      const dx = gs.ship.x - t.x, dy = gs.ship.y - t.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist > 1) { t.x += (dx / dist) * t.speed * 1.5 * dt; t.y += (dy / dist) * t.speed * 1.5 * dt; }
+      if (t.y > H + 10) {
+        gs.lives--; gs.screenShakeUntil = now + 200;
+        if (gs.lives <= 0) { gs.deathX = gs.ship.x; gs.deathY = gs.ship.y; }
+        return false;
+      }
     } else {
       t.y += t.speed * dt;
       if (t.y > H + 10) {
-        gs.lives--;
-        gs.screenShakeUntil = now + 200;
+        gs.lives--; gs.screenShakeUntil = now + 200;
         if (gs.lives <= 0) { gs.deathX = gs.ship.x; gs.deathY = gs.ship.y; }
         return false;
       }
@@ -184,14 +214,27 @@ export function update(gs: GameState, dt: number, W: number, H: number, engine: 
   });
   if (gs.lives <= 0) return 'dead';
 
-  // Targets fire
+  // Targets fire (boss has telegraph delay)
   for (const t of gs.targets) {
     if (t.y < 0 || t.y > H) continue;
-    if (Math.random() < t.fireRate * dt) fireEnemyBullets(t, gs, now);
+    if (t.maxHp >= 40) {
+      // Boss: telegraph before firing
+      if (!gs.bossCharging && Math.random() < t.fireRate * dt) {
+        gs.bossCharging = true;
+        gs.bossChargeStart = now;
+        audio.bossWarn();
+      }
+      if (gs.bossCharging && now - gs.bossChargeStart >= 400) {
+        fireEnemyBullets(t, gs, now);
+        gs.bossCharging = false;
+      }
+    } else {
+      if (Math.random() < t.fireRate * dt) fireEnemyBullets(t, gs, now);
+    }
   }
 
-  // Move enemy bullets
-  gs.enemyBullets.filter(b => { b.x += b.vx * dt; b.y += b.vy * dt; return b.x > -30 && b.x < W + 30 && b.y > -30 && b.y < H + 30; });
+  // Move enemy bullets (store prev for trails)
+  gs.enemyBullets.filter(b => { b.prevX = b.x; b.prevY = b.y; b.x += b.vx * dt; b.y += b.vy * dt; return b.x > -30 && b.x < W + 30 && b.y > -30 && b.y < H + 30; });
 
   // Enemy bullet → helper absorption
   for (const h of gs.helpers) {
@@ -234,12 +277,14 @@ export function update(gs: GameState, dt: number, W: number, H: number, engine: 
       if (b.x >= t.x - t.width / 2 && b.x <= t.x + t.width / 2 && b.y >= t.y - t.height / 2 && b.y <= t.y + t.height / 2) {
         b.active = false;
         t.hp--; t.flashUntil = now + 80;
+        audio.hit();
         for (let i = 0; i < 6; i++) {
           const a = Math.random() * Math.PI * 2, spd = 80 + Math.random() * 200;
           spawnParticle(gs, b.x, b.y, Math.cos(a) * spd, Math.sin(a) * spd, 0.25 + Math.random() * 0.3, t.color, 2 + Math.random() * 2);
         }
         if (t.hp <= 0) {
           deadTargets.add(t.id);
+          audio.destroy();
           for (let i = 0; i < 24; i++) {
             const a = Math.random() * Math.PI * 2, spd = 40 + Math.random() * 300;
             spawnParticle(gs, t.x + (Math.random() - 0.5) * t.width, t.y + (Math.random() - 0.5) * t.height, Math.cos(a) * spd, Math.sin(a) * spd, 0.5 + Math.random() * 0.8, t.color, 2 + Math.random() * 4);
@@ -261,10 +306,25 @@ export function update(gs: GameState, dt: number, W: number, H: number, engine: 
   });
   gs.targets = gs.targets.filter(t => !deadTargets.has(t.id));
 
-  // Particles & fragments
-  gs.particles.filter(p => { p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt; return p.life > 0; });
-  Matter.Engine.update(engine, dt * 1000);
-  gs.fragments = gs.fragments.filter(f => { f.life -= dt * FRAGMENT_DECAY; if (f.life <= 0) { Matter.Composite.remove(engine.world, f.body); return false; } return true; });
+  // Particles (with bounds culling)
+  gs.particles.filter(p => {
+    p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt;
+    return p.life > 0 && p.x > -100 && p.x < W + 100 && p.y > -100 && p.y < H + 100;
+  });
+
+  // Fragments (with bounds culling, skip physics when empty)
+  if (gs.fragments.length > 0) {
+    Matter.Engine.update(engine, dt * 1000);
+    gs.fragments = gs.fragments.filter(f => {
+      const pos = f.body.position;
+      if (pos.x < -200 || pos.x > W + 200 || pos.y < -200 || pos.y > H + 200) {
+        Matter.Composite.remove(engine.world, f.body); return false;
+      }
+      f.life -= dt * FRAGMENT_DECAY;
+      if (f.life <= 0) { Matter.Composite.remove(engine.world, f.body); return false; }
+      return true;
+    });
+  }
 
   return null;
 }

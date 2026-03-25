@@ -7,12 +7,24 @@ import {
 
 export { INTRO_DURATION, OUTRO_DURATION, DEATH_EXPLOSION_DURATION, DEATH_PROMPT_TIME, DEATH_ACCEPT_DURATION };
 
+/* ── Cached scanline pattern ── */
+let scanlinePattern: CanvasPattern | null = null;
+function getScanlinePattern(ctx: CanvasRenderingContext2D): CanvasPattern {
+  if (scanlinePattern) return scanlinePattern;
+  const oc = new OffscreenCanvas(1, 3);
+  const octx = oc.getContext('2d')!;
+  octx.fillStyle = 'rgba(255,255,255,0.018)';
+  octx.fillRect(0, 0, 1, 1);
+  scanlinePattern = ctx.createPattern(oc, 'repeat')!;
+  return scanlinePattern;
+}
+
 /* ── Background ── */
 export function renderBackground(ctx: CanvasRenderingContext2D, W: number, H: number) {
   ctx.fillStyle = '#0a0a0c';
   ctx.fillRect(0, 0, W, H);
-  ctx.fillStyle = 'rgba(255,255,255,0.018)';
-  for (let y = 0; y < H; y += 3) ctx.fillRect(0, y, W, 1);
+  ctx.fillStyle = getScanlinePattern(ctx);
+  ctx.fillRect(0, 0, W, H);
 }
 
 /* ── Playing phase ── */
@@ -47,6 +59,26 @@ export function renderGame(ctx: CanvasRenderingContext2D, gs: GameState, W: numb
     ctx.restore();
   }
 
+  // Boss telegraph glow
+  if (gs.bossCharging) {
+    const boss = gs.targets.find(t => t.maxHp >= 40);
+    if (boss) {
+      const pulse = 0.3 + Math.sin(now / 50) * 0.2;
+      ctx.strokeStyle = `rgba(226, 120, 120, ${pulse})`;
+      ctx.lineWidth = 3;
+      ctx.strokeRect(boss.x - boss.width / 2 - 6, boss.y - boss.height / 2 - 6, boss.width + 12, boss.height + 12);
+      // Aim line toward ship
+      ctx.globalAlpha = 0.12;
+      ctx.strokeStyle = '#E27878';
+      ctx.lineWidth = 1;
+      ctx.beginPath();
+      ctx.moveTo(boss.x, boss.y + boss.height / 2);
+      ctx.lineTo(gs.ship.x, gs.ship.y);
+      ctx.stroke();
+      ctx.globalAlpha = 1;
+    }
+  }
+
   // Fragments
   for (const f of gs.fragments) {
     const p = f.body.position;
@@ -62,16 +94,38 @@ export function renderGame(ctx: CanvasRenderingContext2D, gs: GameState, W: numb
   });
   ctx.globalAlpha = 1;
 
-  // Player bullets
-  ctx.fillStyle = '#F3F5FC';
-  gs.bullets.forEach(b => ctx.fillRect(b.x - 2, b.y - 5, 4, 10));
-
-  // Enemy bullets (diamonds)
-  ctx.fillStyle = PALETTE.enemyBullet;
-  gs.enemyBullets.forEach(eb => {
-    ctx.save(); ctx.translate(eb.x, eb.y); ctx.rotate(Math.PI / 4);
-    ctx.fillRect(-4, -4, 8, 8); ctx.restore();
+  // Player bullets (with trails)
+  gs.bullets.forEach(b => {
+    ctx.globalAlpha = 0.1; ctx.fillStyle = '#F3F5FC';
+    ctx.fillRect(b.x - 1, b.y + 20, 2, 8);
+    ctx.globalAlpha = 0.3;
+    ctx.fillRect(b.x - 1.5, b.y + 10, 3, 10);
+    ctx.globalAlpha = 0.6;
+    ctx.fillRect(b.x - 2, b.y + 2, 4, 8);
+    ctx.globalAlpha = 1;
+    ctx.fillRect(b.x - 2, b.y - 5, 4, 10);
   });
+
+  // Enemy bullets (batched diamonds with afterimage trail)
+  ctx.fillStyle = PALETTE.enemyBullet;
+  ctx.globalAlpha = 0.25;
+  ctx.beginPath();
+  gs.enemyBullets.forEach(eb => {
+    ctx.moveTo(eb.prevX, eb.prevY - 5.66);
+    ctx.lineTo(eb.prevX + 5.66, eb.prevY);
+    ctx.lineTo(eb.prevX, eb.prevY + 5.66);
+    ctx.lineTo(eb.prevX - 5.66, eb.prevY);
+  });
+  ctx.fill();
+  ctx.globalAlpha = 1;
+  ctx.beginPath();
+  gs.enemyBullets.forEach(eb => {
+    ctx.moveTo(eb.x, eb.y - 5.66);
+    ctx.lineTo(eb.x + 5.66, eb.y);
+    ctx.lineTo(eb.x, eb.y + 5.66);
+    ctx.lineTo(eb.x - 5.66, eb.y);
+  });
+  ctx.fill();
 
   // Helpers
   for (const h of gs.helpers) {
@@ -236,8 +290,8 @@ export function renderDeath(ctx: CanvasRenderingContext2D, gs: GameState, W: num
   const textElapsed = elapsed - DEATH_EXPLOSION_DURATION;
 
   ctx.fillStyle = '#0a0a0c'; ctx.fillRect(0, 0, W, H);
-  ctx.fillStyle = 'rgba(255,255,255,0.012)';
-  for (let y = 0; y < H; y += 3) ctx.fillRect(0, y, W, 1);
+  ctx.fillStyle = getScanlinePattern(ctx);
+  ctx.fillRect(0, 0, W, H);
 
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
 
@@ -332,8 +386,8 @@ export function renderDeath(ctx: CanvasRenderingContext2D, gs: GameState, W: num
 export function renderOutro(ctx: CanvasRenderingContext2D, _gs: GameState, W: number, H: number, elapsed: number) {
   const fade = Math.min(elapsed / 1200, 1);
   ctx.fillStyle = `rgba(10, 10, 12, ${fade})`; ctx.fillRect(0, 0, W, H);
-  ctx.fillStyle = 'rgba(255,255,255,0.015)';
-  for (let y = 0; y < H; y += 3) ctx.fillRect(0, y, W, 1);
+  ctx.fillStyle = getScanlinePattern(ctx);
+  ctx.fillRect(0, 0, W, H);
 
   const messages = [
     { text: 'everything was destroyed.', start: 1500, color: '#F3F5FC' },
