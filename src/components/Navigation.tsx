@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Home, Briefcase, FolderGit2, Wrench, GraduationCap, Sun, Moon } from 'lucide-react';
 import { sections } from '../data/portfolio';
+import { useTheme } from '../lib/useTheme';
 import { cn } from '../lib/utils';
 import styles from '../styles/components/Navigation.module.scss';
 
@@ -14,12 +15,7 @@ const sectionIcons: Record<string, typeof Home> = {
 
 export function Navigation() {
   const [activeSection, setActiveSection] = useState('hero');
-  const [theme, setTheme] = useState<'dark' | 'light'>(() => {
-    if (typeof window !== 'undefined') {
-      return (localStorage.getItem('theme') as 'dark' | 'light') || 'dark';
-    }
-    return 'dark';
-  });
+  const { theme, toggleTheme } = useTheme();
 
   useEffect(() => {
     let ticking = false;
@@ -50,15 +46,8 @@ export function Navigation() {
     document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
   };
 
-  const toggleTheme = () => {
-    const next = theme === 'dark' ? 'light' : 'dark';
-    setTheme(next);
-    document.documentElement.setAttribute('data-theme', next);
-    localStorage.setItem('theme', next);
-  };
-
   return (
-    <nav className={cn(styles.nav, 'no-print')} aria-label="Section navigation">
+    <nav className={cn('no-print')} aria-label="Section navigation">
       {/* Desktop: dot nav on right */}
       <div className={styles.dotNav}>
         {sections.map(({ id, label }) => (

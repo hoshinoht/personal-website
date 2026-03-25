@@ -15,8 +15,14 @@ export function Button({ variant = 'filled', href, children, className, onClick,
   const classes = cn(styles.button, styles[variant], className);
 
   if (href) {
+    const isExternal = !href.startsWith('mailto:') && !href.startsWith('tel:');
     return (
-      <a href={href} className={classes} target="_blank" rel="noopener noreferrer" {...props}>
+      <a
+        href={href}
+        className={classes}
+        {...(isExternal ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+        {...props}
+      >
         {children}
       </a>
     );

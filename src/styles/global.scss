@@ -52,26 +52,6 @@ main {
   background: var(--md-sys-color-on-surface-variant);
 }
 
-/* ─── Section base ─── */
-.section {
-  padding: var(--section-padding);
-  max-width: var(--content-max-width);
-  margin: 0 auto;
-}
-
-/* ─── Utilities ─── */
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
 /* ─── Blink cursor animation ─── */
 @keyframes blink {
   0%, 50% { opacity: 1; }

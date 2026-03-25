@@ -3,7 +3,6 @@ import { projects } from '../data/portfolio';
 import { getDomainAccentColor } from '../lib/techColors';
 import styles from '../styles/components/ProjectGraph.module.scss';
 
-const allProjects = projects;
 
 interface Edge {
   from: number;
@@ -14,10 +13,10 @@ interface Edge {
 
 function buildEdges(): Edge[] {
   const edges: Edge[] = [];
-  for (let i = 0; i < allProjects.length; i++) {
-    for (let j = i + 1; j < allProjects.length; j++) {
-      const setA = new Set(allProjects[i].tech.map((t) => t.toLowerCase()));
-      const shared = allProjects[j].tech.filter((t) => setA.has(t.toLowerCase()));
+  for (let i = 0; i < projects.length; i++) {
+    for (let j = i + 1; j < projects.length; j++) {
+      const setA = new Set(projects[i].tech.map((t) => t.toLowerCase()));
+      const shared = projects[j].tech.filter((t) => setA.has(t.toLowerCase()));
       if (shared.length >= 1) {
         edges.push({ from: i, to: j, shared, weight: shared.length });
       }
@@ -43,7 +42,7 @@ function getEdgeColor(weight: number): string {
 function getNodePositions(count: number, width: number, height: number) {
   const cx = width / 2;
   const cy = height / 2;
-  const featured = allProjects.map((p) => p.featured);
+  const featured = projects.map((p) => p.featured);
   const innerCount = featured.filter(Boolean).length;
   const outerCount = count - innerCount;
   const innerRadius = Math.min(cx, cy) * 0.38;
@@ -75,7 +74,7 @@ export function ProjectGraph() {
 
   const width = 800;
   const height = 650;
-  const positions = useMemo(() => getNodePositions(allProjects.length, width, height), []);
+  const positions = useMemo(() => getNodePositions(projects.length, width, height), []);
 
   const activeEdges = hoveredNode !== null
     ? edges.filter((e) => e.from === hoveredNode || e.to === hoveredNode)
@@ -148,7 +147,7 @@ export function ProjectGraph() {
 
             {/* Nodes — interactive hit areas + visible circles */}
             {positions.map((pos, i) => {
-              const project = allProjects[i];
+              const project = projects[i];
               const isFeatured = project.featured;
               const isActive = connectedNodes === null || connectedNodes.has(i);
               const isHovered = hoveredNode === i;
@@ -194,7 +193,7 @@ export function ProjectGraph() {
             {/* Labels + edge labels — non-interactive overlay */}
             <g pointerEvents="none">
               {positions.map((pos, i) => {
-                const project = allProjects[i];
+                const project = projects[i];
                 const isFeatured = project.featured;
                 const isActive = connectedNodes === null || connectedNodes.has(i);
                 const isHovered = hoveredNode === i;

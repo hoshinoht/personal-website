@@ -59,7 +59,7 @@ export function ExperienceTimeline() {
                   </div>
                   <div className={styles.meta}>
                     <span className={styles.period}>{exp.period}</span>
-                    <span className={`${styles.typeBadge} ${styles[exp.type]}`}>
+                    <span className={cn(styles.typeBadge, styles[exp.type])}>
                       {exp.type}
                     </span>
                     <ChevronDown

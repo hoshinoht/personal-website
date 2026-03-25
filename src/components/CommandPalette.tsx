@@ -4,7 +4,9 @@ import {
   X, Command,
 } from 'lucide-react';
 import { bio, experiences, projects, skillCategories, education, sections } from '../data/portfolio';
+import { cn } from '../lib/utils';
 import { useFocusTrap } from '../lib/useFocusTrap';
+import { useTheme } from '../lib/useTheme';
 import styles from '../styles/components/CommandPalette.module.scss';
 
 type ResultType = 'action' | 'section' | 'experience' | 'project' | 'skill' | 'education';
@@ -34,12 +36,7 @@ function buildIndex(): SearchResult[] {
     title: 'Toggle Theme',
     subtitle: 'Switch between dark and light mode',
     keywords: 'theme dark light mode toggle sun moon catppuccin',
-    action: () => {
-      const current = document.documentElement.getAttribute('data-theme') || 'dark';
-      const next = current === 'dark' ? 'light' : 'dark';
-      document.documentElement.setAttribute('data-theme', next);
-      localStorage.setItem('theme', next);
-    },
+    action: () => {/* replaced at runtime */},
   });
 
   results.push({
@@ -177,8 +174,14 @@ export function CommandPalette() {
   const listRef = useRef<HTMLDivElement>(null);
   const paletteRef = useRef<HTMLDivElement>(null);
   useFocusTrap(paletteRef, open);
+  const { toggleTheme } = useTheme();
 
-  const index = useMemo(buildIndex, []);
+  const index = useMemo(() => {
+    const items = buildIndex();
+    const themeAction = items.find((r) => r.title === 'Toggle Theme');
+    if (themeAction) themeAction.action = toggleTheme;
+    return items;
+  }, [toggleTheme]);
 
   const results = useMemo(() => {
     if (!query.trim()) {
@@ -270,7 +273,7 @@ export function CommandPalette() {
             return (
               <button
                 key={`${result.type}-${result.title}-${i}`}
-                className={`${styles.result} ${i === selectedIndex ? styles.resultActive : ''}`}
+                className={cn(styles.result, i === selectedIndex && styles.resultActive)}
                 onClick={() => {
                   result.action();
                   setOpen(false);

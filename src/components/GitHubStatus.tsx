@@ -29,7 +29,10 @@ export function GitHubStatus() {
       signal: controller.signal,
       headers: { Accept: 'application/vnd.github.v3+json' },
     })
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error(r.statusText);
+        return r.json();
+      })
       .then((events: GithubEvent[]) => {
         const pushEvent = events.find((e) => e.type === 'PushEvent');
         if (pushEvent) {

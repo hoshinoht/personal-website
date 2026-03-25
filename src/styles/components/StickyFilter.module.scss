@@ -53,6 +53,7 @@
   background-color: var(--md-sys-color-primary);
   color: var(--md-sys-color-on-primary);
   border-color: var(--md-sys-color-primary);
+  box-shadow: 0 0 12px rgba(196, 162, 212, 0.3);
 }
 
 .pillActive:hover {
@@ -88,10 +89,6 @@
 
 .iconActive {
   animation: iconPop 0.35s var(--md-sys-motion-easing-standard);
-}
-
-.pillActive {
-  box-shadow: 0 0 12px rgba(196, 162, 212, 0.3);
 }
 
 .searchHint {
