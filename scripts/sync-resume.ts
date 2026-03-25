@@ -244,6 +244,7 @@ function main() {
   lines.push('  skills: string[];');
   lines.push('  bullets: string[];');
   lines.push('  domains: Domain[];');
+  lines.push('  atsTags: string[];');
   lines.push('}');
   lines.push('');
   lines.push('export const experiences: Experience[] = [');
@@ -259,6 +260,7 @@ function main() {
     lines.push(`    skills: ${toArrayLiteral(role.skills_used, '    ')},`);
     lines.push(`    bullets: ${toArrayLiteral(role.bullets, '    ')},`);
     lines.push(`    domains: ${toArrayLiteral(domains, '    ')},`);
+    lines.push(`    atsTags: ${toArrayLiteral(role.ats_tags, '    ')},`);
     lines.push('  },');
   }
 
@@ -278,6 +280,7 @@ function main() {
   lines.push('  tech: string[];');
   lines.push('  featured: boolean;');
   lines.push('  domains: Domain[];');
+  lines.push('  atsTags: string[];');
   lines.push('}');
   lines.push('');
   lines.push('export const projects: Project[] = [');
@@ -308,6 +311,7 @@ function main() {
     lines.push(`    tech: ${toArrayLiteral(techList, '    ')},`);
     lines.push(`    featured: ${FEATURED_IDS.has(proj.id)},`);
     lines.push(`    domains: ${toArrayLiteral(domains, '    ')},`);
+    lines.push(`    atsTags: ${toArrayLiteral(proj.ats_tags, '    ')},`);
     lines.push('  },');
   }
 
@@ -317,7 +321,7 @@ function main() {
   // ─── Skills ───
   lines.push('export interface SkillCategory {');
   lines.push('  name: string;');
-  lines.push("  skills: { name: string; proficiency: 'advanced' | 'intermediate' | 'familiar' }[];");
+  lines.push("  skills: { name: string; proficiency: 'advanced' | 'intermediate' | 'familiar'; atsKeywords: string[] }[];");
   lines.push('}');
   lines.push('');
   lines.push('export const skillCategories: SkillCategory[] = [');
@@ -327,7 +331,7 @@ function main() {
     lines.push(`    name: '${escapeStr(cat.name)}',`);
     lines.push('    skills: [');
     for (const skill of cat.skills) {
-      lines.push(`      { name: '${escapeStr(skill.name)}', proficiency: '${skill.proficiency}' },`);
+      lines.push(`      { name: '${escapeStr(skill.name)}', proficiency: '${skill.proficiency}', atsKeywords: ${JSON.stringify(skill.ats_keywords)} },`);
     }
     lines.push('    ],');
     lines.push('  },');
@@ -362,12 +366,13 @@ function main() {
   lines.push('export interface Certification {');
   lines.push('  name: string;');
   lines.push('  issuer: string;');
+  lines.push('  atsKeywords: string[];');
   lines.push('}');
   lines.push('');
   lines.push('export const certifications: Certification[] = [');
 
   for (const cert of certsData.certifications) {
-    lines.push(`  { name: '${escapeStr(cert.name)}', issuer: '${escapeStr(cert.issuer)}' },`);
+    lines.push(`  { name: '${escapeStr(cert.name)}', issuer: '${escapeStr(cert.issuer)}', atsKeywords: ${JSON.stringify(cert.ats_keywords)} },`);
   }
 
   lines.push('];');

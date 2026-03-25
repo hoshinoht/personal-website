@@ -1,13 +1,13 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { FileText, X, Sparkles } from 'lucide-react';
-import { projects, experiences, skillCategories } from '../data/portfolio';
+import { projects, experiences, skillCategories, certifications } from '../data/portfolio';
 import { useScrolledPast } from '../lib/useScrolledPast';
 import { cn } from '../lib/utils';
 import styles from '../styles/components/JdMatcher.module.scss';
 
 interface MatchResult {
-  type: 'project' | 'experience' | 'skill';
+  type: 'project' | 'experience' | 'skill' | 'certification';
   name: string;
   score: number;
   matchedKeywords: string[];
@@ -54,7 +54,7 @@ function analyzeJd(jdText: string): MatchResult[] {
   const results: MatchResult[] = [];
 
   for (const proj of projects) {
-    const targets = [...proj.tech, ...proj.domains, proj.name];
+    const targets = [...proj.tech, ...proj.atsTags, ...proj.domains, proj.name];
     const { score, matched } = scoreMatch(keywords, targets);
     if (score > 0) {
       results.push({ type: 'project', name: proj.name, score, matchedKeywords: matched });
@@ -62,7 +62,7 @@ function analyzeJd(jdText: string): MatchResult[] {
   }
 
   for (const exp of experiences) {
-    const targets = [...exp.skills, exp.title, exp.company];
+    const targets = [...exp.skills, ...exp.atsTags, exp.title, exp.company];
     const { score, matched } = scoreMatch(keywords, targets);
     if (score > 0) {
       results.push({ type: 'experience', name: `${exp.title} — ${exp.company}`, score, matchedKeywords: matched });
@@ -71,11 +71,19 @@ function analyzeJd(jdText: string): MatchResult[] {
 
   for (const cat of skillCategories) {
     for (const skill of cat.skills) {
-      const targets = [skill.name, cat.name];
+      const targets = [skill.name, ...skill.atsKeywords, cat.name];
       const { score, matched } = scoreMatch(keywords, targets);
       if (score > 0) {
         results.push({ type: 'skill', name: skill.name, score, matchedKeywords: matched });
       }
+    }
+  }
+
+  for (const cert of certifications) {
+    const targets = [cert.name, cert.issuer, ...cert.atsKeywords];
+    const { score, matched } = scoreMatch(keywords, targets);
+    if (score > 0) {
+      results.push({ type: 'certification', name: `${cert.name} — ${cert.issuer}`, score, matchedKeywords: matched });
     }
   }
 
@@ -97,6 +105,8 @@ export function JdMatcher() {
     setJdText('');
     setResults(null);
   };
+
+  const maxScore = results && results.length > 0 ? results[0].score : 1;
 
   return (
     <>
@@ -152,21 +162,30 @@ export function JdMatcher() {
             {results && (
               <div className={styles.results}>
                 <p className={styles.resultCount}>
-                  {results.length} matching items found
+                  Top {Math.min(results.length, 15)} of {results.length} matches
                 </p>
-                {results.slice(0, 15).map((r, i) => (
-                  <div key={`${r.type}-${r.name}-${i}`} className={styles.resultItem}>
-                    <div className={styles.resultHeader}>
-                      <span className={styles.resultName}>{r.name}</span>
-                      <span className={styles.resultType}>{r.type}</span>
+                {results.slice(0, 15).map((r, i) => {
+                  const pct = Math.round((r.score / maxScore) * 100);
+                  return (
+                    <div key={`${r.type}-${r.name}-${i}`} className={styles.resultItem}>
+                      <div className={styles.resultHeader}>
+                        <span className={styles.resultName}>{r.name}</span>
+                        <div className={styles.resultMeta}>
+                          <span className={styles.scoreBadge}>{pct}%</span>
+                          <span className={styles.resultType}>{r.type}</span>
+                        </div>
+                      </div>
+                      <div className={styles.scoreBarTrack}>
+                        <div className={styles.scoreBar} style={{ width: `${pct}%` }} />
+                      </div>
+                      <div className={styles.matchedKeywords}>
+                        {r.matchedKeywords.map((kw) => (
+                          <span key={kw} className={styles.keyword}>{kw}</span>
+                        ))}
+                      </div>
                     </div>
-                    <div className={styles.matchedKeywords}>
-                      {r.matchedKeywords.map((kw) => (
-                        <span key={kw} className={styles.keyword}>{kw}</span>
-                      ))}
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </motion.div>
