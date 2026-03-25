@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, useMemo, type ReactNode } from 'react';
 import { domains, type Domain } from '../data/portfolio';
 
 interface FilterState {
@@ -28,15 +28,11 @@ function domainToHash(domain: Domain | null): string {
 export function FilterProvider({ children }: { children: ReactNode }) {
   const [activeDomain, setActiveDomainState] = useState<Domain | null>(domainFromHash);
 
-  const setActiveDomain = (domain: Domain | null) => {
+  const setActiveDomain = useCallback((domain: Domain | null) => {
     setActiveDomainState(domain);
     const hash = domainToHash(domain);
-    if (hash) {
-      window.history.replaceState(null, '', hash);
-    } else {
-      window.history.replaceState(null, '', window.location.pathname);
-    }
-  };
+    window.history.replaceState(null, '', hash || window.location.pathname);
+  }, []);
 
   useEffect(() => {
     const handler = () => setActiveDomainState(domainFromHash());
@@ -44,8 +40,10 @@ export function FilterProvider({ children }: { children: ReactNode }) {
     return () => window.removeEventListener('hashchange', handler);
   }, []);
 
+  const value = useMemo(() => ({ activeDomain, setActiveDomain }), [activeDomain, setActiveDomain]);
+
   return (
-    <FilterContext.Provider value={{ activeDomain, setActiveDomain }}>
+    <FilterContext.Provider value={value}>
       {children}
     </FilterContext.Provider>
   );

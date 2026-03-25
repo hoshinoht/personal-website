@@ -19,7 +19,7 @@ interface SearchResult {
   action: () => void;
 }
 
-function buildIndex(): SearchResult[] {
+function buildIndex(toggleTheme: () => void): SearchResult[] {
   const results: SearchResult[] = [];
 
   // ─── Quick Actions (always at top when relevant) ───
@@ -36,7 +36,7 @@ function buildIndex(): SearchResult[] {
     title: 'Toggle Theme',
     subtitle: 'Switch between dark and light mode',
     keywords: 'theme dark light mode toggle sun moon catppuccin',
-    action: () => {/* replaced at runtime */},
+    action: toggleTheme,
   });
 
   results.push({
@@ -176,12 +176,7 @@ export function CommandPalette() {
   useFocusTrap(paletteRef, open);
   const { toggleTheme } = useTheme();
 
-  const index = useMemo(() => {
-    const items = buildIndex();
-    const themeAction = items.find((r) => r.title === 'Toggle Theme');
-    if (themeAction) themeAction.action = toggleTheme;
-    return items;
-  }, [toggleTheme]);
+  const index = useMemo(() => buildIndex(toggleTheme), [toggleTheme]);
 
   const results = useMemo(() => {
     if (!query.trim()) {
@@ -207,8 +202,13 @@ export function CommandPalette() {
       }
       if (e.key === 'Escape') setOpen(false);
     };
+    const openHandler = () => setOpen(true);
     window.addEventListener('keydown', handler);
-    return () => window.removeEventListener('keydown', handler);
+    window.addEventListener('open-command-palette', openHandler);
+    return () => {
+      window.removeEventListener('keydown', handler);
+      window.removeEventListener('open-command-palette', openHandler);
+    };
   }, []);
 
   useEffect(() => {

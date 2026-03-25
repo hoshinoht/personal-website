@@ -3,7 +3,7 @@ import type { GameState, Target } from './types';
 import {
   SHIP_SIZE, SHIP_SPEED, BULLET_SPEED, BULLET_INTERVAL, HELPER_FIRE_INTERVAL,
   ENEMY_BULLET_SPEED, SPAWN_INTERVAL, BASE_ACTIVE_TARGETS, MAX_ACTIVE_TARGETS,
-  HIT_INVINCIBILITY, SHIP_HIT_RADIUS, HELPER_HIT_RADIUS, PALETTE,
+  HIT_INVINCIBILITY, SHIP_HIT_RADIUS, HELPER_HIT_RADIUS, PALETTE, FRAGMENT_DECAY,
 } from './constants';
 
 /* ── Pool spawn helpers ── */
@@ -264,7 +264,7 @@ export function update(gs: GameState, dt: number, W: number, H: number, engine: 
   // Particles & fragments
   gs.particles.filter(p => { p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt; return p.life > 0; });
   Matter.Engine.update(engine, dt * 1000);
-  gs.fragments = gs.fragments.filter(f => { f.life -= dt * 0.4; if (f.life <= 0) { Matter.Composite.remove(engine.world, f.body); return false; } return true; });
+  gs.fragments = gs.fragments.filter(f => { f.life -= dt * FRAGMENT_DECAY; if (f.life <= 0) { Matter.Composite.remove(engine.world, f.body); return false; } return true; });
 
   return null;
 }

@@ -162,9 +162,12 @@ function renderColoredText(text: string): React.ReactNode {
 }
 
 interface HistoryEntry {
+  id: number;
   input: string;
   output: string;
 }
+
+let nextEntryId = 0;
 
 export function Terminal() {
   const [open, setOpen] = useState(false);
@@ -198,7 +201,7 @@ export function Terminal() {
     if (open) {
       setTimeout(() => inputRef.current?.focus(), 50);
       if (history.length === 0) {
-        setHistory([{ input: '', output: "Welcome to Po Haoting's terminal. Type 'help' to get started." }]);
+        setHistory([{ id: nextEntryId++, input: '', output: "Welcome to Po Haoting's terminal. Type 'help' to get started." }]);
       }
     }
   }, [open, history.length]);
@@ -233,9 +236,9 @@ export function Terminal() {
       if (targetId) {
         setOpen(false);
         setTimeout(() => document.getElementById(targetId)?.scrollIntoView({ behavior: 'smooth' }), 100);
-        setHistory((h) => [...h, { input, output: `Navigating to ${section}...` }]);
+        setHistory((h) => [...h, { id: nextEntryId++, input, output: `Navigating to ${section}...` }]);
       } else {
-        setHistory((h) => [...h, { input, output: `cd: unknown section '${section}'. Try: hero, experience, projects, skills, education` }]);
+        setHistory((h) => [...h, { id: nextEntryId++, input, output: `cd: unknown section '${section}'. Try: hero, experience, projects, skills, education` }]);
       }
       setCmdHistory((h) => [input, ...h]);
       setInput('');
@@ -243,7 +246,7 @@ export function Terminal() {
       return;
     }
 
-    setHistory((h) => [...h, { input, output }]);
+    setHistory((h) => [...h, { id: nextEntryId++, input, output }]);
     setCmdHistory((h) => [input, ...h]);
     setInput('');
     setHistoryIndex(-1);
@@ -291,8 +294,8 @@ export function Terminal() {
         </div>
 
         <div className={styles.body} ref={scrollRef}>
-          {history.map((entry, i) => (
-            <div key={i} className={styles.entry}>
+          {history.map((entry) => (
+            <div key={entry.id} className={styles.entry}>
               {entry.input && (
                 <div className={styles.inputLine}>
                   <div><span className={styles.promptDir}>.../portfolio </span><span className={styles.promptGit}>main </span><span className={styles.promptDirty}>!</span></div>

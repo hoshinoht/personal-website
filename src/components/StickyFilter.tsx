@@ -64,7 +64,7 @@ export function StickyFilter() {
 
           <button
             className={cn(styles.pill, styles.searchHint)}
-            onClick={() => window.dispatchEvent(new KeyboardEvent('keydown', { key: 'k', metaKey: true }))}
+            onClick={() => window.dispatchEvent(new CustomEvent('open-command-palette'))}
             aria-label="Open search"
           >
             <Search className={styles.icon} />

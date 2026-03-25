@@ -1,7 +1,7 @@
 .overlay {
   position: fixed;
   inset: 0;
-  z-index: 9999;
+  z-index: calc(var(--z-overlay) + 1);
   background: #0a0a0c;
   cursor: crosshair;
 }

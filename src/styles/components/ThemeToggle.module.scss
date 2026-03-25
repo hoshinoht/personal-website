@@ -2,7 +2,7 @@
   position: fixed;
   top: 20px;
   right: 20px;
-  z-index: 800;
+  z-index: var(--z-fab);
   width: 40px;
   height: 40px;
   border-radius: var(--md-sys-shape-corner-full);

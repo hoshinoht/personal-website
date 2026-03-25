@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback, lazy, Suspense } from 'react';
+import { useState, useEffect, useCallback, useRef, lazy, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import styles from '../styles/components/KonamiEgg.module.scss';
 
@@ -13,7 +13,7 @@ function isDesktop(): boolean {
 }
 
 export function KonamiEgg() {
-  const [, setSequence] = useState<string[]>([]);
+  const seqRef = useRef<string[]>([]);
   const [gameActive, setGameActive] = useState(false);
   const [fadeIn, setFadeIn] = useState(false);
 
@@ -29,16 +29,14 @@ export function KonamiEgg() {
       if (gameActive) return;
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
 
-      setSequence(prev => {
-        const next = [...prev, e.key].slice(-KONAMI.length);
-        if (next.length === KONAMI.length && next.every((k, i) => k === KONAMI[i])) {
-          if (isDesktop()) {
-            document.body.style.overflow = 'hidden';
-            setGameActive(true);
-          }
+      const next = [...seqRef.current, e.key].slice(-KONAMI.length);
+      seqRef.current = next;
+      if (next.length === KONAMI.length && next.every((k, i) => k === KONAMI[i])) {
+        if (isDesktop()) {
+          document.body.style.overflow = 'hidden';
+          setGameActive(true);
         }
-        return next;
-      });
+      }
     };
     window.addEventListener('keydown', handler);
     return () => {

@@ -5,7 +5,7 @@ import type { Phase } from './game/types';
 import {
   INTRO_DURATION, DEATH_EXPLOSION_DURATION, DEATH_PROMPT_TIME,
   DEATH_ACCEPT_DURATION, OUTRO_DURATION, MAX_LIVES,
-  RESCUE_NAMES, HELPER_COLORS,
+  RESCUE_NAMES, HELPER_COLORS, FRAGMENT_DECAY_DEATH,
 } from './game/constants';
 import { createGameState } from './game/spawner';
 import { update, spawnParticle } from './game/update';
@@ -115,7 +115,7 @@ export function AsteroidsGame({ onComplete }: { onComplete: () => void }) {
       } else if (phase === 'death') {
         gs.particles.filter(p => { p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt; return p.life > 0; });
         Matter.Engine.update(engineRef.current, dt * 1000);
-        gs.fragments = gs.fragments.filter(f => { f.life -= dt * 0.6; if (f.life <= 0) { Matter.Composite.remove(engineRef.current.world, f.body); return false; } return true; });
+        gs.fragments = gs.fragments.filter(f => { f.life -= dt * FRAGMENT_DECAY_DEATH; if (f.life <= 0) { Matter.Composite.remove(engineRef.current.world, f.body); return false; } return true; });
 
         renderDeath(ctx, gs, W, H, phaseElapsed);
 
@@ -145,7 +145,7 @@ export function AsteroidsGame({ onComplete }: { onComplete: () => void }) {
         }
       } else if (phase === 'destroyed') {
         Matter.Engine.update(engineRef.current, dt * 1000);
-        gs.fragments = gs.fragments.filter(f => { f.life -= dt * 0.6; if (f.life <= 0) { Matter.Composite.remove(engineRef.current.world, f.body); return false; } return true; });
+        gs.fragments = gs.fragments.filter(f => { f.life -= dt * FRAGMENT_DECAY_DEATH; if (f.life <= 0) { Matter.Composite.remove(engineRef.current.world, f.body); return false; } return true; });
         gs.particles.filter(p => { p.x += p.vx * dt; p.y += p.vy * dt; p.life -= dt; return p.life > 0; });
         for (const f of gs.fragments) {
           const pos = f.body.position;

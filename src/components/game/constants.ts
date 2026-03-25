@@ -16,6 +16,8 @@ export const HIT_INVINCIBILITY = 1500;
 export const SHIP_HIT_RADIUS = SHIP_SIZE / 2 - 4;
 export const HELPER_HIT_RADIUS = 28;
 export const MAX_LIVES = 3;
+export const FRAGMENT_DECAY = 0.4;
+export const FRAGMENT_DECAY_DEATH = 0.6; // faster decay during death/destroyed phases
 
 export const PALETTE = {
   heading: '#C4A2D4',

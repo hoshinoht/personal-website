@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail } from 'lucide-react';
 import { bio } from '../data/portfolio';
@@ -15,6 +16,8 @@ function getGreeting(): string {
 }
 
 export function Hero() {
+  const greeting = useMemo(getGreeting, []);
+
   return (
     <section id="hero" className={styles.hero}>
       <div className={styles.heroBackground} />
@@ -25,7 +28,7 @@ export function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: [0.2, 0, 0, 1] }}
         >
-          <p className={styles.greeting}>{getGreeting()}</p>
+          <p className={styles.greeting}>{greeting}</p>
           <h1 className={styles.name}>{bio.name}</h1>
           <TypingEffect roles={bio.roles} />
           <p className={styles.summary}>{bio.summary}</p>

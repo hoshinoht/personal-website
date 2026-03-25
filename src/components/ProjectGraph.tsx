@@ -66,6 +66,34 @@ function getNodePositions(count: number, width: number, height: number) {
   return positions;
 }
 
+function renderEdgeLabel(edge: Edge, posA: { x: number; y: number }, posB: { x: number; y: number }) {
+  const labelText = edge.shared.slice(0, 3).join(', ')
+    + (edge.shared.length > 3 ? ` +${edge.shared.length - 3}` : '');
+  const elx = (posA.x + posB.x) / 2;
+  const ely = (posA.y + posB.y) / 2 - 10;
+  const padX = 6;
+  const padY = 3;
+  const textW = labelText.length * 5.5;
+  return (
+    <g>
+      <rect
+        x={elx - textW / 2 - padX}
+        y={ely - 7 - padY}
+        width={textW + padX * 2}
+        height={14 + padY * 2}
+        rx={4}
+        fill="var(--md-sys-color-surface-container)"
+        stroke="var(--md-sys-color-outline-variant)"
+        strokeWidth={0.5}
+        opacity={0.95}
+      />
+      <text x={elx} y={ely} textAnchor="middle" className={styles.edgeLabel}>
+        {labelText}
+      </text>
+    </g>
+  );
+}
+
 export function ProjectGraph() {
   const [open, setOpen] = useState(false);
   const [hoveredNode, setHoveredNode] = useState<number | null>(null);
@@ -225,33 +253,7 @@ export function ProjectGraph() {
                       {project.name}
                     </text>
 
-                    {sharedWith && (() => {
-                      const labelText = sharedWith.shared.slice(0, 3).join(', ')
-                        + (sharedWith.shared.length > 3 ? ` +${sharedWith.shared.length - 3}` : '');
-                      const elx = (pos.x + positions[hoveredNode!].x) / 2;
-                      const ely = (pos.y + positions[hoveredNode!].y) / 2 - 10;
-                      const padX = 6;
-                      const padY = 3;
-                      const textW = labelText.length * 5.5;
-                      return (
-                        <g>
-                          <rect
-                            x={elx - textW / 2 - padX}
-                            y={ely - 7 - padY}
-                            width={textW + padX * 2}
-                            height={14 + padY * 2}
-                            rx={4}
-                            fill="var(--md-sys-color-surface-container)"
-                            stroke="var(--md-sys-color-outline-variant)"
-                            strokeWidth={0.5}
-                            opacity={0.95}
-                          />
-                          <text x={elx} y={ely} textAnchor="middle" className={styles.edgeLabel}>
-                            {labelText}
-                          </text>
-                        </g>
-                      );
-                    })()}
+                    {sharedWith && renderEdgeLabel(sharedWith, pos, positions[hoveredNode!])}
                   </g>
                 );
               })}
