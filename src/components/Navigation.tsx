@@ -22,16 +22,22 @@ export function Navigation() {
   });
 
   useEffect(() => {
+    let ticking = false;
     const onScroll = () => {
-      const offset = window.scrollY + window.innerHeight / 3;
-      let active: string = sections[0].id;
-      for (const { id } of sections) {
-        const el = document.getElementById(id);
-        if (el && el.offsetTop <= offset) {
-          active = id;
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const offset = window.scrollY + window.innerHeight / 3;
+        let active: string = sections[0].id;
+        for (const { id } of sections) {
+          const el = document.getElementById(id);
+          if (el && el.offsetTop <= offset) {
+            active = id;
+          }
         }
-      }
-      setActiveSection(active);
+        setActiveSection(active);
+        ticking = false;
+      });
     };
 
     window.addEventListener('scroll', onScroll, { passive: true });

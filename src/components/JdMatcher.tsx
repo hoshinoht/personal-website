@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { motion } from 'framer-motion';
 import { FileText, X, Sparkles } from 'lucide-react';
 import { projects, experiences, skillCategories, certifications } from '../data/portfolio';
 import { useScrolledPast } from '../lib/useScrolledPast';
+import { useFocusTrap } from '../lib/useFocusTrap';
 import { cn } from '../lib/utils';
 import styles from '../styles/components/JdMatcher.module.scss';
 
@@ -94,7 +95,9 @@ export function JdMatcher() {
   const [open, setOpen] = useState(false);
   const [jdText, setJdText] = useState('');
   const [results, setResults] = useState<MatchResult[] | null>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
   const visible = useScrolledPast('hero');
+  useFocusTrap(modalRef, open);
 
   const analyze = () => {
     if (jdText.trim().length < 10) return;
@@ -123,6 +126,7 @@ export function JdMatcher() {
         <div className={styles.overlay} onClick={() => setOpen(false)}>
           <motion.div
             className={styles.modal}
+            ref={modalRef}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.25, ease: [0.2, 0, 0, 1] }}

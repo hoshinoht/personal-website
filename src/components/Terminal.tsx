@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { bio, experiences, projects, skillCategories, certifications, education } from '../data/portfolio';
+import { useFocusTrap } from '../lib/useFocusTrap';
 import styles from '../styles/components/Terminal.module.scss';
 
 const HELP_TEXT = `Available commands:
@@ -173,6 +174,8 @@ export function Terminal() {
   const [historyIndex, setHistoryIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const terminalRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(terminalRef, open);
 
   useEffect(() => {
     const handler = (e: KeyboardEvent) => {
@@ -275,7 +278,7 @@ export function Terminal() {
 
   return (
     <div className={styles.overlay} onClick={() => setOpen(false)}>
-      <div className={styles.terminal} onClick={(e) => e.stopPropagation()}>
+      <div className={styles.terminal} ref={terminalRef} onClick={(e) => e.stopPropagation()}>
         <div className={styles.titleBar}>
           <div className={styles.dots}>
             <span className={styles.dotRed} onClick={() => setOpen(false)} />

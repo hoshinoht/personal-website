@@ -1,4 +1,5 @@
 import { lazy, Suspense } from 'react';
+import { ErrorBoundary } from './components/ErrorBoundary';
 import { FilterProvider } from './components/FilterContext';
 import { ScrollProgress } from './components/ScrollProgress';
 import { Navigation } from './components/Navigation';
@@ -27,6 +28,7 @@ const Education = lazy(() => import('./components/Education').then((m) => ({ def
 
 export default function App() {
   return (
+    <ErrorBoundary>
     <FilterProvider>
       <ScrollProgress />
       <Navigation />
@@ -64,5 +66,6 @@ export default function App() {
       </main>
       <Footer />
     </FilterProvider>
+    </ErrorBoundary>
   );
 }

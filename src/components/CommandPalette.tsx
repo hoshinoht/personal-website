@@ -4,6 +4,7 @@ import {
   X, Command,
 } from 'lucide-react';
 import { bio, experiences, projects, skillCategories, education, sections } from '../data/portfolio';
+import { useFocusTrap } from '../lib/useFocusTrap';
 import styles from '../styles/components/CommandPalette.module.scss';
 
 type ResultType = 'action' | 'section' | 'experience' | 'project' | 'skill' | 'education';
@@ -174,6 +175,8 @@ export function CommandPalette() {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const inputRef = useRef<HTMLInputElement>(null);
   const listRef = useRef<HTMLDivElement>(null);
+  const paletteRef = useRef<HTMLDivElement>(null);
+  useFocusTrap(paletteRef, open);
 
   const index = useMemo(buildIndex, []);
 
@@ -241,7 +244,7 @@ export function CommandPalette() {
 
   return (
     <div className={styles.overlay} onClick={() => setOpen(false)}>
-      <div className={styles.palette} onClick={(e) => e.stopPropagation()}>
+      <div className={styles.palette} ref={paletteRef} onClick={(e) => e.stopPropagation()}>
         <div className={styles.inputRow}>
           <Search size={18} className={styles.searchIcon} />
           <input
