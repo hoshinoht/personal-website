@@ -125,15 +125,16 @@ export function ProjectTimeline() {
   const [expanded, setExpanded] = useState(false);
 
   const allEntries = useMemo(() => buildEntries(activeDomain), [activeDomain]);
-  if (allEntries.length === 0) return null;
 
-  const minTime = Math.min(...allEntries.map((e) => e.start));
-  const maxTime = Math.max(...allEntries.map((e) => e.end));
+  const minTime = allEntries.length > 0 ? Math.min(...allEntries.map((e) => e.start)) : 0;
+  const maxTime = allEntries.length > 0 ? Math.max(...allEntries.map((e) => e.end)) : 0;
 
   const scale = useMemo(
-    () => buildDensityScale(allEntries, minTime, maxTime),
+    () => allEntries.length > 0 ? buildDensityScale(allEntries, minTime, maxTime) : { timeToPercent: () => 0 },
     [allEntries, minTime, maxTime],
   );
+
+  if (allEntries.length === 0) return null;
 
   const startYear = new Date(minTime).getFullYear();
   const endYear = new Date(maxTime).getFullYear();
