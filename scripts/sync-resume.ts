@@ -12,7 +12,7 @@ import * as yaml from 'js-yaml';
 
 const RESUME_INDEX_PATH =
   process.env.RESUME_INDEX_PATH ||
-  path.resolve(__dirname, '../../../sit/intern/resume/index');
+  path.resolve(__dirname, '../../resume/index');
 
 const OUT_PATH = path.resolve(__dirname, '../src/data/portfolio.ts');
 
