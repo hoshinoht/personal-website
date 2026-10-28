@@ -49,7 +49,7 @@ export function renderGame(ctx: CanvasRenderingContext2D, gs: GameState, W: numb
     ctx.globalAlpha = 0.6;
     const barW = t.width - 8, barH = 3, barY = t.height / 2 - 6;
     ctx.fillStyle = '#0a0a0c'; ctx.fillRect(-barW / 2, barY, barW, barH);
-    ctx.fillStyle = hpRatio > 0.5 ? t.color : hpRatio > 0.25 ? '#E8C97E' : '#E27878';
+    ctx.fillStyle = hpRatio > 0.5 ? t.color : hpRatio > 0.25 ? '#F4DA86' : '#FF8F9A';
     ctx.fillRect(-barW / 2, barY, barW * hpRatio, barH);
     ctx.globalAlpha = 1;
     ctx.fillStyle = flashing ? t.color : '#0a0a0c';
@@ -69,7 +69,7 @@ export function renderGame(ctx: CanvasRenderingContext2D, gs: GameState, W: numb
       ctx.strokeRect(boss.x - boss.width / 2 - 6, boss.y - boss.height / 2 - 6, boss.width + 12, boss.height + 12);
       // Aim line toward ship
       ctx.globalAlpha = 0.12;
-      ctx.strokeStyle = '#E27878';
+      ctx.strokeStyle = '#FF8F9A';
       ctx.lineWidth = 1;
       ctx.beginPath();
       ctx.moveTo(boss.x, boss.y + boss.height / 2);
@@ -96,7 +96,7 @@ export function renderGame(ctx: CanvasRenderingContext2D, gs: GameState, W: numb
 
   // Player bullets (with trails)
   gs.bullets.forEach(b => {
-    ctx.globalAlpha = 0.1; ctx.fillStyle = '#F3F5FC';
+    ctx.globalAlpha = 0.1; ctx.fillStyle = '#FFFFFF';
     ctx.fillRect(b.x - 1, b.y + 20, 2, 8);
     ctx.globalAlpha = 0.3;
     ctx.fillRect(b.x - 1.5, b.y + 10, 3, 10);
@@ -157,7 +157,7 @@ export function renderGame(ctx: CanvasRenderingContext2D, gs: GameState, W: numb
     if (shipImg) {
       ctx.save(); ctx.beginPath(); ctx.arc(gs.ship.x, gs.ship.y, SHIP_SIZE / 2, 0, Math.PI * 2); ctx.clip();
       ctx.drawImage(shipImg, gs.ship.x - SHIP_SIZE / 2, gs.ship.y - SHIP_SIZE / 2, SHIP_SIZE, SHIP_SIZE); ctx.restore();
-      ctx.strokeStyle = isInvincible ? '#E27878' : '#C4A2D4'; ctx.lineWidth = 2;
+      ctx.strokeStyle = isInvincible ? '#FF8F9A' : '#C4A2D4'; ctx.lineWidth = 2;
       ctx.globalAlpha = 0.5 + Math.sin(now / 300) * 0.2;
       ctx.beginPath(); ctx.arc(gs.ship.x, gs.ship.y, SHIP_SIZE / 2 + 4, 0, Math.PI * 2); ctx.stroke();
       ctx.globalAlpha = 1;
@@ -171,13 +171,13 @@ export function renderGame(ctx: CanvasRenderingContext2D, gs: GameState, W: numb
   // ─── HUD ───
   const total = gs.spawnQueue.length;
   const destroyed = total - (gs.spawnQueue.length - gs.spawnIndex) - gs.targets.length;
-  ctx.fillStyle = '#B2B6C1'; ctx.font = '12px "JetBrains Mono", monospace';
+  ctx.fillStyle = '#C9CAD6'; ctx.font = '12px "JetBrains Mono", monospace';
   ctx.textAlign = 'left';
   ctx.fillText(`TARGETS  ${Math.max(0, destroyed)} / ${total}`, 24, 34);
 
   const currentMaxLives = Math.min(MAX_LIVES + Math.floor(gs.deathCount / 2), 12);
   for (let i = 0; i < currentMaxLives; i++) {
-    ctx.fillStyle = i < gs.lives ? '#F3BDCA' : '#393C43';
+    ctx.fillStyle = i < gs.lives ? '#FFB8D1' : '#2A2D35';
     ctx.beginPath(); ctx.arc(26 + i * 18, 56, 5, 0, Math.PI * 2); ctx.fill();
   }
 
@@ -197,11 +197,11 @@ export function renderGame(ctx: CanvasRenderingContext2D, gs: GameState, W: numb
     const pad = 24, lineH = 18;
     const bx = W - pad, by = H - pad - lineH * 3;
     ctx.font = '11px "JetBrains Mono", monospace'; ctx.textAlign = 'right';
-    ctx.fillStyle = '#6E7280'; ctx.fillText('move', bx, by);
+    ctx.fillStyle = '#6D707A'; ctx.fillText('move', bx, by);
     ctx.fillStyle = '#C4A2D4'; ctx.fillText('WASD / Arrows  ', bx - 36, by);
-    ctx.fillStyle = '#6E7280'; ctx.fillText('fire', bx, by + lineH);
+    ctx.fillStyle = '#6D707A'; ctx.fillText('fire', bx, by + lineH);
     ctx.fillStyle = '#C4A2D4'; ctx.fillText('Space / Click  ', bx - 26, by + lineH);
-    ctx.fillStyle = '#6E7280'; ctx.fillText('exit', bx, by + lineH * 2);
+    ctx.fillStyle = '#6D707A'; ctx.fillText('exit', bx, by + lineH * 2);
     ctx.fillStyle = '#C4A2D4'; ctx.fillText('Escape  ', bx - 26, by + lineH * 2);
     ctx.globalAlpha = 1;
   }
@@ -210,9 +210,9 @@ export function renderGame(ctx: CanvasRenderingContext2D, gs: GameState, W: numb
 /* ── Intro ── */
 export function renderIntro(ctx: CanvasRenderingContext2D, W: number, H: number, elapsed: number) {
   const lines = [
-    { text: '[ALERT] External input detected', delay: 300, color: '#E27878' },
+    { text: '[ALERT] External input detected', delay: 300, color: '#FF8F9A' },
     { text: '[SYSTEM] Initiating combat mode...', delay: 1500, color: '#C4A2D4' },
-    { text: '[YoRHa] Glory to mankind.', delay: 3000, color: '#F3F5FC' },
+    { text: '[YoRHa] Glory to mankind.', delay: 3000, color: '#FFFFFF' },
   ];
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   for (let i = 0; i < lines.length; i++) {
@@ -222,7 +222,7 @@ export function renderIntro(ctx: CanvasRenderingContext2D, W: number, H: number,
     ctx.fillText(l.text.substring(0, chars), W / 2, H / 2 - 30 + i * 36);
   }
   if (elapsed > 3800) {
-    ctx.font = '12px "JetBrains Mono", monospace'; ctx.fillStyle = '#6E7280';
+    ctx.font = '12px "JetBrains Mono", monospace'; ctx.fillStyle = '#6D707A';
     ctx.fillText('WASD / Arrows to move  ·  Space / Click to fire', W / 2, H - 48);
   }
 }
@@ -305,8 +305,8 @@ export function renderDeath(ctx: CanvasRenderingContext2D, gs: GameState, W: num
   ];
   const script = recoveryScripts[Math.min(gs.deathCount, recoveryScripts.length - 1)];
   const msgs = [
-    { text: script.sys, start: 1600, color: '#E27878' },
-    { text: script.phil, start: 6600, color: '#B2B6C1' },
+    { text: script.sys, start: 1600, color: '#FF8F9A' },
+    { text: script.phil, start: 6600, color: '#C9CAD6' },
     { text: script.signal, start: 10000, color: '#C4A2D4' },
   ];
   for (const m of msgs) {
@@ -345,7 +345,7 @@ export function renderDeath(ctx: CanvasRenderingContext2D, gs: GameState, W: num
     const promptAge = textElapsed - DEATH_PROMPT_TIME;
     const promptText = 'Accept offer of rescue?  [ Y / N ]';
     const chars = Math.min(Math.floor(promptAge / 35), promptText.length);
-    ctx.font = '16px "JetBrains Mono", monospace'; ctx.fillStyle = '#F3F5FC';
+    ctx.font = '16px "JetBrains Mono", monospace'; ctx.fillStyle = '#FFFFFF';
     ctx.fillText(promptText.substring(0, chars), W / 2, H / 2 + 14);
     if (chars >= promptText.length && Math.floor(textElapsed / 500) % 2 === 0) {
       ctx.fillStyle = '#C4A2D4';
@@ -360,17 +360,17 @@ export function renderDeath(ctx: CanvasRenderingContext2D, gs: GameState, W: num
     if (gs.deathChoice === 'y') {
       const line1 = '[SYSTEM] External support accepted.';
       const chars1 = Math.min(Math.floor(choiceElapsed / 30), line1.length);
-      ctx.font = '16px "JetBrains Mono", monospace'; ctx.fillStyle = '#6EC4B8';
+      ctx.font = '16px "JetBrains Mono", monospace'; ctx.fillStyle = '#78E1D0';
       ctx.fillText(line1.substring(0, chars1), W / 2, H / 2 + 14);
     } else {
       const line1 = '[SYSTEM] Understood. Erasing state.';
       const line2 = '[SYSTEM] Initiating cold reboot...';
       const chars1 = Math.min(Math.floor(choiceElapsed / 30), line1.length);
-      ctx.font = '16px "JetBrains Mono", monospace'; ctx.fillStyle = '#E27878';
+      ctx.font = '16px "JetBrains Mono", monospace'; ctx.fillStyle = '#FF8F9A';
       ctx.fillText(line1.substring(0, chars1), W / 2, H / 2 + 8);
       if (choiceElapsed > 1200) {
         const chars2 = Math.min(Math.floor((choiceElapsed - 1200) / 30), line2.length);
-        ctx.fillStyle = '#B2B6C1';
+        ctx.fillStyle = '#C9CAD6';
         ctx.fillText(line2.substring(0, chars2), W / 2, H / 2 + 40);
       }
     }
@@ -390,10 +390,10 @@ export function renderOutro(ctx: CanvasRenderingContext2D, _gs: GameState, W: nu
   ctx.fillRect(0, 0, W, H);
 
   const messages = [
-    { text: 'everything was destroyed.', start: 1500, color: '#F3F5FC' },
-    { text: '...', start: 3500, color: '#B2B6C1' },
+    { text: 'everything was destroyed.', start: 1500, color: '#FFFFFF' },
+    { text: '...', start: 3500, color: '#C9CAD6' },
     { text: 'but even so,', start: 5000, color: '#C4A2D4' },
-    { text: 'we choose to rebuild.', start: 6800, color: '#6EC4B8' },
+    { text: 'we choose to rebuild.', start: 6800, color: '#78E1D0' },
   ];
   ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
   const visible: Array<{ text: string; color: string }> = [];

@@ -15,11 +15,11 @@
   width: 100%;
   max-width: 720px;
   max-height: 80vh;
-  background: rgba(38, 40, 45, 0.85);
+  background: rgba(23, 26, 34, 0.85);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-radius: 12px;
-  border: 1px solid rgba(96, 100, 110, 0.3);
+  border: 1px solid rgba(93, 96, 106, 0.3);
   box-shadow:
     0 8px 32px rgba(0, 0, 0, 0.4),
     0 0 0 1px rgba(255, 255, 255, 0.03) inset;
@@ -34,7 +34,7 @@
   align-items: center;
   gap: var(--spacing-md);
   padding: 12px 14px;
-  background: rgba(47, 50, 56, 0.5);
+  background: rgba(33, 36, 44, 0.5);
 }
 
 .dots {
@@ -49,16 +49,16 @@
 }
 
 .dotRed {
-  background: #E27878;
+  background: #FF8F9A;
   cursor: pointer;
 
   &:hover {
-    background: #F09090;
+    background: #FFA3AC;
   }
 }
 
-.dotYellow { background: #DEC47C; }
-.dotGreen { background: #82C8A0; }
+.dotYellow { background: #F4DA86; }
+.dotGreen { background: #9BE6B5; }
 
 .titleText {
   font-family: var(--font-mono);
@@ -84,7 +84,7 @@
   &::-webkit-scrollbar { width: 6px; }
   &::-webkit-scrollbar-track { background: transparent; }
   &::-webkit-scrollbar-thumb {
-    background: rgba(110, 114, 128, 0.3);
+    background: rgba(109, 112, 122, 0.3);
     border-radius: 3px;
   }
 }

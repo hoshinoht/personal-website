@@ -108,7 +108,7 @@ export function AsteroidsGame({ onComplete }: { onComplete: () => void }) {
         const result = update(gs, dt, W, H, engineRef.current, now);
         renderGame(ctx, gs, W, H, shipImgRef.current, phaseElapsed);
         if (result === 'dead') {
-          const colors = ['#E27878', '#F3BDCA', '#C4A2D4'];
+          const colors = ['#FF8F9A', '#FFB8D1', '#C4A2D4'];
           for (let i = 0; i < 50; i++) {
             const a = Math.random() * Math.PI * 2, spd = 50 + Math.random() * 400;
             spawnParticle(gs, gs.deathX, gs.deathY, Math.cos(a) * spd, Math.sin(a) * spd, 0.8 + Math.random() * 1.2, colors[i % 3], 3 + Math.random() * 5);

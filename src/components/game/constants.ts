@@ -21,12 +21,12 @@ export const FRAGMENT_DECAY_DEATH = 0.6; // faster decay during death/destroyed 
 
 export const PALETTE = {
   heading: '#C4A2D4',
-  company: '#6EC4B8',
+  company: '#78E1D0',
   project: '#B0BCE8',
-  skill: '#82C8A0',
-  name: '#F3BDCA',
-  enemyBullet: '#E27878',
-  helper: '#6EC4B8',
+  skill: '#9BE6B5',
+  name: '#FFB8D1',
+  enemyBullet: '#FF8F9A',
+  helper: '#78E1D0',
 };
 
 export const RESCUE_NAMES = [
@@ -59,4 +59,4 @@ export const RESCUE_NAMES = [
   'segfault_core_dumped', 'works_on_my_machine', 'exited_vim_successfully'
 ];
 
-export const HELPER_COLORS = ['#6EC4B8', '#B0BCE8', '#82C8A0', '#E8C97E', '#75D6F6', '#F3BDCA', '#C4A2D4', '#DDA05C'];
+export const HELPER_COLORS = ['#78E1D0', '#B0BCE8', '#9BE6B5', '#F4DA86', '#8BD3FF', '#FFB8D1', '#C4A2D4', '#DDA05C'];
