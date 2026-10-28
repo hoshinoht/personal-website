@@ -19,6 +19,8 @@ export function ExperienceTimeline() {
   if (filtered.length === 0) return null;
 
   const toggle = (id: string) => setExpandedId((prev) => (prev === id ? null : id));
+  // Roles with no bullets yet (e.g. a just-started internship) render as static cards.
+  const firstExpandableId = filtered.find((exp) => exp.bullets.length > 0)?.id;
 
   return (
     <section id="experience" className={styles.section}>
@@ -33,7 +35,8 @@ export function ExperienceTimeline() {
       </motion.h2>
       <div className={styles.timeline}>
         {filtered.map((exp, i) => {
-          const isExpanded = expandedId === exp.id;
+          const canExpand = exp.bullets.length > 0;
+          const isExpanded = canExpand && expandedId === exp.id;
           return (
             <motion.div
               key={exp.id}
@@ -46,11 +49,12 @@ export function ExperienceTimeline() {
               <div className={styles.timelineDot} />
               <div
                 className={cn(styles.card, isExpanded && styles.cardExpanded)}
-                onClick={() => toggle(exp.id)}
-                role="button"
-                tabIndex={0}
-                aria-expanded={isExpanded}
-                onKeyDown={(e) => e.key === 'Enter' && toggle(exp.id)}
+                style={canExpand ? undefined : { cursor: 'default' }}
+                onClick={canExpand ? () => toggle(exp.id) : undefined}
+                role={canExpand ? 'button' : undefined}
+                tabIndex={canExpand ? 0 : undefined}
+                aria-expanded={canExpand ? isExpanded : undefined}
+                onKeyDown={canExpand ? (e) => e.key === 'Enter' && toggle(exp.id) : undefined}
               >
                 <div className={styles.cardHeader}>
                   <div>
@@ -62,10 +66,12 @@ export function ExperienceTimeline() {
                     <span className={cn(styles.typeBadge, styles[exp.type])}>
                       {exp.type}
                     </span>
-                    <ChevronDown
-                      size={18}
-                      className={cn(styles.chevron, isExpanded && styles.chevronOpen)}
-                    />
+                    {canExpand && (
+                      <ChevronDown
+                        size={18}
+                        className={cn(styles.chevron, isExpanded && styles.chevronOpen)}
+                      />
+                    )}
                   </div>
                 </div>
 
@@ -75,7 +81,7 @@ export function ExperienceTimeline() {
                   ))}
                 </div>
 
-                {!isExpanded && i === 0 && (
+                {!isExpanded && exp.id === firstExpandableId && (
                   <p className={styles.expandHint}>Tap to expand</p>
                 )}
 
