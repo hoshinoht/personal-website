@@ -1,12 +1,16 @@
 import { motion } from 'framer-motion';
-import { GitCommit, Code, Zap, Container } from 'lucide-react';
+import { Minimize2, FlaskConical, ShieldCheck, Zap } from 'lucide-react';
 import styles from '../styles/components/ImpactStats.module.scss';
 
 const stats = [
-  { icon: GitCommit, value: '700+', label: 'Commits', color: 'var(--md-sys-color-primary)' },
-  { icon: Code, value: '2M+', label: 'Lines of Code', color: 'var(--md-sys-color-secondary)' },
-  { icon: Container, value: '10+', label: 'Containers', color: 'var(--md-sys-color-tertiary)' },
-  { icon: Zap, value: '<1s', label: 'SOS Alert Delivery', color: 'var(--color-green)' },
+  // aerial-scene-recognition.i2: INT8 export 5.4x smaller than FP32 with zero accuracy lost
+  { icon: Minimize2, value: '5.4×', label: 'Smaller model, zero accuracy lost', color: 'var(--md-sys-color-primary)' },
+  // kanade-v5.i2: each change gated on 2,600+ offline Rust tests
+  { icon: FlaskConical, value: '2,600+', label: 'Rust tests gating each release', color: 'var(--md-sys-color-secondary)' },
+  // shiori.r4: all 172 injected-crash runs restored exactly the old or new state
+  { icon: ShieldCheck, value: '172/172', label: 'Injected-crash runs recovered', color: 'var(--md-sys-color-tertiary)' },
+  // carehaven.i2: sub-second SOS alert delivery via Redis pub/sub + FCM
+  { icon: Zap, value: '<1s', label: 'SOS alert delivery', color: 'var(--color-green)' },
 ];
 
 export function ImpactStats() {

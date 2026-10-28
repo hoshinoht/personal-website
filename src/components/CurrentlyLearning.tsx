@@ -3,11 +3,11 @@ import { BookOpen } from 'lucide-react';
 import styles from '../styles/components/CurrentlyLearning.module.scss';
 
 const topics = [
+  'Site reliability engineering',
   'Rust async runtimes',
-  'Federated learning',
-  'eBPF observability',
-  'WebAssembly edge compute',
-  'Transformer architectures',
+  'INT8 quantisation for CPU inference',
+  'Crash-safe journaling',
+  'OpenTelemetry tracing',
 ];
 
 export function CurrentlyLearning() {

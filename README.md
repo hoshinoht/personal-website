@@ -6,7 +6,7 @@ Personal portfolio website for Po Haoting — Computing Science undergraduate, M
 
 ## Tech Stack
 
-- **React 19** + **TypeScript** + **Vite 6** (Bun runtime)
+- **React 19** + **TypeScript** + **Vite 8** (Bun runtime)
 - **CSS Modules** with Material 3 Expressive design tokens
 - **Framer Motion** for scroll reveals and transitions
 - **Lucide React** for icons
@@ -37,7 +37,7 @@ No Tailwind. No component library. Pure custom CSS.
 ### Data
 - Content auto-synced from resume YAML index via `bun run sync`
 - GitHub live status badge showing latest push activity
-- Impact stats strip (700+ commits, 2M+ LOC, etc.)
+- Impact stats strip (5.4× smaller INT8 model, 2,600+ Rust tests per release, 172/172 crash-recovery runs, <1s SOS alerts)
 
 ## Development
 
